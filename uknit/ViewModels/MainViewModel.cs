@@ -1,17 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO.IsolatedStorage;
 
 namespace uknit
@@ -20,35 +9,16 @@ namespace uknit
 	{
 		public MainViewModel()
 		{
-			this.Items = new ObservableCollection<KnittingProjectViewModel>();
+			this.KnittingProjects = new ObservableCollection<KnittingProjectViewModel>();
 		}
 
 		/// <summary>
-		/// A collection for ItemViewModel objects.
+		/// A collection for KnittingProjectViewModel objects.
 		/// </summary>
-		//public ObservableCollection<ItemViewModel> Items
-		public ObservableCollection<KnittingProjectViewModel> Items
+		public ObservableCollection<KnittingProjectViewModel> KnittingProjects
 		{
 			get;
 			private set;
-		}
-
-		private string _sampleProperty = "Sample Runtime Property Value";
-		/// <summary>
-		/// Sample ViewModel property; this property is used in the view to display its value using a Binding
-		/// </summary>
-		/// <returns></returns>
-		public string SampleProperty
-		{
-			get
-			{
-				return _sampleProperty;
-			}
-			set
-			{
-				_sampleProperty = value;
-				NotifyPropertyChanged("SampleProperty");
-			}
 		}
 
 		public bool IsDataLoaded
@@ -58,7 +28,7 @@ namespace uknit
 		}
 
 		/// <summary>
-		/// Creates and adds a few ItemViewModel objects into the Items collection.
+		/// Populates main project list from isolated storage
 		/// </summary>
 		public void LoadData()
 		{
@@ -69,7 +39,7 @@ namespace uknit
 				KnittingProjectViewModel proj = oProj as KnittingProjectViewModel;
 				if(proj != null)
 				{
-					this.Items.Add(proj);
+					this.KnittingProjects.Add(proj);
 				}
 			}
 

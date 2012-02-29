@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using Coding4Fun.Phone.Controls;
 using System.IO.IsolatedStorage;
+using System.Windows.Media;
+using Microsoft.Phone.Controls;
 
 namespace uknit.Views
 {
@@ -68,6 +59,7 @@ namespace uknit.Views
 			if(this.IsEditProject)
 			{
 				KnittingProjectViewModel project = this.IsolatedStorage[this.OriginalProjectName] as KnittingProjectViewModel;
+				int index = App.ViewModel.KnittingProjects.IndexOf(project);
 
 				project.ProjectDescription = this.AddProject_Description.Text;
 				project.RowCounterColor = this.AddProject_RowCounterColor.Color;
@@ -85,8 +77,7 @@ namespace uknit.Views
 					this.IsolatedStorage[project.ProjectName] = project;
 				}
 
-				int index = App.ViewModel.Items.IndexOf(project);
-				App.ViewModel.Items[index] = project;
+				App.ViewModel.KnittingProjects[index] = project;
 			}
 			else if(!this.IsolatedStorage.Contains(AddProject_Name.Text))
 			{
@@ -98,7 +89,7 @@ namespace uknit.Views
 					CurrentRowCount = 0
 				};
 
-				App.ViewModel.Items.Insert(0, proj);
+				App.ViewModel.KnittingProjects.Insert(0, proj);
 
 				this.IsolatedStorage.Add(proj.ProjectName, new KnittingProjectViewModel
 				{

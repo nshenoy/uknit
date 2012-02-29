@@ -29,7 +29,7 @@
 				<!--Double line list with image placeholder and text wrapping-->
 				<StackPanel>
 					<HyperlinkButton HorizontalAlignment="Left" Margin="12,0,0,0"  FontSize="32" NavigateUri="/Views/AddNewProject.xaml" Content="Add new project..." />
-					<ListBox ItemsSource="{Binding Items}" Margin="0,0,-12,0">
+					<ListBox ItemsSource="{Binding KnittingProjects}" Margin="0,0,-12,0">
 						<ListBox.ItemTemplate>
 							<DataTemplate>
 								<Button BorderThickness="0" Margin="0,0,0,0">

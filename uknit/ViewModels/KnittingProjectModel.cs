@@ -1,19 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace uknit
 {
-	public class KnittingProjectViewModel : INotifyPropertyChanged
+	public class KnittingProjectViewModel : INotifyPropertyChanged, IComparable
 	{
 		private string _projectName;
 		public string ProjectName
@@ -86,6 +78,27 @@ namespace uknit
 			{
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+
+		public int CompareTo(object obj)
+		{
+			KnittingProjectViewModel compareAgainst = obj as KnittingProjectViewModel;
+			return this.ProjectName.CompareTo(compareAgainst.ProjectName);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if(obj == null)
+			{
+				return base.Equals(obj);
+			}
+			KnittingProjectViewModel compareAgainst = obj as KnittingProjectViewModel;
+			return String.Compare(this.ProjectName, compareAgainst.ProjectName) == 0;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
 		}
 	}
 }
