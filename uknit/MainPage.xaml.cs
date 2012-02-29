@@ -4,6 +4,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Coding4Fun.Phone.Controls.Toolkit;
+using System.Windows.Controls;
+using System.IO.IsolatedStorage;
 
 namespace uknit
 {
@@ -12,6 +15,7 @@ namespace uknit
 		private SolidColorBrush SteelBlue = new SolidColorBrush(Color.FromArgb(0xFF, 0x46, 0x82, 0xb4));
 		private SolidColorBrush WhiteSmoke = new SolidColorBrush(Color.FromArgb(0xFF, 0xF5, 0xF5, 0xF5));
 		private bool isNew = true;
+		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 
 		// Constructor
 		public MainPage()
@@ -55,7 +59,7 @@ namespace uknit
 				this.NavigationService.RemoveBackEntry();
 				this.NavigationService.RemoveBackEntry();
 			}
-			
+
 			if(isNew)
 			{
 				object val;
@@ -132,6 +136,40 @@ namespace uknit
 			string editPageUri = String.Format("/Views/AddNewProject.xaml?ProjectName={0}", menuItem.Tag.ToString());
 
 			this.NavigationService.Navigate(new Uri(editPageUri, UriKind.Relative));
+		}
+
+		private void OnContextMenuClick_DeleteProject(object sender, RoutedEventArgs e)
+		{
+			MenuItem menuItem = (MenuItem)sender;
+			string projectName = menuItem.Tag.ToString();
+
+			Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+			messagePrompt.IsCancelVisible = true;
+			messagePrompt.Body = new TextBlock
+			{
+				Text = String.Format("You are about to delete \'{0}\'. Are you sure you want to do this?", projectName),
+				FontSize = 30.0,
+				TextWrapping = TextWrapping.Wrap
+			};
+
+			messagePrompt.Completed += (str, res) =>
+				{
+					if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+					{
+						DeleteProject(projectName);
+						MessageBox.Show(String.Format("Deleted \'{0}\'", projectName));
+					}
+				};
+
+			messagePrompt.Show();
+		}
+
+		private void DeleteProject(string projectName)
+		{
+			KnittingProjectViewModel project = this.IsolatedStorage[projectName] as KnittingProjectViewModel;
+			int index = App.ViewModel.KnittingProjects.IndexOf(project);
+			this.IsolatedStorage.Remove(projectName);
+			App.ViewModel.KnittingProjects.RemoveAt(index);
 		}
 	}
 }

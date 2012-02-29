@@ -46,6 +46,7 @@
 										<toolkit:ContextMenuService.ContextMenu>
 											<toolkit:ContextMenu>
 												<toolkit:MenuItem Header="edit project" Tag="{Binding ProjectName}" Click="OnContextMenuClick_EditProject" />
+												<toolkit:MenuItem Header="delete project" Tag="{Binding ProjectName}" Click="OnContextMenuClick_DeleteProject" />
 											</toolkit:ContextMenu>
 										</toolkit:ContextMenuService.ContextMenu>
 									</Button>
