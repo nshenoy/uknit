@@ -19,40 +19,41 @@
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 
 		<!--Panorama control-->
-		<controls:Panorama Title="μknit">
+		<controls:Panorama Title="μknit" DefaultItem="projects">
 			<controls:Panorama.Background>
 				<ImageBrush ImageSource="SwirveDark.png" Stretch="None"/>
 			</controls:Panorama.Background>
 
 			<!--Panorama item one-->
 			<controls:PanoramaItem Header="projects">
-				<!--Double line list with image placeholder and text wrapping-->
-				<StackPanel>
-					<HyperlinkButton HorizontalAlignment="Left" Margin="12,0,0,0"  FontSize="32" NavigateUri="/Views/AddNewProject.xaml" Content="Add new project..." />
-					<ListBox ItemsSource="{Binding KnittingProjects}" Margin="0,0,-12,0">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<Button BorderThickness="0" Margin="0,0,0,0">
-									<StackPanel Orientation="Horizontal" Margin="0,0,0,17">
-										<Grid>
-											<Rectangle Height="100" Width="100" Fill="{Binding RowCounterColorRGB}" Margin="12,0,9,0"/>
-											<TextBlock Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding CurrentRowCount}" FontSize="72"/>
-										</Grid>
-										<StackPanel Width="311">
-											<TextBlock Text="{Binding ProjectName}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" />
-											<TextBlock Text="{Binding ProjectDescription}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+				<ScrollViewer BorderThickness="0">
+					<StackPanel>
+						<HyperlinkButton HorizontalAlignment="Left" Margin="12,0,0,0"  FontSize="32" NavigateUri="/Views/AddNewProject.xaml" Content="Add new project..." />
+						<ItemsControl ItemsSource="{Binding KnittingProjects}" Margin="0,0,-12,0">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Button BorderThickness="0" Margin="0,0,0,0">
+										<StackPanel Orientation="Horizontal" Margin="0,0,0,17">
+											<Grid>
+												<Rectangle Height="100" Width="100" Fill="{Binding RowCounterColorRGB}" Margin="12,0,9,0"/>
+												<TextBlock Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding CurrentRowCount}" FontSize="72"/>
+											</Grid>
+											<StackPanel Width="311">
+												<TextBlock Text="{Binding ProjectName}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" />
+												<TextBlock Text="{Binding ProjectDescription}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+											</StackPanel>
 										</StackPanel>
-									</StackPanel>
-									<toolkit:ContextMenuService.ContextMenu>
-										<toolkit:ContextMenu>
-											<toolkit:MenuItem Header="edit project" Tag="{Binding ProjectName}" Click="OnContextMenuClick_EditProject" />
-										</toolkit:ContextMenu>
-									</toolkit:ContextMenuService.ContextMenu>
-								</Button>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
-				</StackPanel>
+										<toolkit:ContextMenuService.ContextMenu>
+											<toolkit:ContextMenu>
+												<toolkit:MenuItem Header="edit project" Tag="{Binding ProjectName}" Click="OnContextMenuClick_EditProject" />
+											</toolkit:ContextMenu>
+										</toolkit:ContextMenuService.ContextMenu>
+									</Button>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</StackPanel>
+				</ScrollViewer>
 			</controls:PanoramaItem>
 			<controls:PanoramaItem Header="converter">
 				<Grid>
