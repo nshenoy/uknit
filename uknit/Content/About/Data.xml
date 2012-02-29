@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<About>
+	<App Author="Nithin Shenoy" Description="Knitting Tool" />
+	<Items>
+		<MainItem Title="about">
+			<Links>
+				<Link NavigationUri="http://repne.wordpress.com"
+							Content="http://repne.wordpress.com"
+							Label="Web site:"	/>
+			</Links>
+		</MainItem>
+		<Item Title="history" Type="text">
+			1.0.0.0
+			Initial release
+		</Item>
+	</Items>
+</About>
