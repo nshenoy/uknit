@@ -52,6 +52,14 @@ namespace uknit
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			IDictionary<string, string> queryString = this.NavigationContext.QueryString;
+
+			if(queryString.ContainsKey("AddEditProject"))
+			{
+				this.NavigationService.RemoveBackEntry();
+				this.NavigationService.RemoveBackEntry();
+			}
+			
 			if(isNew)
 			{
 				object val;
@@ -120,6 +128,14 @@ namespace uknit
 				Yards.Text = yards.ToString();
 			}
 
+		}
+
+		private void OnContextMenuClick_EditProject(object sender, RoutedEventArgs e)
+		{
+			MenuItem menuItem = (MenuItem)sender;
+			string editPageUri = String.Format("/Views/AddNewProject.xaml?ProjectName={0}", menuItem.Tag.ToString());
+
+			this.NavigationService.Navigate(new Uri(editPageUri, UriKind.Relative));
 		}
 	}
 }

@@ -18,26 +18,34 @@ namespace uknit.Views
 	public partial class AddNewProject : PhoneApplicationPage
 	{
 		private bool IsNew = false;
+		private bool IsEditProject = false;
 		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
+		private string OriginalProjectName = String.Empty;
 
 		public AddNewProject()
 		{
 			InitializeComponent();
-			//SetPageValues(true);
 			IsNew = true;
 		}
 
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
 		{
-			State["AddProject_Name.Text"] = AddProject_Name.Text;
-			State["AddProject_Description.Text"] = AddProject_Description.Text;
-			State["AddProject_RowCounterColor.Color"] = AddProject_RowCounterColor.Color;
+			this.State["AddProject_Name.Text"] = this.AddProject_Name.Text;
+			this.State["AddProject_Description.Text"] = this.AddProject_Description.Text;
+			this.State["AddProject_RowCounterColor.Color"] = this.AddProject_RowCounterColor.Color;
 			base.OnNavigatedFrom(e);
 		}
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
 		{
-			if(IsNew)
+			IDictionary<string, string> queryString = this.NavigationContext.QueryString;
+			if(queryString.ContainsKey("ProjectName"))
+			{
+				this.PageTitle.Text = "edit project";
+				SetPageValues(queryString["ProjectName"]);
+				this.IsEditProject = true;
+			}
+			else if(IsNew)
 			{
 				SetPageValues(true);
 			}
@@ -57,28 +65,63 @@ namespace uknit.Views
 		{
 			// Persist values to isolated storage
 
-			if(!IsolatedStorage.Contains(AddProject_Name.Text))
+			if(this.IsEditProject)
+			{
+				KnittingProjectViewModel project = this.IsolatedStorage[this.OriginalProjectName] as KnittingProjectViewModel;
+
+				project.ProjectDescription = this.AddProject_Description.Text;
+				project.RowCounterColor = this.AddProject_RowCounterColor.Color;
+
+				if(String.Compare(this.OriginalProjectName, this.AddProject_Name.Text) != 0)
+				{
+					this.IsolatedStorage.Remove(this.OriginalProjectName);
+
+					project.ProjectName = this.AddProject_Name.Text;
+
+					this.IsolatedStorage.Add(this.AddProject_Name.Text, project);
+				}
+				else
+				{
+					this.IsolatedStorage[project.ProjectName] = project;
+				}
+
+				int index = App.ViewModel.Items.IndexOf(project);
+				App.ViewModel.Items[index] = project;
+			}
+			else if(!this.IsolatedStorage.Contains(AddProject_Name.Text))
 			{
 				KnittingProjectViewModel proj = new KnittingProjectViewModel
 				{
-					ProjectName = AddProject_Name.Text,
-					ProjectDescription = AddProject_Description.Text,
-					RowCounterColor = AddProject_RowCounterColor.Color,
+					ProjectName = this.AddProject_Name.Text,
+					ProjectDescription = this.AddProject_Description.Text,
+					RowCounterColor = this.AddProject_RowCounterColor.Color,
 					CurrentRowCount = 0
 				};
 
-				App.ViewModel.Items.Add(proj);
+				App.ViewModel.Items.Insert(0, proj);
 
-				IsolatedStorage.Add(proj.ProjectName, new KnittingProjectViewModel
+				this.IsolatedStorage.Add(proj.ProjectName, new KnittingProjectViewModel
 				{
-					ProjectName = AddProject_Name.Text,
-					ProjectDescription = AddProject_Description.Text,
-					RowCounterColor = AddProject_RowCounterColor.Color,
+					ProjectName = this.AddProject_Name.Text,
+					ProjectDescription = this.AddProject_Description.Text,
+					RowCounterColor = this.AddProject_RowCounterColor.Color,
 					CurrentRowCount = 0
 				});
 			}
 
-			NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/MainPage.xaml?AddEditProject=1", UriKind.Relative));
+		}
+
+		private void SetPageValues(string projectName)
+		{
+			KnittingProjectViewModel project = this.IsolatedStorage[projectName] as KnittingProjectViewModel;
+
+			this.OriginalProjectName = project.ProjectName;
+
+			this.AddProject_Name.Text = project.ProjectName;
+			this.AddProject_Description.Text = project.ProjectDescription;
+			this.AddProject_RowCounterColor.Color = project.RowCounterColor;
+
 		}
 
 		private void SetPageValues(bool restore)
@@ -87,25 +130,25 @@ namespace uknit.Views
 			{
 				object val;
 
-				if(State.TryGetValue("AddProject_Name.Text", out val))
+				if(this.State.TryGetValue("AddProject_Name.Text", out val))
 				{
-					AddProject_Name.Text = val as string;
+					this.AddProject_Name.Text = val as string;
 				}
 
-				if(State.TryGetValue("AddProject_Description.Text", out val))
+				if(this.State.TryGetValue("AddProject_Description.Text", out val))
 				{
-					AddProject_Description.Text = val as string;
+					this.AddProject_Description.Text = val as string;
 				}
 
-				if(State.TryGetValue("AddProject_RowCounterColor.Color", out val))
+				if(this.State.TryGetValue("AddProject_RowCounterColor.Color", out val))
 				{
-					AddProject_RowCounterColor.Color = (Color)val;
+					this.AddProject_RowCounterColor.Color = (Color)val;
 				}
 			}
 			else
 			{
-				AddProject_Name.Text = String.Empty;
-				AddProject_Description.Text = String.Empty;
+				this.AddProject_Name.Text = String.Empty;
+				this.AddProject_Description.Text = String.Empty;
 			}
 		}
 	}

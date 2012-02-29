@@ -4,11 +4,11 @@
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728" 
 	x:Class="uknit.MainPage"
-	d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
@@ -28,41 +28,37 @@
 			<controls:PanoramaItem Header="projects">
 				<!--Double line list with image placeholder and text wrapping-->
 				<StackPanel>
-					<HyperlinkButton HorizontalAlignment="Left" Margin="12,0,0,0"  FontSize="32" NavigateUri="/Views/AddNewProject.xaml" Content="Add new project...">
-						<!--<Button BorderThickness="0" HorizontalAlignment="Left" Click="OnClick_AddNewProject">-->
-						<!--<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="0,0,-12,0">Add new project...</TextBlock>-->
-						<!--</Button>-->
-					</HyperlinkButton>
+					<HyperlinkButton HorizontalAlignment="Left" Margin="12,0,0,0"  FontSize="32" NavigateUri="/Views/AddNewProject.xaml" Content="Add new project..." />
 					<ListBox ItemsSource="{Binding Items}" Margin="0,0,-12,0">
 						<ListBox.ItemTemplate>
 							<DataTemplate>
 								<Button BorderThickness="0" Margin="0,0,0,0">
 									<StackPanel Orientation="Horizontal" Margin="0,0,0,17">
-										<!--Replace rectangle with image-->
-										<Rectangle Height="100" Width="100" Fill="#FFE5001b" Margin="12,0,9,0"/>
+										<Grid>
+											<Rectangle Height="100" Width="100" Fill="{Binding RowCounterColorRGB}" Margin="12,0,9,0"/>
+											<TextBlock Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding CurrentRowCount}" FontSize="72"/>
+										</Grid>
 										<StackPanel Width="311">
 											<TextBlock Text="{Binding ProjectName}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" />
 											<TextBlock Text="{Binding ProjectDescription}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
 										</StackPanel>
 									</StackPanel>
+									<toolkit:ContextMenuService.ContextMenu>
+										<toolkit:ContextMenu>
+											<toolkit:MenuItem Header="edit project" Tag="{Binding ProjectName}" Click="OnContextMenuClick_EditProject" />
+										</toolkit:ContextMenu>
+									</toolkit:ContextMenuService.ContextMenu>
 								</Button>
 							</DataTemplate>
 						</ListBox.ItemTemplate>
 					</ListBox>
 				</StackPanel>
 			</controls:PanoramaItem>
-			<controls:PanoramaItem Header="calculator">
-				<!--Double line list with text wrapping-->
-				<!--<ListBox>
-					<StackPanel>
-						<TextBlock>Foo</TextBlock>
-						<TextBox Width="100" InputScope="Number"></TextBox>
-					</StackPanel>
-				</ListBox>-->
+			<controls:PanoramaItem Header="converter">
 				<Grid>
 					<Rectangle Fill="Black" Opacity=".4" Margin="0,0,0,207" />
-				<StackPanel x:Name="ContentPanel" Margin="0,0,0,207" d:LayoutOverrides="GridBox">
-					<Grid x:Name="ConvertGrid">
+					<StackPanel x:Name="ContentPanel" Margin="0,0,0,207" d:LayoutOverrides="GridBox">
+						<Grid x:Name="ConvertGrid">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="*" />
@@ -77,7 +73,7 @@
 							<TextBlock x:Name="MetersLabel" Grid.Row="1" Grid.Column="1" Text="meters" Foreground="WhiteSmoke" Padding="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource PhoneTextLargeStyle}" />
 						</Grid>
 						<Button x:Name="Convert" Content="Convert" Click="Convert_Click"/>
-				</StackPanel>
+					</StackPanel>
 				</Grid>
 			</controls:PanoramaItem>
 
