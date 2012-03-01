@@ -61,6 +61,8 @@ namespace uknit.Views
 		private void InitializePage(string projectName)
 		{
 			this.ProjectName = projectName;
+			this.PageTitle.Text = projectName;
+
 			this.KnittingProject = this.IsolatedStorage[projectName] as KnittingProjectViewModel;
 			this.CurrentRowCount = this.KnittingProject.CurrentRowCount;
 			this.RowCounterClicker.Fill = new SolidColorBrush(this.KnittingProject.RowCounterColor);

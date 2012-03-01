@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
@@ -26,37 +26,25 @@
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-			<TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-			<TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+			<TextBlock x:Name="ApplicationTitle" Text="μknit" Style="{StaticResource PhoneTextNormalStyle}"/>
+			<TextBlock x:Name="PageTitle" Text="" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
 
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<Rectangle Fill="#FFB17812" Height="12" Margin="0,325,0,0" Stroke="Black" VerticalAlignment="Top"/>
-			<Rectangle Fill="#FF3D3DE4" x:Name="RowCounterClicker" Height="78" Margin="144,288,135,0" Stroke="Black" VerticalAlignment="Top" />
-			<Grid Margin="50,296,116,251">
-				<!--<ItemsControl x:Name="TensList">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>-->
-							<Grid>
-								<Rectangle Height="60" Width="60" Fill="WhiteSmoke" Margin="12,0,9,0" />
-								<TextBlock x:Name="Tens" Height="60" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding TensDigit}" FontSize="48" Margin="115,0" Foreground="Black" />
-							</Grid>
-						<!--</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>-->
+			<Rectangle Fill="#FFB17812" Height="12" Margin="0,225,0,0" Stroke="Black" VerticalAlignment="Top"/>
+			<Rectangle Fill="#FF3D3DE4" x:Name="RowCounterClicker" Height="78" Margin="144,188,135,0" Stroke="Black" VerticalAlignment="Top" />
+			<Grid Margin="50,96,116,251">
+				<Grid>
+					<Rectangle Height="60" Width="60" Fill="WhiteSmoke" Margin="12,0,9,0" />
+					<TextBlock x:Name="Tens" Height="60" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding TensDigit}" FontSize="48" Margin="115,0" Foreground="Black" />
+				</Grid>
 			</Grid>
-			<Grid Margin="228,296,148,251">
-				<!--<ItemsControl x:Name="OnesList">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>-->
-							<Grid>
-								<Rectangle Height="60" Width="60" Fill="WhiteSmoke" Margin="12,0,9,0" />
-								<TextBlock x:Name="Ones"  Height="60" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding OnesDigit}" FontSize="48" Margin="12,0,8,0" Foreground="Black" />
-							</Grid>
-						<!--</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>-->
+			<Grid Margin="228,96,148,251">
+				<Grid>
+					<Rectangle Height="60" Width="60" Fill="WhiteSmoke" Margin="12,0,9,0" />
+					<TextBlock x:Name="Ones"  Height="60" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding OnesDigit}" FontSize="48" Margin="12,0,8,0" Foreground="Black" />
+				</Grid>
 			</Grid>
 		</Grid>
 	</Grid>
