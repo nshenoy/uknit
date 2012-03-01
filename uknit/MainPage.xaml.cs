@@ -85,6 +85,13 @@ namespace uknit
 			NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
 		}
 
+		private void OnClick_RowCounter(object sender, EventArgs e)
+		{
+			Button button = (Button)sender;
+			string rowCounterPageUri = String.Format("/Views/RowCounter.xaml?ProjectName={0}", button.Tag.ToString());
+			NavigationService.Navigate(new Uri(rowCounterPageUri, UriKind.Relative));
+		}
+
 		private void Convert_Click(object sender, RoutedEventArgs e)
 		{
 			// No need to do anything since the LostFocus handlers do the job.
