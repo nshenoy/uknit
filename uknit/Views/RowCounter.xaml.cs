@@ -76,6 +76,9 @@ namespace uknit.Views
 			this.State["ProjectName"] = this.ProjectName;
 			this.IsolatedStorage[this.ProjectName] = this.KnittingProject;
 
+			int index = App.ViewModel.KnittingProjects.IndexOf(this.KnittingProject);
+			App.ViewModel.KnittingProjects[index] = this.KnittingProject;
+
 			base.OnNavigatedFrom(e);
 		}
 
@@ -103,12 +106,12 @@ namespace uknit.Views
 
 		private void RowCounter_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Tens.DoubleTap += (s, gestureEventArgs) =>
+			this.Tens.Tap += (s, gestureEventArgs) =>
 				{
 					IncrementRow(10);
 				};
 
-			this.Ones.DoubleTap += (s, gestureEventArgs) =>
+			this.Ones.Tap += (s, gestureEventArgs) =>
 				{
 					IncrementRow(1);
 				};
