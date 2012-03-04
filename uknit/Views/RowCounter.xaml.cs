@@ -65,7 +65,7 @@ namespace uknit.Views
 
 			this.KnittingProject = this.IsolatedStorage[projectName] as KnittingProjectViewModel;
 			this.CurrentRowCount = this.KnittingProject.CurrentRowCount;
-			this.RowCounterClicker.Fill = new SolidColorBrush(this.KnittingProject.RowCounterColor);
+			this.RowCounterControl.Fill = this.KnittingProject.RowCounterColor;
 
 			this.TensDigit = (this.CurrentRowCount / 10).ToString();
 			this.OnesDigit = (this.CurrentRowCount % 10).ToString();
@@ -106,12 +106,12 @@ namespace uknit.Views
 
 		private void RowCounter_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Tens.Tap += (s, gestureEventArgs) =>
+			this.RowCounterControl.Tens.Tap += (s, gestureEventArgs) =>
 				{
 					IncrementRow(10);
 				};
 
-			this.Ones.Tap += (s, gestureEventArgs) =>
+			this.RowCounterControl.Ones.Tap += (s, gestureEventArgs) =>
 				{
 					IncrementRow(1);
 				};
@@ -125,8 +125,8 @@ namespace uknit.Views
 				// Determine if this was meant to increment (up) or decrement (down)
 				bool isIncrement = e.VerticalVelocity < 0;
 
-				Point location = e.GetPosition(this.RowCounterClicker);
-				if(location.X >= (this.RowCounterClicker.RenderTransformOrigin.X + (this.RowCounterClicker.RenderSize.Width / 2)))
+				Point location = e.GetPosition(this.RowCounterControl.RowCounterColor);
+				if(location.X >= (this.RowCounterControl.RowCounterColor.RenderTransformOrigin.X + (this.RowCounterControl.RowCounterColor.RenderSize.Width / 2)))
 				{
 					IncrementRow(isIncrement ? 1 : -1);
 				}

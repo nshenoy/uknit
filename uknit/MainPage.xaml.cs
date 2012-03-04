@@ -7,6 +7,8 @@ using Microsoft.Phone.Controls;
 using Coding4Fun.Phone.Controls.Toolkit;
 using System.Windows.Controls;
 using System.IO.IsolatedStorage;
+using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
 
 namespace uknit
 {
@@ -52,6 +54,18 @@ namespace uknit
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			BitmapImage backgroundImage;
+			if(this.IsolatedStorage.TryGetValue("MainPagePanoramaBackgroundImage", out backgroundImage))
+			{
+				ImageBrush img = new ImageBrush();
+				img.ImageSource = backgroundImage;
+
+				if(this.MainPagePanorama.Background != img)
+				{
+					this.MainPagePanorama.Background = img;
+				}
+			}
+
 			IDictionary<string, string> queryString = this.NavigationContext.QueryString;
 
 			if(queryString.ContainsKey("AddEditProject"))

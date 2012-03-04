@@ -19,7 +19,7 @@
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 
 		<!--Panorama control-->
-		<controls:Panorama Title="μknit" DefaultItem="projects">
+		<controls:Panorama x:Name="MainPagePanorama" Title="μknit" DefaultItem="projects">
 			<controls:Panorama.Background>
 				<ImageBrush ImageSource="SwirveDark.png" Stretch="None"/>
 			</controls:Panorama.Background>

@@ -60,29 +60,56 @@ namespace uknit.Controls
 			(obj as RowCounterControl).Ones.Text = args.NewValue as string;
 		}
 
-		public static readonly DependencyProperty CounterColorProperty = DependencyProperty.Register(
-			"CounterColor",
+		public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
+			"Fill",
 			typeof(Color),
 			typeof(RowCounterControl),
 			new PropertyMetadata(OnCounterColorChanged));
 
-		public Color CounterColor
+		public Color Fill
 		{
 			get
 			{
-				return (Color)GetValue(CounterColorProperty);
+				return (Color)GetValue(FillProperty);
 			}
 
 			set
 			{
-				SetValue(CounterColorProperty, value);
+				SetValue(FillProperty, value);
 			}
 		}
 
 		static void OnCounterColorChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 		{
-			(obj as RowCounterControl).counterColor1.Color = (Color)args.NewValue;
-			(obj as RowCounterControl).counterColor2.Color = (Color)args.NewValue;
+			(obj as RowCounterControl).counterFill1.Color = (Color)args.NewValue;
+			(obj as RowCounterControl).counterFill2.Color = (Color)args.NewValue;
+		}
+
+		public static readonly DependencyProperty NeedleWidthProperty = DependencyProperty.Register(
+			"NeedleWidth",
+			typeof(double),
+			typeof(RowCounterControl),
+			new PropertyMetadata(OnNeedleWidthChanged));
+
+		public double NeedleWidth
+		{
+			get
+			{
+				return (double)GetValue(NeedleWidthProperty);
+			}
+
+			set
+			{
+				SetValue(NeedleWidthProperty, value);
+			}
+		}
+
+		static void OnNeedleWidthChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+		{
+			RowCounterControl control = obj as RowCounterControl;
+			double needleRenderWidth = ((double)args.NewValue - control.RowCounterColor.RenderSize.Width) / 2;
+			control.RowCounterNeedleLeft.Width = needleRenderWidth;
+			control.RowCounterNeedleRight.Width = needleRenderWidth;
 		}
 
 		public RowCounterControl()

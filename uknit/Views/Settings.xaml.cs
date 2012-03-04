@@ -1,19 +1,51 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
+using System.Windows.Media.Imaging;
+using System.IO.IsolatedStorage;
+using System.Windows.Media;
 
 namespace uknit.Views
 {
 	public partial class Settings : PhoneApplicationPage
 	{
+		public PhotoChooserTask PhotoChooser;
+		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
+
 		public Settings()
 		{
 			InitializeComponent();
+
+			this.PhotoChooser = new PhotoChooserTask();
+			this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
+		}
+
+		void PhotoChooserTask_Completed(object sender, PhotoResult e)
+		{
+			if(e.TaskResult == TaskResult.OK)
+			{
+				BitmapImage chosenPhoto = new BitmapImage();
+				chosenPhoto.SetSource(e.ChosenPhoto);
+				this.IsolatedStorage["MainPagePanoramaBackgroundImage"] = chosenPhoto;				
+			}
 		}
 
 		private void OnClick_About(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/YourLastAboutDialog;component/AboutPage.xaml", UriKind.Relative));
+		}
+
+		private void OnClick_ChangeBackground(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				this.PhotoChooser.Show();
+			}
+			catch(System.InvalidOperationException ex)
+			{
+				MessageBox.Show(String.Format("Sorry, an error occurred while selecting a photo. ({0})", ex.Message));
+			}
 		}
 	}
 }

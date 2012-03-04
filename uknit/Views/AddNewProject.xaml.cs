@@ -78,6 +78,7 @@ namespace uknit.Views
 				}
 
 				App.ViewModel.KnittingProjects[index] = project;
+				
 			}
 			else if(!this.IsolatedStorage.Contains(AddProject_Name.Text))
 			{

@@ -6,16 +6,15 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480">
+    Foreground="{StaticResource PhoneForegroundBrush}" >
 
-	<Grid x:Name="LayoutRoot" Height="100" Background="Transparent">
+	<Grid x:Name="RowCounterControlLayoutRoot" Height="100" Background="Transparent">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="300" />
+			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="200" />
-			<ColumnDefinition Width="300" />
+			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
-		<Rectangle Grid.ColumnSpan="3" Height="14" Width="Auto" VerticalAlignment="Center">
+		<Rectangle x:Name="RowCounterNeedleLeft" Grid.Column="0" Height="14" VerticalAlignment="Center">
 			<Rectangle.Fill>
 				<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
 					<GradientStop Color="#FF9F9F35"/>
@@ -23,23 +22,36 @@
 				</LinearGradientBrush>
 			</Rectangle.Fill>
 		</Rectangle>
-		<Rectangle Name="RowCounterColor" Grid.Column="1" Height="100" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" RadiusX="20" RadiusY="20">
+		<Grid Grid.Column="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Rectangle x:Name="RowCounterColor" Grid.Column="1" Height="100" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" RadiusX="20" RadiusY="20">
+				<Rectangle.Fill>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="Black" Offset="0"/>
+						<GradientStop x:Name="counterFill1" Color="Blue" Offset="0.1"/>
+						<GradientStop x:Name="counterFill2" Color="Blue" Offset="0.85"/>
+						<GradientStop Color="Black" Offset="1"/>
+					</LinearGradientBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+			<Canvas Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Height="60" Width="60" Margin="24,0,0,0">
+				<Rectangle Height="60" Width="60" Fill="WhiteSmoke" RadiusX="5" RadiusY="5" />
+				<TextBlock Name="Tens" Height="60" Width="60" TextAlignment="Center" Text="0" FontSize="48" Foreground="Black" />
+			</Canvas>
+			<Canvas Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Height="60" Width="60" Margin="0,0,24,0">
+				<Rectangle Height="60" Width="60" Fill="WhiteSmoke" RadiusX="5" RadiusY="5" />
+				<TextBlock Name="Ones" Height="60" Width="60" TextAlignment="Center" Text="0" FontSize="48" Foreground="Black" />
+			</Canvas>
+		</Grid>
+		<Rectangle x:Name="RowCounterNeedleRight" Grid.Column="2" Height="14" VerticalAlignment="Center">
 			<Rectangle.Fill>
-				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-					<GradientStop Color="Black" Offset="0"/>
-					<GradientStop x:Name="counterColor1" Color="Blue" Offset="0.1"/>
-					<GradientStop x:Name="counterColor2" Color="Blue" Offset="0.85"/>
-					<GradientStop Color="Black" Offset="1"/>
+				<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+					<GradientStop Color="#FF9F9F35"/>
+					<GradientStop Color="#FFB17812" Offset="1"/>
 				</LinearGradientBrush>
 			</Rectangle.Fill>
 		</Rectangle>
-		<Canvas Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Height="60" Width="60" Margin="24,0,0,0">
-			<Rectangle Height="60" Width="60" Fill="WhiteSmoke" RadiusX="5" RadiusY="5" />
-			<TextBlock Name="Tens" Height="60" Width="60" TextAlignment="Center" Text="0" FontSize="48" Foreground="Black" />
-		</Canvas>
-		<Canvas Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Height="60" Width="60" Margin="0,0,24,0">
-			<Rectangle Height="60" Width="60" Fill="WhiteSmoke" RadiusX="5" RadiusY="5" />
-			<TextBlock Name="Ones" Height="60" Width="60" TextAlignment="Center" Text="0" FontSize="48" Foreground="Black" />
-		</Canvas>
 	</Grid>
 </UserControl>
