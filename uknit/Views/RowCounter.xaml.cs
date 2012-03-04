@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
+using uknit.Models;
 
 namespace uknit.Views
 {
@@ -21,7 +22,7 @@ namespace uknit.Views
 		private int CurrentRowCount = 0;
 		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 		private string ProjectName = String.Empty;
-		KnittingProjectViewModel KnittingProject;
+		KnittingProject Project;
 
 		public string TensDigit
 		{
@@ -63,9 +64,9 @@ namespace uknit.Views
 			this.ProjectName = projectName;
 			this.PageTitle.Text = projectName;
 
-			this.KnittingProject = this.IsolatedStorage[projectName] as KnittingProjectViewModel;
-			this.CurrentRowCount = this.KnittingProject.CurrentRowCount;
-			this.RowCounterControl.Fill = this.KnittingProject.RowCounterColor;
+			this.Project = this.IsolatedStorage[projectName] as KnittingProject;
+			this.CurrentRowCount = this.Project.CurrentRowCount;
+			this.RowCounterControl.Fill = this.Project.RowCounterColor;
 
 			this.TensDigit = (this.CurrentRowCount / 10).ToString();
 			this.OnesDigit = (this.CurrentRowCount % 10).ToString();
@@ -74,10 +75,10 @@ namespace uknit.Views
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
 		{
 			this.State["ProjectName"] = this.ProjectName;
-			this.IsolatedStorage[this.ProjectName] = this.KnittingProject;
+			this.IsolatedStorage[this.ProjectName] = this.Project;
 
-			int index = App.ViewModel.KnittingProjects.IndexOf(this.KnittingProject);
-			App.ViewModel.KnittingProjects[index] = this.KnittingProject;
+			int index = App.ViewModel.KnittingProjects.IndexOf(this.Project);
+			App.ViewModel.KnittingProjects[index] = this.Project;
 
 			base.OnNavigatedFrom(e);
 		}
@@ -154,7 +155,7 @@ namespace uknit.Views
 			this.TensDigit = (this.CurrentRowCount / 10).ToString();
 			this.OnesDigit = (this.CurrentRowCount % 10).ToString();
 
-			this.KnittingProject.CurrentRowCount = this.CurrentRowCount;
+			this.Project.CurrentRowCount = this.CurrentRowCount;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

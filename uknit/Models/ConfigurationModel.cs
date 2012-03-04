@@ -49,7 +49,7 @@ namespace uknit.Models
 
 		public static void ModifyKnittingProjectByName(string projectName, KnittingProject project)
 		{
-			ConfigurationModel.IsolatedStorage[projectName] = projectName;
+			ConfigurationModel.IsolatedStorage[projectName] = project;
 		}
 	}
 }

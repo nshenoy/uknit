@@ -25,9 +25,7 @@ namespace uknit.Views
 		{
 			if(e.TaskResult == TaskResult.OK)
 			{
-				BitmapImage chosenPhoto = new BitmapImage();
-				chosenPhoto.SetSource(e.ChosenPhoto);
-				this.IsolatedStorage["MainPagePanoramaBackgroundImage"] = chosenPhoto;				
+				uknit.Models.ConfigurationModel.SaveBackgroundImage(e.ChosenPhoto);
 			}
 		}
 
@@ -46,6 +44,21 @@ namespace uknit.Views
 			{
 				MessageBox.Show(String.Format("Sorry, an error occurred while selecting a photo. ({0})", ex.Message));
 			}
+		}
+
+		private void BackgroundToggle_Checked(object sender, RoutedEventArgs e)
+		{
+			this.BackgroundPicker.Visibility = System.Windows.Visibility.Visible;
+		}
+
+		private void BackgroundToggle_Unchecked(object sender, RoutedEventArgs e)
+		{
+			this.BackgroundPicker.Visibility = System.Windows.Visibility.Collapsed;
+		}
+
+		private void UnitOfMeasure_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+
 		}
 	}
 }

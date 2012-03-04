@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
+using uknit.Models;
 
 namespace uknit
 {
@@ -187,7 +188,7 @@ namespace uknit
 
 		private void DeleteProject(string projectName)
 		{
-			KnittingProjectViewModel project = this.IsolatedStorage[projectName] as KnittingProjectViewModel;
+			KnittingProject project = this.IsolatedStorage[projectName] as KnittingProject;
 			int index = App.ViewModel.KnittingProjects.IndexOf(project);
 			this.IsolatedStorage.Remove(projectName);
 			App.ViewModel.KnittingProjects.RemoveAt(index);

@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -28,14 +29,19 @@
 
 		<!--ContentPanel - place additional content here-->
 		<StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<StackPanel x:Name="BackgroundSettings">
+			<!--<StackPanel x:Name="BackgroundSettings">
 				<TextBlock Style="{StaticResource PhoneTextTitle3Style}">Background Image</TextBlock>
-			</StackPanel>
-			<Button Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="False">
+			</StackPanel>-->
+			<toolkit:ListPicker x:Name="UnitOfMeasure" Header="Unit of Measure" SelectionChanged="UnitOfMeasure_SelectionChanged">
+				<toolkit:ListPickerItem Content="Imperial" />
+				<toolkit:ListPickerItem Content="Metric" />
+			</toolkit:ListPicker>
+			<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Image" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" />
+			<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
 				<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">choose background</TextBlock>
 			</Button>
-			<Button Click="OnClick_About" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left">
-				<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">about</TextBlock>
+			<Button Click="OnClick_About" BorderThickness="0" Margin="0,48,0,12" HorizontalContentAlignment="Left">
+				<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">about</TextBlock>
 			</Button>
 		</StackPanel>
 	</Grid>
