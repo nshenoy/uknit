@@ -3,20 +3,21 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
+using uknit.Models;
 
-namespace uknit
+namespace uknit.ViewModels
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
 		public MainViewModel()
 		{
-			this.KnittingProjects = new ObservableCollection<KnittingProjectViewModel>();
+			this.KnittingProjects = new ObservableCollection<KnittingProject>();
 		}
 
 		/// <summary>
 		/// A collection for KnittingProjectViewModel objects.
 		/// </summary>
-		public ObservableCollection<KnittingProjectViewModel> KnittingProjects
+		public ObservableCollection<KnittingProject> KnittingProjects
 		{
 			get;
 			private set;
@@ -37,7 +38,7 @@ namespace uknit
 
 			foreach(var oProj in isolatedStorage.Values)
 			{
-				KnittingProjectViewModel proj = oProj as KnittingProjectViewModel;
+				KnittingProject proj = oProj as KnittingProject;
 				if(proj != null)
 				{
 					this.KnittingProjects.Add(proj);
