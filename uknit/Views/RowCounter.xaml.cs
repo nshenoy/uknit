@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
 using System.ComponentModel;
-using System.IO.IsolatedStorage;
+using System.Windows;
+using Microsoft.Phone.Controls;
 using uknit.Models;
 
 namespace uknit.Views
@@ -20,7 +11,6 @@ namespace uknit.Views
 	{
 		private bool IsNew = false;
 		private int CurrentRowCount = 0;
-		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 		private string ProjectName = String.Empty;
 		KnittingProject Project;
 
@@ -64,7 +54,7 @@ namespace uknit.Views
 			this.ProjectName = projectName;
 			this.PageTitle.Text = projectName;
 
-			this.Project = this.IsolatedStorage[projectName] as KnittingProject;
+			this.Project = ConfigurationModel.GetKnittingProjectByName(projectName);
 			this.CurrentRowCount = this.Project.CurrentRowCount;
 			this.RowCounterControl.Fill = this.Project.RowCounterColor;
 
@@ -75,7 +65,7 @@ namespace uknit.Views
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
 		{
 			this.State["ProjectName"] = this.ProjectName;
-			this.IsolatedStorage[this.ProjectName] = this.Project;
+			ConfigurationModel.ModifyKnittingProjectByName(this.ProjectName, this.Project);
 
 			int index = App.ViewModel.KnittingProjects.IndexOf(this.Project);
 			App.ViewModel.KnittingProjects[index] = this.Project;

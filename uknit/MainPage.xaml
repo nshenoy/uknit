@@ -21,7 +21,7 @@
 		<!--Panorama control-->
 		<controls:Panorama x:Name="MainPagePanorama" Title="μknit" DefaultItem="projects">
 			<controls:Panorama.Background>
-				<ImageBrush ImageSource="SwirveDark.png" Stretch="None"/>
+				<ImageBrush ImageSource="/Images/PanoramaBackground.jpg" Stretch="UniformToFill"/>
 			</controls:Panorama.Background>
 
 			<!--Panorama item one-->

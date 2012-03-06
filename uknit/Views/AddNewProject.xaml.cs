@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
+using System.Windows;
 using System.Windows.Media;
 using Microsoft.Phone.Controls;
-using uknit.Models;
 using uknit.ViewModels;
-using System.Windows;
 
 namespace uknit.Views
 {
@@ -13,7 +11,6 @@ namespace uknit.Views
 	{
 		private bool IsNew = false;
 		private bool IsEditProject = false;
-		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 		private string OriginalProjectName = String.Empty;
 		private AddNewProjectViewModel Project = null;
 
@@ -79,7 +76,7 @@ namespace uknit.Views
 					Project.CreateProject();
 					successfullySaved = true;
 				}
-				catch
+				catch (Exception ex)
 				{
 					MessageBox.Show(String.Format("Sorry, it looks like a project named \'{0}\' already exists. Please try a different name.", this.AddProject_Name.Text));
 				}

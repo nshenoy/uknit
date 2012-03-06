@@ -58,6 +58,7 @@
     <Reference Include="Coding4Fun.Phone.Controls.Toolkit">
       <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.5.1\lib\Coding4Fun.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="IsolatedStorageExplorer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
@@ -69,6 +70,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="TombstoneHelper">
       <HintPath>..\packages\WP7TombstoneHelper.2.5\lib\TombstoneHelper.dll</HintPath>
     </Reference>
@@ -151,8 +153,9 @@
     <Content Include="Content\Images\cancel.png" />
     <Content Include="Content\Images\save.png" />
     <Content Include="Content\Images\settings.png" />
+    <Content Include="Content\Images\PanoramaBackground.jpg" />
+    <Content Include="Content\Images\SwirveDark.png" />
     <Content Include="SplashScreenImage.jpg" />
-    <Resource Include="SwirveDark.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

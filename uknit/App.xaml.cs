@@ -66,6 +66,7 @@ namespace uknit
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+			//IsolatedStorageExplorer.Explorer.Start("localhost");
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -76,6 +77,8 @@ namespace uknit
             {
                 App.ViewModel.LoadData();
             }
+
+			//IsolatedStorageExplorer.Explorer.RestoreFromTombstone();
         }
 
         // Code to execute when the application is deactivated (sent to background)

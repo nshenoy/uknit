@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Coding4Fun.Phone.Controls.Toolkit;
-using System.Windows.Controls;
-using System.IO.IsolatedStorage;
-using System.Windows.Media.Imaging;
-using System.Collections.ObjectModel;
 using uknit.Models;
 
 namespace uknit
@@ -18,7 +15,6 @@ namespace uknit
 		private SolidColorBrush SteelBlue = new SolidColorBrush(Color.FromArgb(0xFF, 0x46, 0x82, 0xb4));
 		private SolidColorBrush WhiteSmoke = new SolidColorBrush(Color.FromArgb(0xFF, 0xF5, 0xF5, 0xF5));
 		private bool isNew = true;
-		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 
 		// Constructor
 		public MainPage()
@@ -43,6 +39,15 @@ namespace uknit
 					MetroGridHelper.IsVisible = true;
 				}
 			}
+
+			BitmapImage backgroundImage = ConfigurationModel.GetBackgroundImage();
+
+			if(backgroundImage != null)
+			{
+				ImageBrush img = new ImageBrush();
+				img.ImageSource = backgroundImage;
+				this.MainPagePanorama.Background = img;
+			}
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -55,16 +60,13 @@ namespace uknit
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			BitmapImage backgroundImage;
-			if(this.IsolatedStorage.TryGetValue("MainPagePanoramaBackgroundImage", out backgroundImage))
+			BitmapImage backgroundImage = ConfigurationModel.GetBackgroundImage();
+
+			if(backgroundImage != null)
 			{
 				ImageBrush img = new ImageBrush();
 				img.ImageSource = backgroundImage;
-
-				if(this.MainPagePanorama.Background != img)
-				{
-					this.MainPagePanorama.Background = img;
-				}
+				this.MainPagePanorama.Background = img;
 			}
 
 			IDictionary<string, string> queryString = this.NavigationContext.QueryString;
@@ -188,10 +190,10 @@ namespace uknit
 
 		private void DeleteProject(string projectName)
 		{
-			KnittingProject project = this.IsolatedStorage[projectName] as KnittingProject;
+			KnittingProject project = ConfigurationModel.GetKnittingProjectByName(projectName);
 			int index = App.ViewModel.KnittingProjects.IndexOf(project);
-			this.IsolatedStorage.Remove(projectName);
 			App.ViewModel.KnittingProjects.RemoveAt(index);
+			ConfigurationModel.RemoveKnittingProjectByName(projectName);
 		}
 	}
 }
