@@ -36,7 +36,7 @@
 				<toolkit:ListPickerItem Content="Imperial" />
 				<toolkit:ListPickerItem Content="Metric" />
 			</toolkit:ListPicker>
-			<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Image" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" />
+			<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Image" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" IsChecked="True" />
 			<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
 				<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">choose background</TextBlock>
 			</Button>

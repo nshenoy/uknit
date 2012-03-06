@@ -60,14 +60,14 @@ namespace uknit
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			BitmapImage backgroundImage = ConfigurationModel.GetBackgroundImage();
+			//BitmapImage backgroundImage = ConfigurationModel.GetBackgroundImage();
 
-			if(backgroundImage != null)
-			{
-				ImageBrush img = new ImageBrush();
-				img.ImageSource = backgroundImage;
-				this.MainPagePanorama.Background = img;
-			}
+			//if(backgroundImage != null)
+			//{
+			//    ImageBrush img = new ImageBrush();
+			//    img.ImageSource = backgroundImage;
+			//    this.MainPagePanorama.Background = img;
+			//}
 
 			IDictionary<string, string> queryString = this.NavigationContext.QueryString;
 

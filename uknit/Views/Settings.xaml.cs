@@ -17,6 +17,12 @@ namespace uknit.Views
 		{
 			InitializeComponent();
 
+			if(IsolatedStorage.Contains("EnableBackgroundImage"))
+			{
+				bool? isBackgroundEnabled = IsolatedStorage["EnableBackgroundImage"] as bool?;
+				this.BackgroundToggle.IsChecked = isBackgroundEnabled;
+			}
+
 			this.PhotoChooser = new PhotoChooserTask();
 			this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
 		}
@@ -49,11 +55,14 @@ namespace uknit.Views
 		private void BackgroundToggle_Checked(object sender, RoutedEventArgs e)
 		{
 			this.BackgroundPicker.Visibility = System.Windows.Visibility.Visible;
+			IsolatedStorage["EnableBackgroundImage"] = true;
 		}
 
 		private void BackgroundToggle_Unchecked(object sender, RoutedEventArgs e)
 		{
 			this.BackgroundPicker.Visibility = System.Windows.Visibility.Collapsed;
+
+			IsolatedStorage["EnableBackgroundImage"] = false;
 		}
 
 		private void UnitOfMeasure_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

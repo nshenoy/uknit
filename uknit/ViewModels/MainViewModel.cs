@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO.IsolatedStorage;
-using System.Collections.Generic;
 using uknit.Models;
 
 namespace uknit.ViewModels
@@ -34,15 +33,11 @@ namespace uknit.ViewModels
 		/// </summary>
 		public void LoadData()
 		{
-			IsolatedStorageSettings isolatedStorage = IsolatedStorageSettings.ApplicationSettings;
+			List<KnittingProject> projects = ConfigurationModel.LoadKnittingProjects();
 
-			foreach(var oProj in isolatedStorage.Values)
+			foreach(KnittingProject project in projects)
 			{
-				KnittingProject proj = oProj as KnittingProject;
-				if(proj != null)
-				{
-					this.KnittingProjects.Add(proj);
-				}
+				this.KnittingProjects.Add(project);
 			}
 
 			this.IsDataLoaded = true;

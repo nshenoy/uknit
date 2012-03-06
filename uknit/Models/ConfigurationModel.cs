@@ -19,8 +19,6 @@ namespace uknit.Models
 		private static IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 		private static IsolatedStorageFile UserStoreForApplication = IsolatedStorageFile.GetUserStoreForApplication();
 
-		private static XElement ProjectsXml = null;
-
 		public static void SaveBackgroundImage(Stream stream)
 		{
 			BitmapImage chosenPhoto = new BitmapImage();
@@ -47,18 +45,32 @@ namespace uknit.Models
 		public static BitmapImage GetBackgroundImage()
 		{
 			BitmapImage image = new BitmapImage();
-			string backgroundImageFile = System.IO.Path.Combine(ConfigurationModel.IMAGES_PATH, ConfigurationModel.BACKGROUNDIMAGE_FILENAME);
+			bool? isBackgroundEnabled;
 
-			if(ConfigurationModel.UserStoreForApplication.FileExists(backgroundImageFile))
+			if(!IsolatedStorage.TryGetValue("EnableBackgroundImage", out isBackgroundEnabled))
 			{
-				using(IsolatedStorageFileStream ifs = ConfigurationModel.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Open, FileAccess.Read))
+				isBackgroundEnabled = true;
+			}
+
+			if(isBackgroundEnabled == true)
+			{
+				string backgroundImageFile = System.IO.Path.Combine(ConfigurationModel.IMAGES_PATH, ConfigurationModel.BACKGROUNDIMAGE_FILENAME);
+
+				if(ConfigurationModel.UserStoreForApplication.FileExists(backgroundImageFile))
 				{
-					image.SetSource(ifs);
+					using(IsolatedStorageFileStream ifs = ConfigurationModel.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Open, FileAccess.Read))
+					{
+						image.SetSource(ifs);
+					}
+				}
+				else
+				{
+					image.UriSource = new Uri("Content/Images/SwirveDark.png", UriKind.Relative);
 				}
 			}
 			else
 			{
-				image.UriSource = new Uri("Content/Images/SwirveDark.png", UriKind.Relative);
+				image.UriSource = new Uri("Content/Images/PanoramaBackground.jpg", UriKind.Relative);
 			}
 
 			return image;
@@ -147,12 +159,23 @@ namespace uknit.Models
 			}
 		}
 
-		private static void LoadKnittingProjects()
+		public static List<KnittingProject> LoadKnittingProjects()
 		{
-			if(ConfigurationModel.ProjectsXml == null)
-			{
+			List<KnittingProject> projects = new List<KnittingProject>();
+			XElement projectsXml = GetKnittingProjects();
 
+			if(projectsXml != null)
+			{
+				projects = projectsXml.Elements("Project").Select(p => new KnittingProject
+				{
+					ProjectName = p.Element("Name").Value,
+					ProjectDescription = p.Element("Description").Value,
+					RowCounterColor = HexString2Color(p.Element("RowCounterColorRGB").Value),
+					CurrentRowCount = int.Parse(p.Element("CurrentRowCount").Value)
+				}).ToList();
 			}
+
+			return projects;
 		}
 
 		private static XElement GetKnittingProjects()
