@@ -56,25 +56,16 @@
 					</StackPanel>
 				</ScrollViewer>
 			</controls:PanoramaItem>
-			<controls:PanoramaItem Header="converter">
+			<controls:PanoramaItem Header="tools">
 				<Grid>
-					<Rectangle Fill="Black" Opacity=".4" Margin="0,0,0,207" />
-					<StackPanel x:Name="ContentPanel" Margin="0,0,0,207" d:LayoutOverrides="GridBox">
-						<Grid x:Name="ConvertGrid">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="*" />
-							</Grid.RowDefinitions>
-							<TextBox x:Name="Yards" Grid.Row="0" Grid.Column="0" Text="0" MaxLength="5" TextAlignment="Right" GotFocus="Yards_GotFocus" LostFocus="Yards_LostFocus" InputScope="Digits"/>
-							<TextBlock x:Name="YardsLabel" Grid.Row="0" Grid.Column="1" Text="yards" Foreground="WhiteSmoke" Padding="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource PhoneTextLargeStyle}" />
-							<TextBox x:Name="Meters" Grid.Row="1" Grid.Column="0" Text="0" MaxLength="5" TextAlignment="Right" GotFocus="Meters_GotFocus" LostFocus="Meters_LostFocus" InputScope="Digits" />
-							<TextBlock x:Name="MetersLabel" Grid.Row="1" Grid.Column="1" Text="meters" Foreground="WhiteSmoke" Padding="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource PhoneTextLargeStyle}" />
-						</Grid>
-						<Button x:Name="Convert" Content="Convert" Click="Convert_Click"/>
+					<Rectangle Fill="Black" Opacity=".4"  />
+					<StackPanel>
+						<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalAlignment="Left">
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">gauge calculator</TextBlock>
+						</Button>
+						<Button BorderThickness="0" Click="OnClick_Tools_YardsMeters" HorizontalAlignment="Left">
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">convert yards &lt;-&gt; meters</TextBlock>
+						</Button>
 					</StackPanel>
 				</Grid>
 			</controls:PanoramaItem>
