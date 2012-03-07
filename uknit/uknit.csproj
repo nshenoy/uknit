@@ -168,7 +168,7 @@
     <Content Include="Content\Images\save.png" />
     <Content Include="Content\Images\settings.png" />
     <Content Include="Content\Images\PanoramaBackground.jpg" />
-    <Content Include="Content\Images\SwirveDark.png" />
+    <Resource Include="Content\Images\SwirveDark.jpg" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup />

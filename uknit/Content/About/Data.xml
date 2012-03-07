@@ -1,17 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <About>
-	<App Author="Nithin Shenoy" Description="Knitting Tool" />
+	<App 
+		Title="μknit" 
+		Author="Nithin Shenoy" 
+		Description="Stitch counter and other knitting tools"
+		AdditionalNotes="Thank you for trying out μknit! If you have any suggestions, bugs, or feedback, please feel free to drop me a line." />
 	<Items>
-		<MainItem Title="about">
+		<MainItem 
+			Title="about"
+			AppAdditionalNotesLabel="A Word from the Author:">
 			<Links>
 				<Link NavigationUri="http://repne.wordpress.com"
 							Content="http://repne.wordpress.com"
-							Label="Web site:"	/>
+							Label="Web:" />
+			</Links>
+			<Links>
+				<Link NavigationUri="mailto:nithin_shenoy@hotmail.com"
+							Content="mailto:nithin_shenoy@hotmail.com"
+							Label="Support:" />
 			</Links>
 		</MainItem>
 		<Item Title="history" Type="text">
 			1.0.0.0
-			Initial release
+			Initial public release
 		</Item>
 	</Items>
 </About>

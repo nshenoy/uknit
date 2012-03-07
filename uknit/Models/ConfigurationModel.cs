@@ -65,7 +65,7 @@ namespace uknit.Models
 				}
 				else
 				{
-					image.UriSource = new Uri("Content/Images/SwirveDark.png", UriKind.Relative);
+					image.UriSource = new Uri("Content/Images/SwirveDark.jpg", UriKind.Relative);
 				}
 			}
 			else

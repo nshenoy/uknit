@@ -75,7 +75,7 @@
 	</Grid>
 
 	<phone:PhoneApplicationPage.ApplicationBar>
-		<shell:ApplicationBar IsVisible="True"  IsMenuEnabled="True">
+		<shell:ApplicationBar Mode="Minimized" IsVisible="True"  IsMenuEnabled="True">
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="settings" Click="OnClick_Settings"/>
 			</shell:ApplicationBar.MenuItems>
