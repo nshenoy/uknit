@@ -119,12 +119,17 @@ namespace uknit
 
 		private void OnClick_Tools_YardsMeters(object sender, RoutedEventArgs e)
 		{
-			NavigationService.Navigate(new Uri("/Views/Tools_YardsMeters.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Views/Tools/YardsMeters.xaml", UriKind.Relative));
 		}
 
 		private void OnClick_Tools_Gauge(object sender, RoutedEventArgs e)
 		{
-			NavigationService.Navigate(new Uri("/Views/Tools_GaugeCalculator.xaml", UriKind.Relative));
+			NavigationService.Navigate(new Uri("/Views/Tools/GaugeCalculator.xaml", UriKind.Relative));
+		}
+
+		private void OnClick_Tools_Ruler(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Views/Tools/Ruler.xaml", UriKind.Relative));
 		}
 	}
 }

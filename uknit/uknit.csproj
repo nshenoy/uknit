@@ -98,7 +98,7 @@
     <Compile Include="Views\AddNewProject.xaml.cs">
       <DependentUpon>AddNewProject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GaugeCalculator.xaml.cs">
+    <Compile Include="Views\Tools\GaugeCalculator.xaml.cs">
       <DependentUpon>GaugeCalculator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RowCounter.xaml.cs">
@@ -108,8 +108,11 @@
       <DependentUpon>Settings.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Views\Tools_YardsMeters.xaml.cs">
-      <DependentUpon>Tools_YardsMeters.xaml</DependentUpon>
+    <Compile Include="Views\Tools\Ruler.xaml.cs">
+      <DependentUpon>Ruler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tools\YardsMeters.xaml.cs">
+      <DependentUpon>YardsMeters.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +133,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GaugeCalculator.xaml">
+    <Page Include="Views\Tools\GaugeCalculator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,7 +146,11 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\Tools_YardsMeters.xaml">
+    <Page Include="Views\Tools\Ruler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tools\YardsMeters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

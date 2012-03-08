@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <About>
 	<App 
-		Title="μknit" 
+		Title="uknit" 
 		Author="Nithin Shenoy" 
 		Description="Stitch counter and other knitting tools"
-		AdditionalNotes="Thank you for trying out μknit! If you have any suggestions, bugs, or feedback, please feel free to drop me a line." />
+		AdditionalNotes="Thank you for trying out uknit! If you have any suggestions, bugs, or feedback, please feel free to drop me a line." />
 	<Items>
 		<MainItem 
 			Title="about"

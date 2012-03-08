@@ -23,8 +23,13 @@ namespace uknit.Views
 				this.BackgroundToggle.IsChecked = isBackgroundEnabled;
 			}
 
+			if(IsolatedStorage.Contains("UnitOfMeasure"))
+			{
+				this.UnitOfMeasure.SelectedIndex = (int)IsolatedStorage["UnitOfMeasure"];
+			}
 			//this.PhotoChooser = new PhotoChooserTask();
 			//this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
+			this.UnitOfMeasure.SelectionChanged +=new System.Windows.Controls.SelectionChangedEventHandler(UnitOfMeasure_SelectionChanged);
 		}
 
 		void PhotoChooserTask_Completed(object sender, PhotoResult e)
@@ -66,7 +71,7 @@ namespace uknit.Views
 
 		private void UnitOfMeasure_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-
+			IsolatedStorage["UnitOfMeasure"] = this.UnitOfMeasure.SelectedIndex;
 		}
 	}
 }

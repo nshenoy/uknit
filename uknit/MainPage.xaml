@@ -13,13 +13,15 @@
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
 	SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
-	shell:SystemTray.IsVisible="False" Margin="0">
+	shell:SystemTray.IsVisible="False" Margin="0"
+	toolkit:TiltEffect.IsTiltEnabled="True"
+	Style="{StaticResource PageStyle}">
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 
 		<!--Panorama control-->
-		<controls:Panorama x:Name="MainPagePanorama" Title="μknit" DefaultItem="projects">
+		<controls:Panorama x:Name="MainPagePanorama" Title="uknit" DefaultItem="projects">
 			<controls:Panorama.Background>
 				<ImageBrush ImageSource="/Images/PanoramaBackground.jpg" Stretch="UniformToFill"/>
 			</controls:Panorama.Background>
@@ -60,6 +62,9 @@
 				<Grid>
 					<Rectangle Fill="Black" Opacity=".4"  />
 					<StackPanel>
+						<Button BorderThickness="0" Click="OnClick_Tools_Ruler" HorizontalAlignment="Left">
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">ruler</TextBlock>
+						</Button>
 						<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">gauge calculator</TextBlock>
 						</Button>
