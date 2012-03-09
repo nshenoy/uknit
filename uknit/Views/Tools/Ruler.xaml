@@ -16,6 +16,28 @@
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
+		<Grid.Resources>
+			<Style TargetType="Line">
+				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="X1" Value="0" />
+			</Style>
+			<Style x:Key="Eighth" TargetType="Line">
+				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="X2" Value="12" />
+			</Style>
+			<Style x:Key="Quarter" TargetType="Line">
+				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="X2" Value="24" />
+			</Style>
+			<Style x:Key="Half" TargetType="Line">
+				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="X2" Value="32" />
+			</Style>
+			<Style x:Key="Inch" TargetType="Line">
+				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="X2" Value="48" />
+			</Style>
+		</Grid.Resources>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
@@ -33,9 +55,14 @@
 				<ColumnDefinition Width="180" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<Canvas Width="180" Grid.Row="1" Background="WhiteSmoke">
-
-			</Canvas>
+			<Grid x:Name="RulerGrid" Width="180" Grid.Column="0" Background="WhiteSmoke">
+			</Grid>
+			<Grid Grid.Column="2">
+				<StackPanel>
+					<Button Content="Bigger" Click="OnClick_Bigger" />
+					<Button Content="Smaller" Click="OnClick_Smaller" />
+				</StackPanel>
+			</Grid>
 		</Grid>
 	</Grid>
 
