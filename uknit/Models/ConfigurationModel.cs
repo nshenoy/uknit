@@ -214,6 +214,92 @@ namespace uknit.Models
 			return projects;
 		}
 
+		public static string GetUnitOfMeasure()
+		{
+			string unitOfMeasure = "Imperial";
+			if(IsolatedStorage.Contains("UnitOfMeasure"))
+			{
+				unitOfMeasure = IsolatedStorage["UnitOfMeasure"] as string;
+			}
+			else
+			{
+				SetUnitOfMeasure(unitOfMeasure);
+			}
+
+			return unitOfMeasure;
+		}
+
+		public static void SetUnitOfMeasure(string unitOfMeasure)
+		{
+			IsolatedStorage["UnitOfMeasure"] = unitOfMeasure;
+		}
+
+		public static double GetDevicePixelDensity()
+		{
+			double ppd;
+
+			if(ConfigurationModel.GetUnitOfMeasure() == "Imperial")
+			{
+				ppd = ConfigurationModel.GetDevicePixelsPerInch();
+			}
+			else
+			{
+				ppd = ConfigurationModel.GetDevicePixelsPerCentimeter();
+			}
+
+			return ppd;
+		}
+
+		public static void SetDevicePixelDensity(double pixelsBetweenLines)
+		{
+			if(ConfigurationModel.GetUnitOfMeasure() == "Imperial")
+			{
+				ConfigurationModel.SetDevicePixelsPerInch(pixelsBetweenLines);
+			}
+			else
+			{
+				ConfigurationModel.SetDevicePixelsPerCentimeter(pixelsBetweenLines);
+			}
+		}
+
+		public static double GetDevicePixelsPerInch()
+		{
+			double ppi;
+			if(!IsolatedStorage.TryGetValue("DevicePixelsPerInch", out ppi))
+			{
+				ppi = 262;
+				IsolatedStorage["DevicePixelsPerInch"] = ppi;
+			}
+
+			return ppi;
+		}
+
+		public static void SetDevicePixelsPerInch(double pixelsBetweenLines)
+		{
+			double ppi = pixelsBetweenLines * 9 + 9;
+
+			IsolatedStorage["DevicePixelsPerInch"] = ppi;
+		}
+
+		public static double GetDevicePixelsPerCentimeter()
+		{
+			double ppc;
+			if(!IsolatedStorage.TryGetValue("DevicePixelsPerCentimeter", out ppc))
+			{
+				ppc = 262 / 2.54;
+				IsolatedStorage["DevicePixelsPerCentimeter"] = ppc;
+			}
+
+			return ppc;
+		}
+
+		public static void SetDevicePixelsPerCentimeter(double pixelsBetweenLines)
+		{
+			double ppc = pixelsBetweenLines * 11 + 11;
+
+			IsolatedStorage["DevicePixelsPerCentimeter"] = ppc;
+		}
+
 		private static Color HexString2Color(string hex)
 		{
 			byte a;

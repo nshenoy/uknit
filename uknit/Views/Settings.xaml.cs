@@ -5,6 +5,7 @@ using Microsoft.Phone.Tasks;
 using System.Windows.Media.Imaging;
 using System.IO.IsolatedStorage;
 using System.Windows.Media;
+using uknit.Models;
 
 namespace uknit.Views
 {
@@ -23,13 +24,25 @@ namespace uknit.Views
 				this.BackgroundToggle.IsChecked = isBackgroundEnabled;
 			}
 
-			if(IsolatedStorage.Contains("UnitOfMeasure"))
+			int selectedIndex = 0;
+			switch(ConfigurationModel.GetUnitOfMeasure())
 			{
-				this.UnitOfMeasure.SelectedIndex = (int)IsolatedStorage["UnitOfMeasure"];
+				case "Imperial":
+					selectedIndex = 0;
+					break;
+				case "Metric":
+					selectedIndex = 1;
+					break;
 			}
+
+			Dispatcher.BeginInvoke(() =>
+			{
+				this.UnitOfMeasure.SelectedIndex = selectedIndex;
+			});
+
 			//this.PhotoChooser = new PhotoChooserTask();
 			//this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
-			this.UnitOfMeasure.SelectionChanged +=new System.Windows.Controls.SelectionChangedEventHandler(UnitOfMeasure_SelectionChanged);
+			this.UnitOfMeasure.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(UnitOfMeasure_SelectionChanged);
 		}
 
 		void PhotoChooserTask_Completed(object sender, PhotoResult e)
@@ -71,7 +84,14 @@ namespace uknit.Views
 
 		private void UnitOfMeasure_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			IsolatedStorage["UnitOfMeasure"] = this.UnitOfMeasure.SelectedIndex;
+			if(e.AddedItems.Count == 0)
+			{
+				ConfigurationModel.SetUnitOfMeasure("Imperial");
+			}
+			else
+			{
+				ConfigurationModel.SetUnitOfMeasure(((ListPickerItem)(e.AddedItems[0])).Content as string);
+			}
 		}
 	}
 }

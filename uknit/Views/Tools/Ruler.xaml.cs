@@ -11,38 +11,63 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Diagnostics;
+using uknit.Models;
 
 namespace uknit.Views.Tools
 {
 	public partial class Ruler : PhoneApplicationPage
 	{
-		public enum Tick
+		public enum ImperialTick
 		{
 			Eighth,
 			Quarter,
 			Half,
 			Inch
-		};
+		}
+
+		public enum MetricTick
+		{
+			Millimeter,
+			Half,
+			Centimeter
+		}
 
 		public Ruler()
 		{
 			InitializeComponent();
+		}
 
-			DrawRuler(App.Current.Host.Content.ActualHeight);
+		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+		{
+			this.RulerGrid.Children.Clear();
+			if(ConfigurationModel.GetUnitOfMeasure() == "Imperial")
+			{
+				DrawRulerImperial(App.Current.Host.Content.ActualHeight);
+			}
+			else
+			{
+				DrawRulerMetric(App.Current.Host.Content.ActualHeight);
+			}
+
+			base.OnNavigatedTo(e);
 		}
 
 		private void OnClick_Settings(object sender, EventArgs e)
 		{
-			NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Absolute));
+			NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
 		}
 
-		private void DrawRuler(double rulerLengthInPixels)
+		private void DrawRulerImperial(double rulerLengthInPixels)
 		{
-			int ppi = 262;
-			int pixelsBetweenLines = (262 - 9) / 9;
-			Tick tick = Tick.Inch;
-			int sum = 0;
-			int offset = 10;
+			//int ppi = 262;
+			double ppi = ConfigurationModel.GetDevicePixelsPerInch();
+			double pixelsBetweenLines = (ppi - 9) / 9;
+
+			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
+
+			ImperialTick tick = ImperialTick.Inch;
+			double sum = 0;
+			double offset = 10;
 
 			while(sum < rulerLengthInPixels)
 			{
@@ -55,19 +80,19 @@ namespace uknit.Views.Tools
 
 					if(idx % 8 == 0)
 					{
-						tick = Tick.Inch;
+						tick = ImperialTick.Inch;
 					}
 					else if(idx % 4 == 0)
 					{
-						tick = Tick.Half;
+						tick = ImperialTick.Half;
 					}
 					else if(idx % 2 == 0)
 					{
-						tick = Tick.Quarter;
+						tick = ImperialTick.Quarter;
 					}
 					else
 					{
-						tick = Tick.Eighth;
+						tick = ImperialTick.Eighth;
 					}
 
 					if(idx < 8)
@@ -81,7 +106,59 @@ namespace uknit.Views.Tools
 							Y2 = sum + offset
 						};
 
-						Debug.WriteLine(String.Format("Drawing line {0} at {1}", tick.ToString(), line.Y1));
+						Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
+						this.RulerGrid.Children.Add(line);
+					}
+				}
+			}
+		}
+
+		private void DrawRulerMetric(double rulerLengthInPixels)
+		{
+			//int ppi = 262;
+			double ppi = ConfigurationModel.GetDevicePixelsPerCentimeter();
+			double pixelsBetweenLines = (ppi - 11) / 11;
+
+			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
+
+			MetricTick tick = MetricTick.Centimeter;
+			double sum = 0;
+			double offset = 10;
+
+			while(sum < rulerLengthInPixels)
+			{
+				for(int idx = 0; idx < 11; idx++)
+				{
+					if(idx > 0)
+					{
+						sum += pixelsBetweenLines;
+					}
+
+					if(idx % 10 == 0)
+					{
+						tick = MetricTick.Centimeter;
+					}
+					else if(idx % 5 == 0)
+					{
+						tick = MetricTick.Half;
+					}
+					else
+					{
+						tick = MetricTick.Millimeter;
+					}
+
+					if(idx < 10)
+					{
+						sum += 1;
+
+						Line line = new Line()
+						{
+							Style = (Style)this.LayoutRoot.Resources[tick.ToString()],
+							Y1 = sum + offset,
+							Y2 = sum + offset
+						};
+
+						Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
 						this.RulerGrid.Children.Add(line);
 					}
 				}
@@ -91,12 +168,16 @@ namespace uknit.Views.Tools
 		private void OnClick_Bigger(object sender, RoutedEventArgs e)
 		{
 			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().Take(2).ToArray();
-			double spacing = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 + 1;
+			double pixelsBetweenLines = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 + 1;
 			double sum = offsetCalcLines[0].Y1;
+
+			ConfigurationModel.SetDevicePixelDensity(pixelsBetweenLines - 1);
+			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
+			Debug.WriteLine("PPI is now {0}", ConfigurationModel.GetDevicePixelDensity());
 
 			foreach(Line line in this.RulerGrid.Children.OfType<Line>().Skip(1))
 			{
-				sum += spacing;
+				sum += pixelsBetweenLines;
 				line.Y1 = sum;
 				line.Y2 = sum;
 			}
@@ -105,12 +186,16 @@ namespace uknit.Views.Tools
 		private void OnClick_Smaller(object sender, RoutedEventArgs e)
 		{
 			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().Take(2).ToArray();
-			double spacing = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 - 1;
+			double pixelsBetweenLines = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 - 1;
 			double sum = offsetCalcLines[0].Y1;
+
+			ConfigurationModel.SetDevicePixelDensity(pixelsBetweenLines - 1);
+			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
+			Debug.WriteLine("PPI is now {0}", ConfigurationModel.GetDevicePixelDensity());
 
 			foreach(Line line in this.RulerGrid.Children.OfType<Line>().Skip(1))
 			{
-				sum += spacing;
+				sum += pixelsBetweenLines;
 				line.Y1 = sum;
 				line.Y2 = sum;
 			}
