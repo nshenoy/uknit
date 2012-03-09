@@ -63,8 +63,8 @@
 				<ColumnDefinition Width="180" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<Grid x:Name="RulerGrid" Width="180" Grid.Column="0" Background="WhiteSmoke">
-			</Grid>
+			<Canvas x:Name="RulerGrid" Width="180" Grid.Column="0" Background="WhiteSmoke">
+			</Canvas>
 			<Grid Grid.Column="2">
 				<StackPanel>
 					<Button Content="Bigger" Click="OnClick_Bigger" />
