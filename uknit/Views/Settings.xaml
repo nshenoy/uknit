@@ -17,7 +17,10 @@
 	Style="{StaticResource PageStyle}">
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot" Background="Transparent">
+	<Grid x:Name="LayoutRoot">
+		<Grid.Background>
+			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg" Opacity="0.6"/>
+		</Grid.Background>
 		<Grid.Resources>
 			<Style TargetType="Button">
 				<Setter Property="toolkit:TiltEffect.IsTiltEnabled" Value="True" />
@@ -73,21 +76,22 @@
 		</StackPanel>
 
 		<!--ContentPanel - place additional content here-->
-		<StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<!--<StackPanel x:Name="BackgroundSettings">
-				<TextBlock Style="{StaticResource PhoneTextTitle3Style}">Background Image</TextBlock>
-			</StackPanel>-->
-			<toolkit:ListPicker x:Name="UnitOfMeasure" Header="Unit of Measure">
-				<toolkit:ListPickerItem Content="Imperial" />
-				<toolkit:ListPickerItem Content="Metric" />
-			</toolkit:ListPicker>
-			<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Image" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" IsChecked="True" />
-			<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
-				<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">choose background</TextBlock>
-			</Button>
-			<Button Click="OnClick_About" BorderThickness="0" Margin="0,48,0,12" HorizontalContentAlignment="Left">
-				<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">about</TextBlock>
-			</Button>
-		</StackPanel>
+		<Grid Grid.Row="1">
+			<Rectangle x:Name="ContentBackground" Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.6"/>
+			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
+				<toolkit:ListPicker x:Name="UnitOfMeasure" Header="Unit of Measure">
+					<toolkit:ListPickerItem Content="Imperial" />
+					<toolkit:ListPickerItem Content="Metric" />
+				</toolkit:ListPicker>
+				<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Images" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" IsChecked="True" />
+				<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
+					<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">choose background</TextBlock>
+				</Button>
+				<Button Click="OnClick_About" BorderThickness="0" Margin="0,48,0,12" HorizontalContentAlignment="Left">
+					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">about</TextBlock>
+				</Button>
+			</StackPanel>
+		</Grid>
+
 	</Grid>
 </phone:PhoneApplicationPage>

@@ -7,7 +7,7 @@
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728" 
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
 	x:Class="uknit.MainPage"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
 	FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -62,10 +62,10 @@
 				</Setter>
 			</Style>
 		</Grid.Resources>
-			<!--Panorama control-->
+		<!--Panorama control-->
 		<controls:Panorama x:Name="MainPagePanorama" Title="uknit" DefaultItem="projects">
 			<controls:Panorama.Background>
-				<ImageBrush ImageSource="/Images/PanoramaBackground.jpg" Stretch="UniformToFill"/>
+				<ImageBrush ImageSource="/Content/Images/PanoramaBackground.jpg" Stretch="UniformToFill"/>
 			</controls:Panorama.Background>
 
 			<!--Panorama item one-->
@@ -102,8 +102,8 @@
 			</controls:PanoramaItem>
 			<controls:PanoramaItem Header="tools">
 				<Grid>
-					<Rectangle Fill="Black" Opacity=".4"  />
-					<StackPanel>
+					<Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity=".4" VerticalAlignment="Top" Height="324"/>
+					<StackPanel x:Name="ToolsPanel">
 						<Button BorderThickness="0" Click="OnClick_Tools_Ruler" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">ruler</TextBlock>
 						</Button>
@@ -113,6 +113,9 @@
 						<Button BorderThickness="0" Click="OnClick_Tools_YardsMeters" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">convert yards &lt;-&gt; meters</TextBlock>
 						</Button>
+						<Button BorderThickness="0" Click="OnClick_Settings" HorizontalContentAlignment="Left">
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">settings</TextBlock>
+						</Button>
 					</StackPanel>
 				</Grid>
 			</controls:PanoramaItem>
@@ -121,11 +124,11 @@
 		</controls:Panorama>
 	</Grid>
 
-	<phone:PhoneApplicationPage.ApplicationBar>
+	<!--<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar Mode="Minimized" IsVisible="True"  IsMenuEnabled="True">
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="settings" Click="OnClick_Settings"/>
 			</shell:ApplicationBar.MenuItems>
 		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>-->
 </phone:PhoneApplicationPage>

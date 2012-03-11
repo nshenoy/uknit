@@ -12,14 +12,17 @@
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
 	SupportedOrientations="Portrait" Orientation="Portrait"
-	mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+	mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
 	shell:SystemTray.IsVisible="True"
 	Style="{StaticResource PageStyle}" >
 	<phone:PhoneApplicationPage.Resources>
 		<c4fControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 	</phone:PhoneApplicationPage.Resources>
 		<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot" Background="Transparent">
+	<Grid x:Name="LayoutRoot">
+		<Grid.Background>
+			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg" Opacity="0.6"/>
+		</Grid.Background>
 		<Grid.Resources>
 			<Style TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
@@ -70,9 +73,10 @@
 			<Canvas x:Name="RulerGrid" Width="180" Grid.Column="0" Background="WhiteSmoke">
 			</Canvas>
 			<Grid Grid.Column="2">
+				<Rectangle x:Name="ContentBackground" Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.6" />
 				<StackPanel>
 					<toolkit:ToggleSwitch x:Name="RulerSettingsSwitch" Header="Ruler Settings"  IsChecked="False" />
-					<TextBlock x:Name="RulerSettingsText" Margin="12,-36" Foreground="{StaticResource PhoneForegroundBrush}" Style="{StaticResource PhoneTextSmallStyle}" />
+					<TextBlock x:Name="RulerSettingsText" Margin="12,-36" Foreground="{StaticResource PhoneAccentBrush}" Style="{StaticResource PhoneTextSmallStyle}" />
 					<StackPanel x:Name="UnitOfMeasurePanel" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
 						<RadioButton Content="Imperial" Grid.Column="1" x:Name="Imperial" Checked="UnitOfMeasure_Checked" />
 						<RadioButton Content="Metric" Grid.Column="2" x:Name="Metric" Checked="UnitOfMeasure_Checked" />
@@ -87,12 +91,12 @@
 		</Grid>
 	</Grid>
 
-	<phone:PhoneApplicationPage.ApplicationBar>
+	<!--<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar Mode="Minimized" IsVisible="True" IsMenuEnabled="True">
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="settings" Click="OnClick_Settings"/>
 			</shell:ApplicationBar.MenuItems>
 		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>-->
 
 </phone:PhoneApplicationPage>
