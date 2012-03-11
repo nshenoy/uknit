@@ -34,7 +34,7 @@ namespace uknit
 				}
 			}
 
-			BitmapImage backgroundImage = ConfigurationModel.GetBackgroundImage();
+			BitmapImage backgroundImage = ConfigurationManager.GetBackgroundImage();
 
 			if(backgroundImage != null)
 			{
@@ -111,10 +111,10 @@ namespace uknit
 
 		private void DeleteProject(string projectName)
 		{
-			KnittingProject project = ConfigurationModel.GetKnittingProjectByName(projectName);
+			KnittingProject project = ConfigurationManager.GetKnittingProjectByName(projectName);
 			int index = App.ViewModel.KnittingProjects.IndexOf(project);
 			App.ViewModel.KnittingProjects.RemoveAt(index);
-			ConfigurationModel.RemoveKnittingProjectByName(projectName);
+			ConfigurationManager.RemoveKnittingProjectByName(projectName);
 		}
 
 		private void OnClick_Tools_YardsMeters(object sender, RoutedEventArgs e)

@@ -94,7 +94,7 @@
     <Compile Include="Models\KnittingProject.cs" />
     <Compile Include="ViewModels\AddNewProjectViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Models\ConfigurationModel.cs" />
+    <Compile Include="Models\ConfigurationManager.cs" />
     <Compile Include="Views\AddNewProject.xaml.cs">
       <DependentUpon>AddNewProject.xaml</DependentUpon>
     </Compile>

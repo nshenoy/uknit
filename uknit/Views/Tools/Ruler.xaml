@@ -4,8 +4,10 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:c4fControls="clr-namespace:Coding4Fun.Phone.Controls.Converters;assembly=Coding4Fun.Phone.Controls"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
@@ -13,8 +15,10 @@
 	mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
 	shell:SystemTray.IsVisible="True"
 	Style="{StaticResource PageStyle}" >
-
-	<!--LayoutRoot is the root grid where all page content is placed-->
+	<phone:PhoneApplicationPage.Resources>
+		<c4fControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+	</phone:PhoneApplicationPage.Resources>
+		<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<Grid.Resources>
 			<Style TargetType="Line">
@@ -67,8 +71,17 @@
 			</Canvas>
 			<Grid Grid.Column="2">
 				<StackPanel>
-					<Button Content="Bigger" Click="OnClick_Bigger" />
-					<Button Content="Smaller" Click="OnClick_Smaller" />
+					<toolkit:ToggleSwitch x:Name="RulerSettingsSwitch" Header="Ruler Settings"  IsChecked="False" />
+					<TextBlock x:Name="RulerSettingsText" Margin="12,-36" Foreground="{StaticResource PhoneForegroundBrush}" Style="{StaticResource PhoneTextSmallStyle}" />
+					<StackPanel x:Name="UnitOfMeasurePanel" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<RadioButton Content="Imperial" Grid.Column="1" x:Name="Imperial" Checked="UnitOfMeasure_Checked" />
+						<RadioButton Content="Metric" Grid.Column="2" x:Name="Metric" Checked="UnitOfMeasure_Checked" />
+						<toolkit:ToggleSwitch x:Name="CalibrationSwitch" Header="Calibrate Ruler" IsChecked="False" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+						<StackPanel x:Name="CalibrationButtons" Visibility="{Binding ElementName=CalibrationSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+							<Button Content="Bigger" Click="OnClick_Bigger" />
+							<Button Content="Smaller" Click="OnClick_Smaller" />
+						</StackPanel>
+					</StackPanel>
 				</StackPanel>
 			</Grid>
 		</Grid>

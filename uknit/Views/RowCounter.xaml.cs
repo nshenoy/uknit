@@ -54,7 +54,7 @@ namespace uknit.Views
 			this.ProjectName = projectName;
 			this.PageTitle.Text = projectName;
 
-			this.Project = ConfigurationModel.GetKnittingProjectByName(projectName);
+			this.Project = ConfigurationManager.GetKnittingProjectByName(projectName);
 			this.CurrentRowCount = this.Project.CurrentRowCount;
 			this.RowCounterControl.Fill = this.Project.RowCounterColor;
 
@@ -65,7 +65,7 @@ namespace uknit.Views
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
 		{
 			this.State["ProjectName"] = this.ProjectName;
-			ConfigurationModel.ModifyKnittingProjectByName(this.ProjectName, this.Project);
+			ConfigurationManager.ModifyKnittingProjectByName(this.ProjectName, this.Project);
 
 			int index = App.ViewModel.KnittingProjects.IndexOf(this.Project);
 			App.ViewModel.KnittingProjects[index] = this.Project;

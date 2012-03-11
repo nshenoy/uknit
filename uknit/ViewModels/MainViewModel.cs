@@ -33,7 +33,7 @@ namespace uknit.ViewModels
 		/// </summary>
 		public void LoadData()
 		{
-			List<KnittingProject> projects = ConfigurationModel.LoadKnittingProjects();
+			List<KnittingProject> projects = ConfigurationManager.LoadKnittingProjects();
 
 			foreach(KnittingProject project in projects)
 			{

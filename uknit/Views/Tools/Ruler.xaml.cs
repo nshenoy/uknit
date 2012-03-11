@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Diagnostics;
 using uknit.Models;
+using System.Windows.Data;
 
 namespace uknit.Views.Tools
 {
@@ -39,15 +40,7 @@ namespace uknit.Views.Tools
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
 		{
-			this.RulerGrid.Children.Clear();
-			if(ConfigurationModel.GetUnitOfMeasure() == "Imperial")
-			{
-				DrawRulerImperial(App.Current.Host.Content.ActualHeight);
-			}
-			else
-			{
-				DrawRulerMetric(App.Current.Host.Content.ActualHeight);
-			}
+			DrawRuler();
 
 			base.OnNavigatedTo(e);
 		}
@@ -57,10 +50,25 @@ namespace uknit.Views.Tools
 			NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
 		}
 
+		private void DrawRuler()
+		{
+			this.RulerGrid.Children.Clear();
+			if(ConfigurationManager.GetUnitOfMeasure() == "Imperial")
+			{
+				this.Imperial.IsChecked = true;
+				DrawRulerImperial(App.Current.Host.Content.ActualHeight);
+			}
+			else
+			{
+				this.Metric.IsChecked = true;
+				DrawRulerMetric(App.Current.Host.Content.ActualHeight);
+			}
+		}
+
 		private void DrawRulerImperial(double rulerLengthInPixels)
 		{
 			//int ppi = 262;
-			double ppi = ConfigurationModel.GetDevicePixelsPerInch();
+			double ppi = ConfigurationManager.GetDevicePixelsPerInch();
 			double pixelsBetweenLines = (ppi - 9) / 9;
 
 			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
@@ -68,6 +76,7 @@ namespace uknit.Views.Tools
 			ImperialTick tick = ImperialTick.Inch;
 			double sum = 0;
 			double offset = 10;
+			int currentInch = 0;
 
 			while(sum < rulerLengthInPixels)
 			{
@@ -106,17 +115,38 @@ namespace uknit.Views.Tools
 							Y2 = sum + offset
 						};
 
+						if(tick == ImperialTick.Inch)
+						{
+							line.Name = "tick_inch_" + currentInch;
+							TextBlock textBlock = new TextBlock()
+							{
+								Name = "label_" + line.Name,
+								Text = currentInch.ToString(),
+								FontSize = 24,
+								Foreground = new SolidColorBrush(Colors.Black),
+								RenderTransform = new RotateTransform()
+								{
+									Angle = 90
+								}
+							};
+
+							textBlock.Margin = new Thickness(line.X2 + 36, line.Y1 - 6, 0, 0);
+							this.RulerGrid.Children.Add(textBlock);
+						}
+
 						Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
 						this.RulerGrid.Children.Add(line);
 					}
 				}
+
+				currentInch++;
 			}
 		}
 
 		private void DrawRulerMetric(double rulerLengthInPixels)
 		{
 			//int ppi = 262;
-			double ppi = ConfigurationModel.GetDevicePixelsPerCentimeter();
+			double ppi = ConfigurationManager.GetDevicePixelsPerCentimeter();
 			double pixelsBetweenLines = (ppi - 11) / 11;
 
 			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
@@ -124,6 +154,7 @@ namespace uknit.Views.Tools
 			MetricTick tick = MetricTick.Centimeter;
 			double sum = 0;
 			double offset = 10;
+			int currentCm = 0;
 
 			while(sum < rulerLengthInPixels)
 			{
@@ -158,10 +189,31 @@ namespace uknit.Views.Tools
 							Y2 = sum + offset
 						};
 
+						if(tick == MetricTick.Centimeter)
+						{
+							line.Name = "tick_cm_" + currentCm;
+							TextBlock textBlock = new TextBlock()
+							{
+								Name = "label_" + line.Name,
+								Text = currentCm.ToString(),
+								FontSize = 24,
+								Foreground = new SolidColorBrush(Colors.Black),
+								RenderTransform = new RotateTransform()
+								{
+									Angle = 90
+								}
+							};
+
+							textBlock.Margin = new Thickness(line.X2 + 36, line.Y1 - 6, 0, 0);
+							this.RulerGrid.Children.Add(textBlock);
+						}
+
 						Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
 						this.RulerGrid.Children.Add(line);
 					}
 				}
+
+				currentCm++;
 			}
 		}
 
@@ -169,17 +221,24 @@ namespace uknit.Views.Tools
 		{
 			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().Take(2).ToArray();
 			double pixelsBetweenLines = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 + 1;
-			double sum = offsetCalcLines[0].Y1;
 
-			ConfigurationModel.SetDevicePixelDensity(pixelsBetweenLines - 1);
+			ConfigurationManager.SetDevicePixelDensity(pixelsBetweenLines - 1);
 			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
-			Debug.WriteLine("PPI is now {0}", ConfigurationModel.GetDevicePixelDensity());
+			Debug.WriteLine("PPI is now {0}", ConfigurationManager.GetDevicePixelDensity());
 
 			foreach(Line line in this.RulerGrid.Children.OfType<Line>().Skip(1))
 			{
-				sum += pixelsBetweenLines;
-				line.Y1 = sum;
-				line.Y2 = sum;
+				line.Y1++;
+				line.Y2++;
+
+				if(line.Name.StartsWith("tick_"))
+				{
+					string label = "label_" + line.Name;
+					TextBlock tb = this.RulerGrid.Children.OfType<TextBlock>().Where(t => t.Name == label).First();
+					Thickness thickness = tb.Margin;
+					thickness.Top = line.Y1 - 6;
+					tb.Margin = thickness;
+				}
 			}
 		}
 
@@ -187,18 +246,33 @@ namespace uknit.Views.Tools
 		{
 			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().Take(2).ToArray();
 			double pixelsBetweenLines = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 - 1;
-			double sum = offsetCalcLines[0].Y1;
 
-			ConfigurationModel.SetDevicePixelDensity(pixelsBetweenLines - 1);
+			ConfigurationManager.SetDevicePixelDensity(pixelsBetweenLines - 1);
 			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
-			Debug.WriteLine("PPI is now {0}", ConfigurationModel.GetDevicePixelDensity());
+			Debug.WriteLine("PPI is now {0}", ConfigurationManager.GetDevicePixelDensity());
 
 			foreach(Line line in this.RulerGrid.Children.OfType<Line>().Skip(1))
 			{
-				sum += pixelsBetweenLines;
-				line.Y1 = sum;
-				line.Y2 = sum;
+				line.Y1--;
+				line.Y2--;
+
+				if(line.Name.StartsWith("tick_"))
+				{
+					string label = "label_" + line.Name;
+					TextBlock tb = this.RulerGrid.Children.OfType<TextBlock>().Where(t => t.Name == label).First();
+					Thickness thickness = tb.Margin;
+					thickness.Top = line.Y1 - 6;
+					tb.Margin = thickness;
+				}
 			}
+		}
+
+		private void UnitOfMeasure_Checked(object sender, RoutedEventArgs e)
+		{
+			RadioButton rb = sender as RadioButton;
+			ConfigurationManager.SetUnitOfMeasure(rb.Name);
+			this.RulerSettingsText.Text = rb.Name;
+			DrawRuler();
 		}
 	}
 }

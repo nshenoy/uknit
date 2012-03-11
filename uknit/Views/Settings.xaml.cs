@@ -25,7 +25,7 @@ namespace uknit.Views
 			}
 
 			int selectedIndex = 0;
-			switch(ConfigurationModel.GetUnitOfMeasure())
+			switch(ConfigurationManager.GetUnitOfMeasure())
 			{
 				case "Imperial":
 					selectedIndex = 0;
@@ -49,7 +49,7 @@ namespace uknit.Views
 		{
 			if(e.TaskResult == TaskResult.OK)
 			{
-				uknit.Models.ConfigurationModel.SaveBackgroundImage(e.ChosenPhoto);
+				uknit.Models.ConfigurationManager.SaveBackgroundImage(e.ChosenPhoto);
 			}
 		}
 
@@ -86,11 +86,11 @@ namespace uknit.Views
 		{
 			if(e.AddedItems.Count == 0)
 			{
-				ConfigurationModel.SetUnitOfMeasure("Imperial");
+				ConfigurationManager.SetUnitOfMeasure("Imperial");
 			}
 			else
 			{
-				ConfigurationModel.SetUnitOfMeasure(((ListPickerItem)(e.AddedItems[0])).Content as string);
+				ConfigurationManager.SetUnitOfMeasure(((ListPickerItem)(e.AddedItems[0])).Content as string);
 			}
 		}
 	}

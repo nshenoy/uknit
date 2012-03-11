@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace uknit.Models
 {
-	public static class ConfigurationModel
+	public static class ConfigurationManager
 	{
 		private static readonly string DATA_PATH = "Data";
 		private static readonly string IMAGES_PATH = "Images";
@@ -25,18 +25,18 @@ namespace uknit.Models
 			chosenPhoto.SetSource(stream);
 			WriteableBitmap backgroundImage = new WriteableBitmap(chosenPhoto);
 
-			string backgroundImageFile = System.IO.Path.Combine(ConfigurationModel.IMAGES_PATH, ConfigurationModel.BACKGROUNDIMAGE_FILENAME);
+			string backgroundImageFile = System.IO.Path.Combine(ConfigurationManager.IMAGES_PATH, ConfigurationManager.BACKGROUNDIMAGE_FILENAME);
 
-			if(!ConfigurationModel.UserStoreForApplication.DirectoryExists(ConfigurationModel.IMAGES_PATH))
+			if(!ConfigurationManager.UserStoreForApplication.DirectoryExists(ConfigurationManager.IMAGES_PATH))
 			{
-				ConfigurationModel.UserStoreForApplication.CreateDirectory(ConfigurationModel.IMAGES_PATH);
+				ConfigurationManager.UserStoreForApplication.CreateDirectory(ConfigurationManager.IMAGES_PATH);
 			}
-			else if(ConfigurationModel.UserStoreForApplication.FileExists(backgroundImageFile))
+			else if(ConfigurationManager.UserStoreForApplication.FileExists(backgroundImageFile))
 			{
-				ConfigurationModel.UserStoreForApplication.DeleteFile(backgroundImageFile);
+				ConfigurationManager.UserStoreForApplication.DeleteFile(backgroundImageFile);
 			}
 
-			using(IsolatedStorageFileStream ifs = ConfigurationModel.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Create, FileAccess.ReadWrite))
+			using(IsolatedStorageFileStream ifs = ConfigurationManager.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Create, FileAccess.ReadWrite))
 			{
 				System.Windows.Media.Imaging.Extensions.SaveJpeg(backgroundImage, ifs, backgroundImage.PixelWidth, backgroundImage.PixelHeight, 0, 85);
 			}
@@ -54,11 +54,11 @@ namespace uknit.Models
 
 			if(isBackgroundEnabled == true)
 			{
-				string backgroundImageFile = System.IO.Path.Combine(ConfigurationModel.IMAGES_PATH, ConfigurationModel.BACKGROUNDIMAGE_FILENAME);
+				string backgroundImageFile = System.IO.Path.Combine(ConfigurationManager.IMAGES_PATH, ConfigurationManager.BACKGROUNDIMAGE_FILENAME);
 
-				if(ConfigurationModel.UserStoreForApplication.FileExists(backgroundImageFile))
+				if(ConfigurationManager.UserStoreForApplication.FileExists(backgroundImageFile))
 				{
-					using(IsolatedStorageFileStream ifs = ConfigurationModel.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Open, FileAccess.Read))
+					using(IsolatedStorageFileStream ifs = ConfigurationManager.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Open, FileAccess.Read))
 					{
 						image.SetSource(ifs);
 					}
@@ -102,8 +102,8 @@ namespace uknit.Models
 			XElement projectToRemove = projectXml.Elements("Project").Where(p => p.Element("Name").Value == projectName).First();
 			projectToRemove.Remove();
 
-			string projectPath = System.IO.Path.Combine(ConfigurationModel.DATA_PATH, ConfigurationModel.SAVEDPROJECTS_FILENAME);
-			using(IsolatedStorageFileStream stream = ConfigurationModel.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
+			string projectPath = System.IO.Path.Combine(ConfigurationManager.DATA_PATH, ConfigurationManager.SAVEDPROJECTS_FILENAME);
+			using(IsolatedStorageFileStream stream = ConfigurationManager.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
 			{
 				using(StreamWriter writer = new StreamWriter(stream))
 				{
@@ -127,8 +127,8 @@ namespace uknit.Models
 
 				projectXml.Add(newProject);
 
-				string projectPath = System.IO.Path.Combine(ConfigurationModel.DATA_PATH, ConfigurationModel.SAVEDPROJECTS_FILENAME);
-				using(IsolatedStorageFileStream stream = ConfigurationModel.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
+				string projectPath = System.IO.Path.Combine(ConfigurationManager.DATA_PATH, ConfigurationManager.SAVEDPROJECTS_FILENAME);
+				using(IsolatedStorageFileStream stream = ConfigurationManager.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
 				{
 					using(StreamWriter writer = new StreamWriter(stream))
 					{
@@ -149,8 +149,8 @@ namespace uknit.Models
 			projectToModify.Element("RowCounterColorRGB").Value = project.RowCounterColorRGB;
 
 
-			string projectPath = System.IO.Path.Combine(ConfigurationModel.DATA_PATH, ConfigurationModel.SAVEDPROJECTS_FILENAME);
-			using(IsolatedStorageFileStream stream = ConfigurationModel.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
+			string projectPath = System.IO.Path.Combine(ConfigurationManager.DATA_PATH, ConfigurationManager.SAVEDPROJECTS_FILENAME);
+			using(IsolatedStorageFileStream stream = ConfigurationManager.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
 			{
 				using(StreamWriter writer = new StreamWriter(stream))
 				{
@@ -181,11 +181,11 @@ namespace uknit.Models
 		private static XElement GetKnittingProjects()
 		{
 			XElement projects = null;
-			string projectPath = System.IO.Path.Combine(ConfigurationModel.DATA_PATH, ConfigurationModel.SAVEDPROJECTS_FILENAME);
+			string projectPath = System.IO.Path.Combine(ConfigurationManager.DATA_PATH, ConfigurationManager.SAVEDPROJECTS_FILENAME);
 
-			if(ConfigurationModel.UserStoreForApplication.FileExists(projectPath))
+			if(ConfigurationManager.UserStoreForApplication.FileExists(projectPath))
 			{
-				using(IsolatedStorageFileStream stream = ConfigurationModel.UserStoreForApplication.OpenFile(projectPath, FileMode.Open, FileAccess.Read))
+				using(IsolatedStorageFileStream stream = ConfigurationManager.UserStoreForApplication.OpenFile(projectPath, FileMode.Open, FileAccess.Read))
 				{
 					using(StreamReader reader = new StreamReader(stream))
 					{
@@ -195,12 +195,12 @@ namespace uknit.Models
 			}
 			else
 			{
-				if(!ConfigurationModel.UserStoreForApplication.DirectoryExists(ConfigurationModel.DATA_PATH))
+				if(!ConfigurationManager.UserStoreForApplication.DirectoryExists(ConfigurationManager.DATA_PATH))
 				{
-					ConfigurationModel.UserStoreForApplication.CreateDirectory(ConfigurationModel.DATA_PATH);
+					ConfigurationManager.UserStoreForApplication.CreateDirectory(ConfigurationManager.DATA_PATH);
 				}
 
-				using(IsolatedStorageFileStream stream = ConfigurationModel.UserStoreForApplication.CreateFile(projectPath))
+				using(IsolatedStorageFileStream stream = ConfigurationManager.UserStoreForApplication.CreateFile(projectPath))
 				{
 					using(StreamWriter writer = new StreamWriter(stream))
 					{
@@ -238,13 +238,13 @@ namespace uknit.Models
 		{
 			double ppd;
 
-			if(ConfigurationModel.GetUnitOfMeasure() == "Imperial")
+			if(ConfigurationManager.GetUnitOfMeasure() == "Imperial")
 			{
-				ppd = ConfigurationModel.GetDevicePixelsPerInch();
+				ppd = ConfigurationManager.GetDevicePixelsPerInch();
 			}
 			else
 			{
-				ppd = ConfigurationModel.GetDevicePixelsPerCentimeter();
+				ppd = ConfigurationManager.GetDevicePixelsPerCentimeter();
 			}
 
 			return ppd;
@@ -252,13 +252,13 @@ namespace uknit.Models
 
 		public static void SetDevicePixelDensity(double pixelsBetweenLines)
 		{
-			if(ConfigurationModel.GetUnitOfMeasure() == "Imperial")
+			if(ConfigurationManager.GetUnitOfMeasure() == "Imperial")
 			{
-				ConfigurationModel.SetDevicePixelsPerInch(pixelsBetweenLines);
+				ConfigurationManager.SetDevicePixelsPerInch(pixelsBetweenLines);
 			}
 			else
 			{
-				ConfigurationModel.SetDevicePixelsPerCentimeter(pixelsBetweenLines);
+				ConfigurationManager.SetDevicePixelsPerCentimeter(pixelsBetweenLines);
 			}
 		}
 
