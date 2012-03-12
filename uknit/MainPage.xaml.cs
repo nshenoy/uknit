@@ -42,6 +42,10 @@ namespace uknit
 				img.ImageSource = backgroundImage;
 				this.MainPagePanorama.Background = img;
 			}
+			else
+			{
+				this.MainPagePanorama.Background = null;
+			}
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)

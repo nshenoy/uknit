@@ -82,7 +82,8 @@ namespace uknit.Models
 			}
 			else
 			{
-				image.UriSource = new Uri("Content/Images/PanoramaBackground.jpg", UriKind.Relative);
+				//image.UriSource = new Uri("Content/Images/PanoramaBackground.jpg", UriKind.Relative);
+				image = null;
 			}
 
 			return image;

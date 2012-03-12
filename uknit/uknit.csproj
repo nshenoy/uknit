@@ -171,18 +171,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\Images\dark\cancel.png" />
+    <Content Include="Content\Images\cancel.png" />
     <Content Include="Content\Images\KnitBackground.JPG" />
     <Content Include="Content\Images\KnitBackground480x800.jpg" />
-    <Content Include="Content\Images\dark\save.png" />
-    <Content Include="Content\Images\dark\settings.png" />
+    <Resource Include="Content\Images\PanoramaBackground_Light.jpg" />
+    <Content Include="Content\Images\save.png" />
+    <Content Include="Content\Images\settings.png" />
     <Content Include="Content\Images\PanoramaBackground.jpg" />
     <Resource Include="Content\Images\SwirveDark.jpg" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Images\light\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

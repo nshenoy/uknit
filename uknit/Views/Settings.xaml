@@ -14,8 +14,8 @@
 	mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
 	shell:SystemTray.IsVisible="True"
 	toolkit:TiltEffect.IsTiltEnabled="True"
-	Style="{StaticResource PageStyle}">
-
+	Style="{StaticResource PageStyle}" >
+	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot">
 		<Grid.Background>

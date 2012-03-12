@@ -79,6 +79,7 @@ namespace uknit.Views
 		{
 			//this.BackgroundPicker.Visibility = System.Windows.Visibility.Visible;
 			IsolatedStorage["EnableBackgroundImage"] = true;
+
 			this.LayoutRoot.Background = new ImageBrush()
 			{
 				ImageSource = new BitmapImage(new Uri("/Content/Images/KnitBackground480x800.jpg", UriKind.Relative))
