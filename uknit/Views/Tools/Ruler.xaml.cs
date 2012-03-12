@@ -33,9 +33,18 @@ namespace uknit.Views.Tools
 			Centimeter
 		}
 
+		private string currentRulerUnitOfMeasure;
+
 		public Ruler()
 		{
 			InitializeComponent();
+
+			if(!ConfigurationManager.IsBackgroundEnabled())
+			{
+				this.LayoutRoot.Background = null;
+			}
+
+			currentRulerUnitOfMeasure = ConfigurationManager.GetUnitOfMeasure();
 		}
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -43,6 +52,11 @@ namespace uknit.Views.Tools
 			DrawRuler();
 
 			base.OnNavigatedTo(e);
+
+			if(!ConfigurationManager.IsRulerCalibrated())
+			{
+				AskForCalibration();
+			}
 		}
 
 		private void OnClick_Settings(object sender, EventArgs e)
@@ -219,17 +233,20 @@ namespace uknit.Views.Tools
 
 		private void OnClick_Bigger(object sender, RoutedEventArgs e)
 		{
-			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().Take(2).ToArray();
-			double pixelsBetweenLines = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 + 1;
+			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Take(2).ToArray();
+			double pixelsBetweenLines = Math.Abs(offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1) + 1;
+			double sum = offsetCalcLines[0].Y1;
 
 			ConfigurationManager.SetDevicePixelDensity(pixelsBetweenLines - 1);
 			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
 			Debug.WriteLine("PPI is now {0}", ConfigurationManager.GetDevicePixelDensity());
 
-			foreach(Line line in this.RulerGrid.Children.OfType<Line>().Skip(1))
+			var lines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Skip(1);
+			foreach(Line line in lines)
 			{
-				line.Y1++;
-				line.Y2++;
+				sum += pixelsBetweenLines;
+				line.Y1 = sum;
+				line.Y2 = sum;
 
 				if(line.Name.StartsWith("tick_"))
 				{
@@ -240,21 +257,33 @@ namespace uknit.Views.Tools
 					tb.Margin = thickness;
 				}
 			}
+
+			DrawRuler();
 		}
 
 		private void OnClick_Smaller(object sender, RoutedEventArgs e)
 		{
-			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().Take(2).ToArray();
-			double pixelsBetweenLines = offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1 - 1;
+			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Take(2).ToArray();
+			double pixelsBetweenLines = Math.Abs(offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1) - 1;
+
+			if(pixelsBetweenLines < 2)
+			{
+				// Don't allow the ruler to be made any smaller. Cuz that's just silly.
+				return;
+			}
+
+			double sum = offsetCalcLines[0].Y1;
 
 			ConfigurationManager.SetDevicePixelDensity(pixelsBetweenLines - 1);
 			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
 			Debug.WriteLine("PPI is now {0}", ConfigurationManager.GetDevicePixelDensity());
 
-			foreach(Line line in this.RulerGrid.Children.OfType<Line>().Skip(1))
+			var lines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Skip(1);
+			foreach(Line line in lines)
 			{
-				line.Y1--;
-				line.Y2--;
+				sum += pixelsBetweenLines;
+				line.Y1 = sum;
+				line.Y2 = sum;
 
 				if(line.Name.StartsWith("tick_"))
 				{
@@ -265,6 +294,8 @@ namespace uknit.Views.Tools
 					tb.Margin = thickness;
 				}
 			}
+
+			DrawRuler();
 		}
 
 		private void UnitOfMeasure_Checked(object sender, RoutedEventArgs e)
@@ -272,7 +303,35 @@ namespace uknit.Views.Tools
 			RadioButton rb = sender as RadioButton;
 			ConfigurationManager.SetUnitOfMeasure(rb.Name);
 			this.RulerSettingsText.Text = rb.Name;
-			DrawRuler();
+			if(rb.Name != currentRulerUnitOfMeasure)
+			{
+				DrawRuler();
+				currentRulerUnitOfMeasure = rb.Name;
+			}
+		}
+
+		private void AskForCalibration()
+		{
+			Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+			messagePrompt.IsCancelVisible = true;
+			messagePrompt.Body = new TextBlock
+			{
+				Text = "I noticed that you have calibrated the ruler yet. This is important to make sure the ruler is somewhat accurate. Afterall, you don't want to make a baby hat that fits Andre the Giant. Would you like to calibrate now?",
+				FontSize = 20.0,
+				TextWrapping = TextWrapping.Wrap
+			};
+
+			messagePrompt.Completed += (str, res) =>
+			{
+				if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+				{
+					this.RulerSettingsSwitch.IsChecked = true;
+					this.CalibrationSwitch.IsChecked = true;
+					ConfigurationManager.SetRulerCalibrated();
+				}
+			};
+
+			messagePrompt.Show();
 		}
 	}
 }

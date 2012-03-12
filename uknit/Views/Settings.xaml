@@ -87,6 +87,9 @@
 				<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
 					<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">choose background</TextBlock>
 				</Button>
+				<Button Click="OnClick_Restore" BorderThickness="0" HorizontalContentAlignment="Left">
+					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">restore defaults</TextBlock>
+				</Button>
 				<Button Click="OnClick_About" BorderThickness="0" Margin="0,48,0,12" HorizontalContentAlignment="Left">
 					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">about</TextBlock>
 				</Button>

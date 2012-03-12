@@ -42,6 +42,18 @@ namespace uknit.Models
 			}
 		}
 
+		public static bool IsBackgroundEnabled()
+		{
+			bool? isBackgroundEnabled;
+
+			if(!IsolatedStorage.TryGetValue("EnableBackgroundImage", out isBackgroundEnabled))
+			{
+				isBackgroundEnabled = true;
+			}
+
+			return (bool)isBackgroundEnabled;
+		}
+
 		public static BitmapImage GetBackgroundImage()
 		{
 			BitmapImage image = new BitmapImage();
@@ -214,6 +226,19 @@ namespace uknit.Models
 			return projects;
 		}
 
+		public static bool IsRulerCalibrated()
+		{
+			return IsolatedStorage.Contains("RulerCalibrated");
+		}
+
+		public static void SetRulerCalibrated()
+		{
+			if(!ConfigurationManager.IsRulerCalibrated())
+			{
+				IsolatedStorage["RulerCalibrated"] = true;
+			}
+		}
+	
 		public static string GetUnitOfMeasure()
 		{
 			string unitOfMeasure = "Imperial";
@@ -283,21 +308,23 @@ namespace uknit.Models
 
 		public static double GetDevicePixelsPerCentimeter()
 		{
-			double ppc;
-			if(!IsolatedStorage.TryGetValue("DevicePixelsPerCentimeter", out ppc))
-			{
-				ppc = 262 / 2.54;
-				IsolatedStorage["DevicePixelsPerCentimeter"] = ppc;
-			}
+			double ppi = ConfigurationManager.GetDevicePixelsPerInch();
 
-			return ppc;
+			return (ppi / 2.54);
 		}
 
 		public static void SetDevicePixelsPerCentimeter(double pixelsBetweenLines)
 		{
 			double ppc = pixelsBetweenLines * 11 + 11;
 
-			IsolatedStorage["DevicePixelsPerCentimeter"] = ppc;
+			IsolatedStorage["DevicePixelsPerInch"] = ppc * 2.54;
+		}
+
+		public static void RestoreDefaults()
+		{
+			IsolatedStorage.Remove("DevicePixelsPerInch");
+			IsolatedStorage.Remove("UnitOfMeasure");
+			IsolatedStorage.Remove("RulerCalibrated");
 		}
 
 		private static Color HexString2Color(string hex)

@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System.IO.IsolatedStorage;
 using System.Windows.Media;
 using uknit.Models;
+using System.Windows.Controls;
 
 namespace uknit.Views
 {
@@ -22,6 +23,10 @@ namespace uknit.Views
 			{
 				bool? isBackgroundEnabled = IsolatedStorage["EnableBackgroundImage"] as bool?;
 				this.BackgroundToggle.IsChecked = isBackgroundEnabled;
+				if(!isBackgroundEnabled.GetValueOrDefault(true))
+				{
+					this.LayoutRoot.Background = null;
+				}
 			}
 
 			int selectedIndex = 0;
@@ -74,12 +79,17 @@ namespace uknit.Views
 		{
 			//this.BackgroundPicker.Visibility = System.Windows.Visibility.Visible;
 			IsolatedStorage["EnableBackgroundImage"] = true;
+			this.LayoutRoot.Background = new ImageBrush()
+			{
+				ImageSource = new BitmapImage(new Uri("/Content/Images/KnitBackground480x800.jpg", UriKind.Relative))
+			};
 		}
 
 		private void BackgroundToggle_Unchecked(object sender, RoutedEventArgs e)
 		{
 			//this.BackgroundPicker.Visibility = System.Windows.Visibility.Collapsed;
 			IsolatedStorage["EnableBackgroundImage"] = false;
+			this.LayoutRoot.Background = null;
 		}
 
 		private void UnitOfMeasure_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -92,6 +102,29 @@ namespace uknit.Views
 			{
 				ConfigurationManager.SetUnitOfMeasure(((ListPickerItem)(e.AddedItems[0])).Content as string);
 			}
+		}
+
+		private void OnClick_Restore(object sender, RoutedEventArgs e)
+		{
+			Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+			messagePrompt.IsCancelVisible = true;
+			messagePrompt.Body = new TextBlock
+			{
+				Text = "Whoa, you're about to restore uknit to it's default settings (ruler calibration, etc). You really want I should do this?",
+				FontSize = 30.0,
+				TextWrapping = TextWrapping.Wrap
+			};
+
+			messagePrompt.Completed += (str, res) =>
+			{
+				if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+				{
+					ConfigurationManager.RestoreDefaults();
+					MessageBox.Show("Defaults restored.");
+				}
+			};
+
+			messagePrompt.Show();
 		}
 	}
 }

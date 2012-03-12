@@ -56,6 +56,14 @@ namespace uknit.Views
 		private void OnSaveProject(object sender, EventArgs e)
 		{
 			bool successfullySaved = false;
+			List<string> validationErrors = new List<string>();
+
+			if(String.IsNullOrWhiteSpace(this.AddProject_Name.Text))
+			{
+				MessageBox.Show(String.Format("Sorry, it looks like the project name is blank. Please name the project.", this.AddProject_Name.Text));
+				this.AddProject_Name.BorderBrush = new SolidColorBrush(Colors.Red);
+				return;
+			}
 
 			if(this.IsEditProject)
 			{
