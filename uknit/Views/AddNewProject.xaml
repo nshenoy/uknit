@@ -44,8 +44,8 @@
 	<!--Sample code showing usage of ApplicationBar-->
 	<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-			<shell:ApplicationBarIconButton IconUri="/Content/Images/Dark/save.png" Text="save" Click="OnSaveProject"/>
-			<shell:ApplicationBarIconButton IconUri="/Content/Images/Dark/cancel.png" Text="cancel" Click="OnCancelProject"/>
+			<shell:ApplicationBarIconButton IconUri="/Content/Images/save.png" Text="save" Click="OnSaveProject"/>
+			<shell:ApplicationBarIconButton IconUri="/Content/Images/cancel.png" Text="cancel" Click="OnCancelProject"/>
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
 

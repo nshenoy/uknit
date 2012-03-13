@@ -6,12 +6,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 using uknit.Models;
 
 namespace uknit
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
+		private MarketplaceDetailTask MarketPlaceDetail = new MarketplaceDetailTask();
 		// Constructor
 		public MainPage()
 		{
@@ -134,6 +136,37 @@ namespace uknit
 		private void OnClick_Tools_Ruler(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/Views/Tools/Ruler.xaml", UriKind.Relative));
+		}
+
+		private void OnClick_AddNewProject(object sender, RoutedEventArgs e)
+		{
+			bool isTrial = (Application.Current as App).IsTrial;
+			if(!isTrial || (isTrial && this.ProjectItems.Items.Count < 1))
+			{
+				NavigationService.Navigate(new Uri("/Views/AddNewProject.xaml", UriKind.Relative));
+			}
+			else
+			{
+				Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+				messagePrompt.IsCancelVisible = true;
+				messagePrompt.Body = new TextBlock
+				{
+					Text = "Thanks for trying uknit! This trial lets you use only 1 project. Would you like to buy the app to add unlimited projects?",
+					FontSize = 30.0,
+					TextWrapping = TextWrapping.Wrap
+				};
+
+				messagePrompt.Completed += (str, res) =>
+				{
+					if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+					{
+						this.MarketPlaceDetail.Show();
+					}
+				};
+
+				messagePrompt.Show();
+
+			}
 		}
 	}
 }

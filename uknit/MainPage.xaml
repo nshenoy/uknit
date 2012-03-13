@@ -72,8 +72,13 @@
 			<controls:PanoramaItem Header="projects">
 				<ScrollViewer BorderThickness="0">
 					<StackPanel>
-						<HyperlinkButton HorizontalAlignment="Left" Margin="12,0,0,0"  FontSize="32" NavigateUri="/Views/AddNewProject.xaml" Content="Add new project..." />
-						<ItemsControl ItemsSource="{Binding KnittingProjects}" Margin="0,0,-12,0">
+						<Button BorderThickness="0" Margin="-12,0,0,0" HorizontalAlignment="Left" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Click="OnClick_AddNewProject">
+							<StackPanel Orientation="Horizontal">
+								<Image Height="36" Width="36" Source="Content/Images/add.png" />
+								<TextBlock VerticalAlignment="Center" Padding="6,0,0,0">Add new project...</TextBlock>
+							</StackPanel>
+						</Button>
+						<ItemsControl x:Name="ProjectItems" ItemsSource="{Binding KnittingProjects}" Margin="0,0,-12,0">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<Button BorderThickness="0" Margin="0,0,0,0" Tag="{Binding ProjectName}" Click="OnClick_RowCounter" >

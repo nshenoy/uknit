@@ -11,10 +11,15 @@ namespace uknit.Models
 {
 	public static class ConfigurationManager
 	{
-		private static readonly string DATA_PATH = "Data";
-		private static readonly string IMAGES_PATH = "Images";
-		private static readonly string SAVEDPROJECTS_FILENAME = "SavedProjects.xml";
-		private static readonly string BACKGROUNDIMAGE_FILENAME = "Background.jpg";
+		private const string DATA_PATH = "Data";
+		private const string IMAGES_PATH = "Images";
+		private const string SAVEDPROJECTS_FILENAME = "SavedProjects.xml";
+		private const string BACKGROUNDIMAGE_FILENAME = "Background.jpg";
+
+		private const string EnableBackgroundImageKeyName = "EnableBackgroundImage";
+		private const string DevicePixelsPerInchKeyName = "DevicePixelsPerInch";
+		private const string UnitOfMeasureKeyName = "UnitOfMeasure";
+		private const string RulerCalibratedKeyName = "RulerCalibrated";
 
 		private static IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 		private static IsolatedStorageFile UserStoreForApplication = IsolatedStorageFile.GetUserStoreForApplication();
@@ -46,7 +51,7 @@ namespace uknit.Models
 		{
 			bool? isBackgroundEnabled;
 
-			if(!IsolatedStorage.TryGetValue("EnableBackgroundImage", out isBackgroundEnabled))
+			if(!IsolatedStorage.TryGetValue(EnableBackgroundImageKeyName, out isBackgroundEnabled))
 			{
 				isBackgroundEnabled = true;
 			}
@@ -59,7 +64,7 @@ namespace uknit.Models
 			BitmapImage image = new BitmapImage();
 			bool? isBackgroundEnabled;
 
-			if(!IsolatedStorage.TryGetValue("EnableBackgroundImage", out isBackgroundEnabled))
+			if(!IsolatedStorage.TryGetValue(EnableBackgroundImageKeyName, out isBackgroundEnabled))
 			{
 				isBackgroundEnabled = true;
 			}
@@ -229,23 +234,23 @@ namespace uknit.Models
 
 		public static bool IsRulerCalibrated()
 		{
-			return IsolatedStorage.Contains("RulerCalibrated");
+			return IsolatedStorage.Contains(RulerCalibratedKeyName);
 		}
 
 		public static void SetRulerCalibrated()
 		{
 			if(!ConfigurationManager.IsRulerCalibrated())
 			{
-				IsolatedStorage["RulerCalibrated"] = true;
+				IsolatedStorage[RulerCalibratedKeyName] = true;
 			}
 		}
 	
 		public static string GetUnitOfMeasure()
 		{
 			string unitOfMeasure = "Imperial";
-			if(IsolatedStorage.Contains("UnitOfMeasure"))
+			if(IsolatedStorage.Contains(UnitOfMeasureKeyName))
 			{
-				unitOfMeasure = IsolatedStorage["UnitOfMeasure"] as string;
+				unitOfMeasure = IsolatedStorage[UnitOfMeasureKeyName] as string;
 			}
 			else
 			{
@@ -257,7 +262,7 @@ namespace uknit.Models
 
 		public static void SetUnitOfMeasure(string unitOfMeasure)
 		{
-			IsolatedStorage["UnitOfMeasure"] = unitOfMeasure;
+			IsolatedStorage[UnitOfMeasureKeyName] = unitOfMeasure;
 		}
 
 		public static double GetDevicePixelDensity()
@@ -291,10 +296,10 @@ namespace uknit.Models
 		public static double GetDevicePixelsPerInch()
 		{
 			double ppi;
-			if(!IsolatedStorage.TryGetValue("DevicePixelsPerInch", out ppi))
+			if(!IsolatedStorage.TryGetValue(DevicePixelsPerInchKeyName, out ppi))
 			{
 				ppi = 262;
-				IsolatedStorage["DevicePixelsPerInch"] = ppi;
+				IsolatedStorage[DevicePixelsPerInchKeyName] = ppi;
 			}
 
 			return ppi;
@@ -304,7 +309,7 @@ namespace uknit.Models
 		{
 			double ppi = pixelsBetweenLines * 9 + 9;
 
-			IsolatedStorage["DevicePixelsPerInch"] = ppi;
+			IsolatedStorage[DevicePixelsPerInchKeyName] = ppi;
 		}
 
 		public static double GetDevicePixelsPerCentimeter()
@@ -318,14 +323,14 @@ namespace uknit.Models
 		{
 			double ppc = pixelsBetweenLines * 11 + 11;
 
-			IsolatedStorage["DevicePixelsPerInch"] = ppc * 2.54;
+			IsolatedStorage[DevicePixelsPerInchKeyName] = ppc * 2.54;
 		}
 
 		public static void RestoreDefaults()
 		{
-			IsolatedStorage.Remove("DevicePixelsPerInch");
-			IsolatedStorage.Remove("UnitOfMeasure");
-			IsolatedStorage.Remove("RulerCalibrated");
+			IsolatedStorage.Remove(DevicePixelsPerInchKeyName);
+			IsolatedStorage.Remove(UnitOfMeasureKeyName);
+			IsolatedStorage.Remove(RulerCalibratedKeyName);
 		}
 
 		private static Color HexString2Color(string hex)

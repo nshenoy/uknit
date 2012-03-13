@@ -24,5 +24,23 @@
 			1.0.0.0
 			Initial public release
 		</Item>
+		<Item Title="notes" Type="text">
+			Source Code
+			All source code for uknit is available at https://github.com/nshenoy/uknit under the GPL v3 license. Feel free to contribute.
+		</Item>
+		<Item Title="credits" Type="text">
+			Background Images
+			All background images were original works by my lovely wife Kerry. Follow her on Ravelry at http://www.ravelry.com/people/KerryBeth.
+
+
+			YLAD
+			http://ylad.codeplex.com.
+
+			Coding4Fun Windows Phone Toolkit
+			http://coding4fun.codeplex.com/
+
+			MetroGridHelper
+			http://nuget.org/packages/MetroGridHelper
+		</Item>
 	</Items>
 </About>

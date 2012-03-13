@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Marketplace;
 using Microsoft.Phone.Shell;
 using uknit.ViewModels;
 
@@ -9,6 +10,8 @@ namespace uknit
 	public partial class App : Application
 	{
 		private static MainViewModel viewModel = null;
+
+		private static LicenseInformation LicenseInfo = new LicenseInformation();
 
 		/// <summary>
 		/// A static ViewModel used by the views to bind against.
@@ -19,10 +22,19 @@ namespace uknit
 			get
 			{
 				// Delay creation of the view model until necessary
-				if (viewModel == null)
+				if(viewModel == null)
 					viewModel = new MainViewModel();
 
 				return viewModel;
+			}
+		}
+
+		private static bool _isTrial = true;
+		public bool IsTrial
+		{
+			get
+			{
+				return _isTrial;
 			}
 		}
 
@@ -30,7 +42,11 @@ namespace uknit
 		/// Provides easy access to the root frame of the Phone Application.
 		/// </summary>
 		/// <returns>The root frame of the Phone Application.</returns>
-		public PhoneApplicationFrame RootFrame { get; private set; }
+		public PhoneApplicationFrame RootFrame
+		{
+			get;
+			private set;
+		}
 
 		/// <summary>
 		/// Constructor for the Application object.
@@ -42,7 +58,7 @@ namespace uknit
 			UnhandledException += Application_UnhandledException;
 
 			// Show graphics profiling information while debugging.
-			if (System.Diagnostics.Debugger.IsAttached)
+			if(System.Diagnostics.Debugger.IsAttached)
 			{
 				// Display the current frame rate counters.
 				Application.Current.Host.Settings.EnableFrameRateCounter = true;
@@ -66,19 +82,19 @@ namespace uknit
 		// This code will not execute when the application is reactivated
 		private void Application_Launching(object sender, LaunchingEventArgs e)
 		{
-			//IsolatedStorageExplorer.Explorer.Start("localhost");
+			CheckLicense();
 		}
 
 		// Code to execute when the application is activated (brought to foreground)
 		// This code will not execute when the application is first launched
 		private void Application_Activated(object sender, ActivatedEventArgs e)
 		{
-			if (!App.ViewModel.IsDataLoaded)
+			CheckLicense();
+
+			if(!App.ViewModel.IsDataLoaded)
 			{
 				App.ViewModel.LoadData();
 			}
-
-			//IsolatedStorageExplorer.Explorer.RestoreFromTombstone();
 		}
 
 		// Code to execute when the application is deactivated (sent to background)
@@ -96,7 +112,7 @@ namespace uknit
 		// Code to execute if a navigation fails
 		private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
 		{
-			if (System.Diagnostics.Debugger.IsAttached)
+			if(System.Diagnostics.Debugger.IsAttached)
 			{
 				// A navigation has failed; break into the debugger
 				System.Diagnostics.Debugger.Break();
@@ -106,7 +122,7 @@ namespace uknit
 		// Code to execute on Unhandled Exceptions
 		private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
 		{
-			if (System.Diagnostics.Debugger.IsAttached)
+			if(System.Diagnostics.Debugger.IsAttached)
 			{
 				// An unhandled exception has occurred; break into the debugger
 				System.Diagnostics.Debugger.Break();
@@ -121,7 +137,7 @@ namespace uknit
 		// Do not add any additional code to this method
 		private void InitializePhoneApplication()
 		{
-			if (phoneApplicationInitialized)
+			if(phoneApplicationInitialized)
 				return;
 
 			// Create the frame but don't set it as RootVisual yet; this allows the splash
@@ -141,11 +157,32 @@ namespace uknit
 		private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
 		{
 			// Set the root visual to allow the application to render
-			if (RootVisual != RootFrame)
+			if(RootVisual != RootFrame)
 				RootVisual = RootFrame;
 
 			// Remove this handler since it is no longer needed
 			RootFrame.Navigated -= CompleteInitializePhoneApplication;
+		}
+
+		/// <summary>
+		/// Check the current license information for this application
+		/// </summary>
+		private void CheckLicense()
+		{
+#if DEBUG
+			string message = "This sample demonstrates the implementation of a trial mode in an application." +
+							   "Press 'OK' to simulate trial mode. Press 'Cancel' to run the application in normal mode.";
+			if(MessageBox.Show(message, "Debug Trial", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+			{
+				_isTrial = true;
+			}
+			else
+			{
+				_isTrial = false;
+			}
+#else
+			_isTrial = LicenseInfo.IsTrial();
+#endif
 		}
 
 		#endregion
