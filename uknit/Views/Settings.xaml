@@ -11,15 +11,15 @@
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
 	SupportedOrientations="Portrait" Orientation="Portrait"
-	mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-	shell:SystemTray.IsVisible="False"
+	mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+	shell:SystemTray.IsVisible="True"
 	toolkit:TiltEffect.IsTiltEnabled="True"
 	Style="{StaticResource PageStyle}" >
 	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot">
 		<Grid.Background>
-			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg" Opacity="0.6"/>
+			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg" Opacity="0.6" />
 		</Grid.Background>
 		<Grid.Resources>
 			<Style TargetType="Button">
@@ -71,8 +71,8 @@
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-			<TextBlock x:Name="ApplicationTitle" Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-			<TextBlock x:Name="PageTitle" Text="uknit" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+			<TextBlock x:Name="ApplicationTitle" Text="uknit" Style="{StaticResource PhoneTextNormalStyle}"/>
+			<TextBlock x:Name="PageTitle" Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
 
 		<!--ContentPanel - place additional content here-->

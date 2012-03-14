@@ -5,6 +5,7 @@
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:controlsprimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
@@ -12,11 +13,31 @@
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
-	SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+	SupportedOrientations="Portrait" Orientation="Portrait"
 	shell:SystemTray.IsVisible="False" Margin="0"
 	toolkit:TiltEffect.IsTiltEnabled="True"
 	Style="{StaticResource PageStyle}">
 
+	<phone:PhoneApplicationPage.Resources>
+	<ControlTemplate x:Key="panoramaTemplate" TargetType="controls:Panorama">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<!-- The use of the margin on the Border will prevent rendering artifacts (dark vertical lines). -->
+			<controlsprimitives:PanningBackgroundLayer x:Name="BackgroundLayer" Grid.RowSpan="2" HorizontalAlignment="Left">
+				<Border x:Name="background" Background="{TemplateBinding Background}" CacheMode="BitmapCache" Margin="-1,0"/>
+			</controlsprimitives:PanningBackgroundLayer>
+			<controlsprimitives:PanningTitleLayer x:Name="TitleLayer" Grid.Row="0" HorizontalAlignment="Left" Margin="10,-76,0,9"
+														Content="{TemplateBinding Title}" ContentTemplate="{TemplateBinding TitleTemplate}" 
+														FontSize="187" FontFamily="{StaticResource PhoneFontFamilyLight}" CacheMode="BitmapCache"/>
+			<controlsprimitives:PanningLayer x:Name="ItemsLayer" Grid.Row="1" HorizontalAlignment="Left">
+				<ItemsPresenter x:Name="items"/>
+			</controlsprimitives:PanningLayer>
+		</Grid>
+	</ControlTemplate>
+	</phone:PhoneApplicationPage.Resources>
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
 		<Grid.Resources>
@@ -74,8 +95,8 @@
 					<StackPanel>
 						<Button BorderThickness="0" Margin="-12,0,0,0" HorizontalAlignment="Left" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Click="OnClick_AddNewProject">
 							<StackPanel Orientation="Horizontal">
-								<Image Height="36" Width="36" Source="Content/Images/add.png" />
-								<TextBlock VerticalAlignment="Center" Padding="6,0,0,0">Add new project...</TextBlock>
+								<Image x:Name="AddIcon" Height="36" Width="36" Source="Content/Images/dark/add.png" />
+								<TextBlock x:Name="AddLabel" VerticalAlignment="Center" Padding="6,0,0,0" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">Add new project...</TextBlock>
 							</StackPanel>
 						</Button>
 						<ItemsControl x:Name="ProjectItems" ItemsSource="{Binding KnittingProjects}" Margin="0,0,-12,0">
@@ -85,11 +106,11 @@
 										<StackPanel Orientation="Horizontal" Margin="0,0,0,17">
 											<Grid>
 												<Rectangle Height="100" Width="100" Fill="{Binding RowCounterColorRGB}" Margin="12,0,9,0"/>
-												<TextBlock Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding CurrentRowCount}" FontSize="72"/>
+												<TextBlock Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding CurrentRowCount}" FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}" />
 											</Grid>
 											<StackPanel Width="311">
-												<TextBlock Text="{Binding ProjectName}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" />
-												<TextBlock Text="{Binding ProjectDescription}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+												<TextBlock Text="{Binding ProjectName}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}" />
+												<TextBlock Text="{Binding ProjectDescription}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}"/>
 											</StackPanel>
 										</StackPanel>
 										<toolkit:ContextMenuService.ContextMenu>
@@ -110,21 +131,22 @@
 					<Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity=".4" VerticalAlignment="Top" Height="324"/>
 					<StackPanel x:Name="ToolsPanel">
 						<Button BorderThickness="0" Click="OnClick_Tools_Ruler" HorizontalContentAlignment="Left">
-							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">ruler</TextBlock>
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">ruler</TextBlock>
 						</Button>
-						<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalContentAlignment="Left">
-							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">gauge calculator</TextBlock>
-						</Button>
+						<!--<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalContentAlignment="Left">
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">gauge calculator</TextBlock>
+						</Button>-->
 						<Button BorderThickness="0" Click="OnClick_Tools_YardsMeters" HorizontalContentAlignment="Left">
-							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">convert yards &lt;-&gt; meters</TextBlock>
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">convert yards &lt;-&gt; meters</TextBlock>
 						</Button>
 						<Button BorderThickness="0" Click="OnClick_Settings" HorizontalContentAlignment="Left">
-							<TextBlock Style="{StaticResource PhoneTextLargeStyle}">settings</TextBlock>
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">settings</TextBlock>
 						</Button>
 					</StackPanel>
 				</Grid>
 			</controls:PanoramaItem>
 
+			<controls:PanoramaItem Header="test"></controls:PanoramaItem>
 			<!--Panorama item two-->
 		</controls:Panorama>
 	</Grid>

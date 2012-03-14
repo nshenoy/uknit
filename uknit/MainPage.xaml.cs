@@ -14,6 +14,29 @@ namespace uknit
 	public partial class MainPage : PhoneApplicationPage
 	{
 		private MarketplaceDetailTask MarketPlaceDetail = new MarketplaceDetailTask();
+		
+		public Brush PanoramaBackgroundBrush
+		{
+			get
+			{
+				Brush brush;
+				BitmapImage backgroundImage = ConfigurationManager.GetBackgroundImage();
+
+				if(backgroundImage != null)
+				{
+					ImageBrush img = new ImageBrush();
+					img.ImageSource = backgroundImage;
+					brush = img;
+				}
+				else
+				{
+					brush = Application.Current.Resources["PhoneBackgroundBrush"] as SolidColorBrush;
+				}
+
+				return brush;
+			}
+		}
+
 		// Constructor
 		public MainPage()
 		{
@@ -43,6 +66,13 @@ namespace uknit
 				ImageBrush img = new ImageBrush();
 				img.ImageSource = backgroundImage;
 				this.MainPagePanorama.Background = img;
+
+				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+				if(isLightTheme == Visibility.Visible)
+				{
+					this.MainPagePanorama.Foreground = new SolidColorBrush(Colors.White);
+					this.AddIcon.Source = new BitmapImage(new Uri("Content/Images/dark/add.png", UriKind.Relative));
+				}
 			}
 			else
 			{
@@ -63,6 +93,16 @@ namespace uknit
 			{
 				this.NavigationService.RemoveBackEntry();
 				this.NavigationService.RemoveBackEntry();
+			}
+
+			if(ConfigurationManager.GetBackgroundImage() == null)
+			{
+				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+				if(isLightTheme == Visibility.Visible)
+				{
+					this.MainPagePanorama.Foreground = new SolidColorBrush(Colors.Black);
+					this.AddIcon.Source = new BitmapImage(new Uri("Content/Images/Light/add.png", UriKind.Relative));
+				}
 			}
 
 			base.OnNavigatedTo(e);

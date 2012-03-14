@@ -43,6 +43,15 @@ namespace uknit.Views.Tools
 			{
 				this.LayoutRoot.Background = null;
 			}
+			else
+			{
+				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+				if(isLightTheme == Visibility.Visible)
+				{
+					this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
+					this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
+				}
+			}
 
 			currentRulerUnitOfMeasure = ConfigurationManager.GetUnitOfMeasure();
 		}

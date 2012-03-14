@@ -27,6 +27,15 @@ namespace uknit.Views
 				{
 					this.LayoutRoot.Background = null;
 				}
+				else
+				{
+					Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+					if(isLightTheme == Visibility.Visible)
+					{
+						this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
+						this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
+					}
+				}
 			}
 
 			int selectedIndex = 0;
@@ -77,20 +86,32 @@ namespace uknit.Views
 
 		private void BackgroundToggle_Checked(object sender, RoutedEventArgs e)
 		{
-			//this.BackgroundPicker.Visibility = System.Windows.Visibility.Visible;
 			IsolatedStorage["EnableBackgroundImage"] = true;
 
 			this.LayoutRoot.Background = new ImageBrush()
 			{
 				ImageSource = new BitmapImage(new Uri("/Content/Images/KnitBackground480x800.jpg", UriKind.Relative))
 			};
+
+			Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+			if(isLightTheme == Visibility.Visible)
+			{
+				this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
+				this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
+			}
 		}
 
 		private void BackgroundToggle_Unchecked(object sender, RoutedEventArgs e)
 		{
-			//this.BackgroundPicker.Visibility = System.Windows.Visibility.Collapsed;
 			IsolatedStorage["EnableBackgroundImage"] = false;
 			this.LayoutRoot.Background = null;
+
+			Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+			if(isLightTheme == Visibility.Visible)
+			{
+				this.ApplicationTitle.Foreground = new SolidColorBrush((Color)Resources["PhoneTextBoxForegroundColor"]);
+				this.PageTitle.Foreground = new SolidColorBrush((Color)Resources["PhoneTextBoxForegroundColor"]);
+			}
 		}
 
 		private void UnitOfMeasure_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

@@ -15,6 +15,9 @@ namespace uknit.Models
 		private const string IMAGES_PATH = "Images";
 		private const string SAVEDPROJECTS_FILENAME = "SavedProjects.xml";
 		private const string BACKGROUNDIMAGE_FILENAME = "Background.jpg";
+		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/SwirveDark.jpg";
+		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBackground.jpg";
+		private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBlueBackground.jpg";
 
 		private const string EnableBackgroundImageKeyName = "EnableBackgroundImage";
 		private const string DevicePixelsPerInchKeyName = "DevicePixelsPerInch";
@@ -82,12 +85,11 @@ namespace uknit.Models
 				}
 				else
 				{
-					image.UriSource = new Uri("Content/Images/SwirveDark.jpg", UriKind.Relative);
+					image.UriSource = new Uri(ConfigurationManager.DEFAULT_PANORAMA_IMAGE, UriKind.Relative);
 				}
 			}
 			else
 			{
-				//image.UriSource = new Uri("Content/Images/PanoramaBackground.jpg", UriKind.Relative);
 				image = null;
 			}
 
