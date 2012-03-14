@@ -6,6 +6,8 @@ using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
+using System.Windows;
+using System.ComponentModel;
 
 namespace uknit.Models
 {
@@ -62,9 +64,10 @@ namespace uknit.Models
 			return (bool)isBackgroundEnabled;
 		}
 
-		public static BitmapImage GetBackgroundImage()
+		public static Brush GetBackgroundBrush()
 		{
-			BitmapImage image = new BitmapImage();
+			Brush backgroundBrush;
+			BitmapImage backgroundImage = new BitmapImage();
 			bool? isBackgroundEnabled;
 
 			if(!IsolatedStorage.TryGetValue(EnableBackgroundImageKeyName, out isBackgroundEnabled))
@@ -80,20 +83,24 @@ namespace uknit.Models
 				{
 					using(IsolatedStorageFileStream ifs = ConfigurationManager.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Open, FileAccess.Read))
 					{
-						image.SetSource(ifs);
+						backgroundImage.SetSource(ifs);
 					}
 				}
 				else
 				{
-					image.UriSource = new Uri(ConfigurationManager.DEFAULT_PANORAMA_IMAGE, UriKind.Relative);
+					backgroundImage.UriSource = new Uri(ConfigurationManager.DEFAULT_PANORAMA_IMAGE, UriKind.Relative);
 				}
+
+				ImageBrush img = new ImageBrush();
+				img.ImageSource = backgroundImage;
+				backgroundBrush = img;
 			}
 			else
 			{
-				image = null;
+				backgroundBrush = Application.Current.Resources["PhoneBackgroundBrush"] as SolidColorBrush;
 			}
 
-			return image;
+			return backgroundBrush;
 		}
 
 		public static KnittingProject GetKnittingProjectByName(string projectName)
@@ -246,7 +253,7 @@ namespace uknit.Models
 				IsolatedStorage[RulerCalibratedKeyName] = true;
 			}
 		}
-	
+
 		public static string GetUnitOfMeasure()
 		{
 			string unitOfMeasure = "Imperial";

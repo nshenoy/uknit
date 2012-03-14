@@ -84,10 +84,10 @@
 			</Style>
 		</Grid.Resources>
 		<!--Panorama control-->
-		<controls:Panorama x:Name="MainPagePanorama" Title="uknit" DefaultItem="projects">
-			<controls:Panorama.Background>
+		<controls:Panorama x:Name="MainPagePanorama" Title="uknit" DefaultItem="projects" Background="{Binding PanoramaBackgroundBrush}">
+			<!--<controls:Panorama.Background>
 				<ImageBrush ImageSource="/Content/Images/PanoramaBackground.jpg" Stretch="UniformToFill"/>
-			</controls:Panorama.Background>
+			</controls:Panorama.Background>-->
 
 			<!--Panorama item one-->
 			<controls:PanoramaItem Header="projects">
@@ -145,9 +145,6 @@
 					</StackPanel>
 				</Grid>
 			</controls:PanoramaItem>
-
-			<controls:PanoramaItem Header="test"></controls:PanoramaItem>
-			<!--Panorama item two-->
 		</controls:Panorama>
 	</Grid>
 

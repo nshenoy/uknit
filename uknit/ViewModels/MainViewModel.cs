@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using uknit.Models;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows;
 
 namespace uknit.ViewModels
 {
@@ -20,6 +23,21 @@ namespace uknit.ViewModels
 		{
 			get;
 			private set;
+		}
+
+		private Brush PanoramaBackgroundBrushProperty;
+		public Brush PanoramaBackgroundBrush
+		{
+			get
+			{
+				this.PanoramaBackgroundBrushProperty = ConfigurationManager.GetBackgroundBrush();
+				return PanoramaBackgroundBrushProperty;
+			}
+			set
+			{
+				this.PanoramaBackgroundBrushProperty = value;
+				NotifyPropertyChanged("PanoramaBackgroundBrush");
+			}
 		}
 
 		public bool IsDataLoaded
