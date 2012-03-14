@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using Microsoft.Phone.Controls;
 using uknit.Models;
+using System.Windows.Media;
 
 namespace uknit.Views
 {
@@ -47,6 +48,20 @@ namespace uknit.Views
 			this.DataContext = this;
 			this.Loaded += new RoutedEventHandler(RowCounter_Loaded);
 			IsNew = true;
+
+			if(!ConfigurationManager.IsBackgroundEnabled())
+			{
+				this.LayoutRoot.Background = null;
+			}
+			else
+			{
+				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+				if(isLightTheme == Visibility.Visible)
+				{
+					this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
+					this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
+				}
+			}
 		}
 
 		private void InitializePage(string projectName)
