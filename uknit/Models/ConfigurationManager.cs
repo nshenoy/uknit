@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace uknit.Models
 {
-	public static class ConfigurationManager
+	public class ConfigurationManager
 	{
 		private const string DATA_PATH = "Data";
 		private const string IMAGES_PATH = "Images";
@@ -29,7 +29,7 @@ namespace uknit.Models
 		private static IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
 		private static IsolatedStorageFile UserStoreForApplication = IsolatedStorageFile.GetUserStoreForApplication();
 
-		public static void SaveBackgroundImage(Stream stream)
+		public void SaveBackgroundImage(Stream stream)
 		{
 			BitmapImage chosenPhoto = new BitmapImage();
 			chosenPhoto.SetSource(stream);
@@ -52,7 +52,7 @@ namespace uknit.Models
 			}
 		}
 
-		public static bool IsBackgroundEnabled()
+		public bool IsBackgroundEnabled()
 		{
 			bool? isBackgroundEnabled;
 
@@ -64,7 +64,7 @@ namespace uknit.Models
 			return (bool)isBackgroundEnabled;
 		}
 
-		public static Brush GetBackgroundBrush()
+		public Brush GetBackgroundBrush()
 		{
 			Brush backgroundBrush;
 			BitmapImage backgroundImage = new BitmapImage();
@@ -103,7 +103,7 @@ namespace uknit.Models
 			return backgroundBrush;
 		}
 
-		public static KnittingProject GetKnittingProjectByName(string projectName)
+		public KnittingProject GetKnittingProjectByName(string projectName)
 		{
 			KnittingProject knittingProject = null;
 			XElement projectXml = GetKnittingProjects();
@@ -123,7 +123,7 @@ namespace uknit.Models
 			return knittingProject;
 		}
 
-		public static void RemoveKnittingProjectByName(string projectName)
+		public void RemoveKnittingProjectByName(string projectName)
 		{
 			XElement projectXml = GetKnittingProjects();
 			XElement projectToRemove = projectXml.Elements("Project").Where(p => p.Element("Name").Value == projectName).First();
@@ -139,7 +139,7 @@ namespace uknit.Models
 			}
 		}
 
-		public static void AddKnittingProject(string projectName, KnittingProject project)
+		public void AddKnittingProject(string projectName, KnittingProject project)
 		{
 			XElement projectXml = GetKnittingProjects();
 			List<XElement> projects = projectXml.Elements("Project").ToList();
@@ -165,7 +165,7 @@ namespace uknit.Models
 			}
 		}
 
-		public static void ModifyKnittingProjectByName(string projectName, KnittingProject project)
+		public void ModifyKnittingProjectByName(string projectName, KnittingProject project)
 		{
 			XElement projectXml = GetKnittingProjects();
 			XElement projectToModify = projectXml.Elements("Project").Where(p => p.Element("Name").Value == projectName).First();
@@ -186,7 +186,7 @@ namespace uknit.Models
 			}
 		}
 
-		public static List<KnittingProject> LoadKnittingProjects()
+		public List<KnittingProject> LoadKnittingProjects()
 		{
 			List<KnittingProject> projects = new List<KnittingProject>();
 			XElement projectsXml = GetKnittingProjects();
@@ -205,7 +205,7 @@ namespace uknit.Models
 			return projects;
 		}
 
-		private static XElement GetKnittingProjects()
+		private XElement GetKnittingProjects()
 		{
 			XElement projects = null;
 			string projectPath = System.IO.Path.Combine(ConfigurationManager.DATA_PATH, ConfigurationManager.SAVEDPROJECTS_FILENAME);
@@ -241,20 +241,20 @@ namespace uknit.Models
 			return projects;
 		}
 
-		public static bool IsRulerCalibrated()
+		public bool IsRulerCalibrated()
 		{
 			return IsolatedStorage.Contains(RulerCalibratedKeyName);
 		}
 
-		public static void SetRulerCalibrated()
+		public void SetRulerCalibrated()
 		{
-			if(!ConfigurationManager.IsRulerCalibrated())
+			if(!this.IsRulerCalibrated())
 			{
 				IsolatedStorage[RulerCalibratedKeyName] = true;
 			}
 		}
 
-		public static string GetUnitOfMeasure()
+		public string GetUnitOfMeasure()
 		{
 			string unitOfMeasure = "Imperial";
 			if(IsolatedStorage.Contains(UnitOfMeasureKeyName))
@@ -269,40 +269,40 @@ namespace uknit.Models
 			return unitOfMeasure;
 		}
 
-		public static void SetUnitOfMeasure(string unitOfMeasure)
+		public void SetUnitOfMeasure(string unitOfMeasure)
 		{
 			IsolatedStorage[UnitOfMeasureKeyName] = unitOfMeasure;
 		}
 
-		public static double GetDevicePixelDensity()
+		public double GetDevicePixelDensity()
 		{
 			double ppd;
 
-			if(ConfigurationManager.GetUnitOfMeasure() == "Imperial")
+			if(this.GetUnitOfMeasure() == "Imperial")
 			{
-				ppd = ConfigurationManager.GetDevicePixelsPerInch();
+				ppd = this.GetDevicePixelsPerInch();
 			}
 			else
 			{
-				ppd = ConfigurationManager.GetDevicePixelsPerCentimeter();
+				ppd = this.GetDevicePixelsPerCentimeter();
 			}
 
 			return ppd;
 		}
 
-		public static void SetDevicePixelDensity(double pixelsBetweenLines)
+		public void SetDevicePixelDensity(double pixelsBetweenLines)
 		{
-			if(ConfigurationManager.GetUnitOfMeasure() == "Imperial")
+			if(this.GetUnitOfMeasure() == "Imperial")
 			{
-				ConfigurationManager.SetDevicePixelsPerInch(pixelsBetweenLines);
+				this.SetDevicePixelsPerInch(pixelsBetweenLines);
 			}
 			else
 			{
-				ConfigurationManager.SetDevicePixelsPerCentimeter(pixelsBetweenLines);
+				this.SetDevicePixelsPerCentimeter(pixelsBetweenLines);
 			}
 		}
 
-		public static double GetDevicePixelsPerInch()
+		public double GetDevicePixelsPerInch()
 		{
 			double ppi;
 			if(!IsolatedStorage.TryGetValue(DevicePixelsPerInchKeyName, out ppi))
@@ -314,35 +314,35 @@ namespace uknit.Models
 			return ppi;
 		}
 
-		public static void SetDevicePixelsPerInch(double pixelsBetweenLines)
+		public void SetDevicePixelsPerInch(double pixelsBetweenLines)
 		{
 			double ppi = pixelsBetweenLines * 9 + 9;
 
 			IsolatedStorage[DevicePixelsPerInchKeyName] = ppi;
 		}
 
-		public static double GetDevicePixelsPerCentimeter()
+		public double GetDevicePixelsPerCentimeter()
 		{
-			double ppi = ConfigurationManager.GetDevicePixelsPerInch();
+			double ppi = this.GetDevicePixelsPerInch();
 
 			return (ppi / 2.54);
 		}
 
-		public static void SetDevicePixelsPerCentimeter(double pixelsBetweenLines)
+		public void SetDevicePixelsPerCentimeter(double pixelsBetweenLines)
 		{
 			double ppc = pixelsBetweenLines * 11 + 11;
 
 			IsolatedStorage[DevicePixelsPerInchKeyName] = ppc * 2.54;
 		}
 
-		public static void RestoreDefaults()
+		public void RestoreDefaults()
 		{
 			IsolatedStorage.Remove(DevicePixelsPerInchKeyName);
 			IsolatedStorage.Remove(UnitOfMeasureKeyName);
 			IsolatedStorage.Remove(RulerCalibratedKeyName);
 		}
 
-		private static Color HexString2Color(string hex)
+		private Color HexString2Color(string hex)
 		{
 			byte a;
 			byte r;

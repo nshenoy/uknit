@@ -14,6 +14,7 @@ namespace uknit.Views
 		private int CurrentRowCount = 0;
 		private string ProjectName = String.Empty;
 		KnittingProject Project;
+		public ConfigurationManager AppSettings = new ConfigurationManager();
 
 		public string TensDigit
 		{
@@ -49,7 +50,7 @@ namespace uknit.Views
 			this.Loaded += new RoutedEventHandler(RowCounter_Loaded);
 			IsNew = true;
 
-			if(!ConfigurationManager.IsBackgroundEnabled())
+			if(!this.AppSettings.IsBackgroundEnabled())
 			{
 				this.LayoutRoot.Background = null;
 			}
@@ -69,7 +70,7 @@ namespace uknit.Views
 			this.ProjectName = projectName;
 			this.PageTitle.Text = projectName;
 
-			this.Project = ConfigurationManager.GetKnittingProjectByName(projectName);
+			this.Project = this.AppSettings.GetKnittingProjectByName(projectName);
 			this.CurrentRowCount = this.Project.CurrentRowCount;
 			this.RowCounterControl.Fill = this.Project.RowCounterColor;
 
@@ -80,7 +81,7 @@ namespace uknit.Views
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
 		{
 			this.State["ProjectName"] = this.ProjectName;
-			ConfigurationManager.ModifyKnittingProjectByName(this.ProjectName, this.Project);
+			this.AppSettings.ModifyKnittingProjectByName(this.ProjectName, this.Project);
 
 			int index = App.ViewModel.KnittingProjects.IndexOf(this.Project);
 			App.ViewModel.KnittingProjects[index] = this.Project;

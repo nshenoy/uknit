@@ -6,6 +6,8 @@ namespace uknit.ViewModels
 {
 	public class AddNewProjectViewModel
 	{
+		public ConfigurationManager AppSettings = new ConfigurationManager();
+
 		public string ProjectName
 		{
 			get;
@@ -32,7 +34,7 @@ namespace uknit.ViewModels
 		{
 			this.ProjectName = projectName;
 
-			KnittingProject knittingProject = uknit.Models.ConfigurationManager.GetKnittingProjectByName(projectName);
+			KnittingProject knittingProject = this.AppSettings.GetKnittingProjectByName(projectName);
 
 			this.ProjectDescription = knittingProject.ProjectDescription;
 			this.RowCounterColor = knittingProject.RowCounterColor;
@@ -48,16 +50,16 @@ namespace uknit.ViewModels
 				CurrentRowCount = 0
 			};
 
-			if(uknit.Models.ConfigurationManager.GetKnittingProjectByName(this.ProjectName) == null)
+			if(this.AppSettings.GetKnittingProjectByName(this.ProjectName) == null)
 			{
 				App.ViewModel.KnittingProjects.Insert(0, knittingProject);
-				uknit.Models.ConfigurationManager.AddKnittingProject(this.ProjectName, knittingProject);
+				this.AppSettings.AddKnittingProject(this.ProjectName, knittingProject);
 			}
 		}
 
 		public void EditProject(string projectName, string description, Color color)
 		{
-			KnittingProject project = uknit.Models.ConfigurationManager.GetKnittingProjectByName(this.ProjectName);
+			KnittingProject project = this.AppSettings.GetKnittingProjectByName(this.ProjectName);
 			int index = App.ViewModel.KnittingProjects.IndexOf(project);
 
 			project.ProjectDescription = description;
@@ -65,16 +67,16 @@ namespace uknit.ViewModels
 
 			if(String.Compare(this.ProjectName, projectName) != 0)
 			{
-				uknit.Models.ConfigurationManager.RemoveKnittingProjectByName(this.ProjectName);
+				this.AppSettings.RemoveKnittingProjectByName(this.ProjectName);
 
 				this.ProjectName = projectName;
 				project.ProjectName = projectName;
 
-				uknit.Models.ConfigurationManager.AddKnittingProject(projectName, project);
+				this.AppSettings.AddKnittingProject(projectName, project);
 			}
 			else
 			{
-				uknit.Models.ConfigurationManager.ModifyKnittingProjectByName(projectName, project);
+				this.AppSettings.ModifyKnittingProjectByName(projectName, project);
 			}
 
 			App.ViewModel.KnittingProjects[index] = project;

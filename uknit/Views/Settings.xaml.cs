@@ -14,6 +14,7 @@ namespace uknit.Views
 	{
 		public PhotoChooserTask PhotoChooser;
 		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
+		public ConfigurationManager AppSettings = new ConfigurationManager();
 
 		public Settings()
 		{
@@ -39,7 +40,7 @@ namespace uknit.Views
 			}
 
 			int selectedIndex = 0;
-			switch(ConfigurationManager.GetUnitOfMeasure())
+			switch(this.AppSettings.GetUnitOfMeasure())
 			{
 				case "Imperial":
 					selectedIndex = 0;
@@ -63,7 +64,7 @@ namespace uknit.Views
 		{
 			if(e.TaskResult == TaskResult.OK)
 			{
-				uknit.Models.ConfigurationManager.SaveBackgroundImage(e.ChosenPhoto);
+				this.AppSettings.SaveBackgroundImage(e.ChosenPhoto);
 			}
 		}
 
@@ -118,11 +119,11 @@ namespace uknit.Views
 		{
 			if(e.AddedItems.Count == 0)
 			{
-				ConfigurationManager.SetUnitOfMeasure("Imperial");
+				this.AppSettings.SetUnitOfMeasure("Imperial");
 			}
 			else
 			{
-				ConfigurationManager.SetUnitOfMeasure(((ListPickerItem)(e.AddedItems[0])).Content as string);
+				this.AppSettings.SetUnitOfMeasure(((ListPickerItem)(e.AddedItems[0])).Content as string);
 			}
 		}
 
@@ -141,7 +142,7 @@ namespace uknit.Views
 			{
 				if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
 				{
-					ConfigurationManager.RestoreDefaults();
+					this.AppSettings.RestoreDefaults();
 					MessageBox.Show("Defaults restored.");
 				}
 			};

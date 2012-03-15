@@ -90,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\KnittingProject.cs" />
     <Compile Include="ViewModels\AddNewProjectViewModel.cs" />
+    <Compile Include="ViewModels\ThemeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ConfigurationManager.cs" />
     <Compile Include="Views\AddNewProject.xaml.cs">

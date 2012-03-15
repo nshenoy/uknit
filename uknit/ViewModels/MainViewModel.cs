@@ -11,6 +11,8 @@ namespace uknit.ViewModels
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
+		public ConfigurationManager AppSettings = new ConfigurationManager();
+
 		public MainViewModel()
 		{
 			this.KnittingProjects = new ObservableCollection<KnittingProject>();
@@ -30,7 +32,7 @@ namespace uknit.ViewModels
 		{
 			get
 			{
-				this.PanoramaBackgroundBrushProperty = ConfigurationManager.GetBackgroundBrush();
+				this.PanoramaBackgroundBrushProperty = this.AppSettings.GetBackgroundBrush();
 				return PanoramaBackgroundBrushProperty;
 			}
 			set
@@ -51,7 +53,7 @@ namespace uknit.ViewModels
 		/// </summary>
 		public void LoadData()
 		{
-			List<KnittingProject> projects = ConfigurationManager.LoadKnittingProjects();
+			List<KnittingProject> projects = this.AppSettings.LoadKnittingProjects();
 
 			foreach(KnittingProject project in projects)
 			{

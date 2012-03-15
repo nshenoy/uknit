@@ -20,7 +20,6 @@
 		<c4fControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 	</phone:PhoneApplicationPage.Resources>
 	
-	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot">
 		<Grid.Background>
 			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg"/>
@@ -60,13 +59,11 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<!--TitlePanel contains the name of the application and page title-->
 		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
 			<TextBlock x:Name="ApplicationTitle" Text="uknit" Style="{StaticResource PhoneTextNormalStyle}"/>
 			<TextBlock x:Name="PageTitle" Text="ruler" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
 
-		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="180" />
@@ -92,13 +89,4 @@
 			</Grid>
 		</Grid>
 	</Grid>
-
-	<!--<phone:PhoneApplicationPage.ApplicationBar>
-		<shell:ApplicationBar Mode="Minimized" IsVisible="True" IsMenuEnabled="True">
-			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem Text="settings" Click="OnClick_Settings"/>
-			</shell:ApplicationBar.MenuItems>
-		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>-->
-
 </phone:PhoneApplicationPage>

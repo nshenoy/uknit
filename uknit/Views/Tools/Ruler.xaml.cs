@@ -18,6 +18,8 @@ namespace uknit.Views.Tools
 {
 	public partial class Ruler : PhoneApplicationPage
 	{
+		public ConfigurationManager AppSettings = new ConfigurationManager();
+
 		public enum ImperialTick
 		{
 			Eighth,
@@ -39,7 +41,7 @@ namespace uknit.Views.Tools
 		{
 			InitializeComponent();
 
-			if(!ConfigurationManager.IsBackgroundEnabled())
+			if(!this.AppSettings.IsBackgroundEnabled())
 			{
 				this.LayoutRoot.Background = null;
 			}
@@ -53,7 +55,7 @@ namespace uknit.Views.Tools
 				}
 			}
 
-			currentRulerUnitOfMeasure = ConfigurationManager.GetUnitOfMeasure();
+			currentRulerUnitOfMeasure = this.AppSettings.GetUnitOfMeasure();
 		}
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -62,7 +64,7 @@ namespace uknit.Views.Tools
 
 			base.OnNavigatedTo(e);
 
-			if(!ConfigurationManager.IsRulerCalibrated())
+			if(!this.AppSettings.IsRulerCalibrated())
 			{
 				AskForCalibration();
 			}
@@ -76,7 +78,7 @@ namespace uknit.Views.Tools
 		private void DrawRuler()
 		{
 			this.RulerGrid.Children.Clear();
-			if(ConfigurationManager.GetUnitOfMeasure() == "Imperial")
+			if(this.AppSettings.GetUnitOfMeasure() == "Imperial")
 			{
 				this.Imperial.IsChecked = true;
 				DrawRulerImperial(App.Current.Host.Content.ActualHeight);
@@ -91,7 +93,7 @@ namespace uknit.Views.Tools
 		private void DrawRulerImperial(double rulerLengthInPixels)
 		{
 			//int ppi = 262;
-			double ppi = ConfigurationManager.GetDevicePixelsPerInch();
+			double ppi = this.AppSettings.GetDevicePixelsPerInch();
 			double pixelsBetweenLines = (ppi - 9) / 9;
 
 			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
@@ -169,7 +171,7 @@ namespace uknit.Views.Tools
 		private void DrawRulerMetric(double rulerLengthInPixels)
 		{
 			//int ppi = 262;
-			double ppi = ConfigurationManager.GetDevicePixelsPerCentimeter();
+			double ppi = this.AppSettings.GetDevicePixelsPerCentimeter();
 			double pixelsBetweenLines = (ppi - 11) / 11;
 
 			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
@@ -246,9 +248,9 @@ namespace uknit.Views.Tools
 			double pixelsBetweenLines = Math.Abs(offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1) + 1;
 			double sum = offsetCalcLines[0].Y1;
 
-			ConfigurationManager.SetDevicePixelDensity(pixelsBetweenLines - 1);
+			this.AppSettings.SetDevicePixelDensity(pixelsBetweenLines - 1);
 			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
-			Debug.WriteLine("PPI is now {0}", ConfigurationManager.GetDevicePixelDensity());
+			Debug.WriteLine("PPI is now {0}", this.AppSettings.GetDevicePixelDensity());
 
 			var lines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Skip(1);
 			foreach(Line line in lines)
@@ -283,9 +285,9 @@ namespace uknit.Views.Tools
 
 			double sum = offsetCalcLines[0].Y1;
 
-			ConfigurationManager.SetDevicePixelDensity(pixelsBetweenLines - 1);
+			this.AppSettings.SetDevicePixelDensity(pixelsBetweenLines - 1);
 			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
-			Debug.WriteLine("PPI is now {0}", ConfigurationManager.GetDevicePixelDensity());
+			Debug.WriteLine("PPI is now {0}", this.AppSettings.GetDevicePixelDensity());
 
 			var lines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Skip(1);
 			foreach(Line line in lines)
@@ -310,7 +312,7 @@ namespace uknit.Views.Tools
 		private void UnitOfMeasure_Checked(object sender, RoutedEventArgs e)
 		{
 			RadioButton rb = sender as RadioButton;
-			ConfigurationManager.SetUnitOfMeasure(rb.Name);
+			this.AppSettings.SetUnitOfMeasure(rb.Name);
 			this.RulerSettingsText.Text = rb.Name;
 			if(rb.Name != currentRulerUnitOfMeasure)
 			{
@@ -336,7 +338,7 @@ namespace uknit.Views.Tools
 				{
 					this.RulerSettingsSwitch.IsChecked = true;
 					this.CalibrationSwitch.IsChecked = true;
-					ConfigurationManager.SetRulerCalibrated();
+					this.AppSettings.SetRulerCalibrated();
 				}
 			};
 
