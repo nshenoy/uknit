@@ -55,8 +55,8 @@ namespace uknit.Views
 				this.UnitOfMeasure.SelectedIndex = selectedIndex;
 			});
 
-			//this.PhotoChooser = new PhotoChooserTask();
-			//this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
+			this.PhotoChooser = new PhotoChooserTask();
+			this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
 			this.UnitOfMeasure.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(UnitOfMeasure_SelectionChanged);
 		}
 
@@ -148,6 +148,16 @@ namespace uknit.Views
 			};
 
 			messagePrompt.Show();
+		}
+
+		private void RowCounterTensToggle_Checked(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void RowCounterTensToggle_Unchecked(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }
