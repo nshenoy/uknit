@@ -14,7 +14,7 @@ namespace uknit.Views
 	{
 		public PhotoChooserTask PhotoChooser;
 		private IsolatedStorageSettings IsolatedStorage = IsolatedStorageSettings.ApplicationSettings;
-		public ConfigurationManager AppSettings = new ConfigurationManager();
+		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
 		public Settings()
 		{

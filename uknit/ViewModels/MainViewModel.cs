@@ -11,7 +11,7 @@ namespace uknit.ViewModels
 {
 	public class MainViewModel : INotifyPropertyChanged
 	{
-		public ConfigurationManager AppSettings = new ConfigurationManager();
+		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
 		public MainViewModel()
 		{

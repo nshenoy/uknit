@@ -6,7 +6,7 @@ namespace uknit.ViewModels
 {
 	public class AddNewProjectViewModel
 	{
-		public ConfigurationManager AppSettings = new ConfigurationManager();
+		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
 		public string ProjectName
 		{

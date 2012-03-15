@@ -13,6 +13,7 @@ namespace uknit
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
+		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 		private MarketplaceDetailTask MarketPlaceDetail = new MarketplaceDetailTask();
 
 		// Constructor
@@ -38,7 +39,7 @@ namespace uknit
 			}
 
 			Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
-			if(ConfigurationManager.IsBackgroundEnabled() && (isLightTheme == Visibility.Visible))
+			if(this.AppSettings.IsBackgroundEnabled() && (isLightTheme == Visibility.Visible))
 			{
 				this.MainPagePanorama.Foreground = new SolidColorBrush(Colors.White);
 				this.AddIcon.Source = new BitmapImage(new Uri("Content/Images/dark/add.png", UriKind.Relative));
@@ -60,7 +61,7 @@ namespace uknit
 				this.NavigationService.RemoveBackEntry();
 			}
 
-			if(!ConfigurationManager.IsBackgroundEnabled())
+			if(!this.AppSettings.IsBackgroundEnabled())
 			{
 				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
 				if(isLightTheme == Visibility.Visible)
@@ -69,7 +70,7 @@ namespace uknit
 					this.AddIcon.Source = new BitmapImage(new Uri("Content/Images/Light/add.png", UriKind.Relative));
 				}
 			}
-			App.ViewModel.PanoramaBackgroundBrush = ConfigurationManager.GetBackgroundBrush();
+			App.ViewModel.PanoramaBackgroundBrush = this.AppSettings.GetBackgroundBrush();
 			base.OnNavigatedTo(e);
 		}
 
@@ -122,10 +123,10 @@ namespace uknit
 
 		private void DeleteProject(string projectName)
 		{
-			KnittingProject project = ConfigurationManager.GetKnittingProjectByName(projectName);
+			KnittingProject project = this.AppSettings.GetKnittingProjectByName(projectName);
 			int index = App.ViewModel.KnittingProjects.IndexOf(project);
 			App.ViewModel.KnittingProjects.RemoveAt(index);
-			ConfigurationManager.RemoveKnittingProjectByName(projectName);
+			this.AppSettings.RemoveKnittingProjectByName(projectName);
 		}
 
 		private void OnClick_Tools_YardsMeters(object sender, RoutedEventArgs e)

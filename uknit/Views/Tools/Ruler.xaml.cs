@@ -18,7 +18,7 @@ namespace uknit.Views.Tools
 {
 	public partial class Ruler : PhoneApplicationPage
 	{
-		public ConfigurationManager AppSettings = new ConfigurationManager();
+		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
 		public enum ImperialTick
 		{

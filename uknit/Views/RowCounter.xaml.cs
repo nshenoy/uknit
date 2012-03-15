@@ -13,8 +13,8 @@ namespace uknit.Views
 		private bool IsNew = false;
 		private int CurrentRowCount = 0;
 		private string ProjectName = String.Empty;
-		KnittingProject Project;
-		public ConfigurationManager AppSettings = new ConfigurationManager();
+		private KnittingProject Project;
+		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
 		public string TensDigit
 		{
