@@ -21,6 +21,7 @@ namespace uknit.Models
 		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBackground.jpg";
 		private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBlueBackground.jpg";
 
+		private const string EnableRowCounterTensDigitKeyName = "EnableRowCounterTensDigit";
 		private const string EnableBackgroundImageKeyName = "EnableBackgroundImage";
 		private const string DevicePixelsPerInchKeyName = "DevicePixelsPerInch";
 		private const string UnitOfMeasureKeyName = "UnitOfMeasure";
@@ -50,6 +51,19 @@ namespace uknit.Models
 			{
 				System.Windows.Media.Imaging.Extensions.SaveJpeg(backgroundImage, ifs, backgroundImage.PixelWidth, backgroundImage.PixelHeight, 0, 85);
 			}
+		}
+
+		public bool IsRowCounterTensDigitEnabled()
+		{
+			bool? isRowCounterTensDigitEnabled;
+
+			if(!IsolatedStorage.TryGetValue(EnableRowCounterTensDigitKeyName, out isRowCounterTensDigitEnabled))
+			{
+				isRowCounterTensDigitEnabled = false;
+				IsolatedStorage[EnableRowCounterTensDigitKeyName] = false;
+			}
+
+			return (bool)isRowCounterTensDigitEnabled;
 		}
 
 		public bool IsBackgroundEnabled()
@@ -240,7 +254,7 @@ namespace uknit.Models
 
 			return projects;
 		}
-
+	
 		public bool IsRulerCalibrated()
 		{
 			return IsolatedStorage.Contains(RulerCalibratedKeyName);

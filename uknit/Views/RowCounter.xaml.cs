@@ -15,6 +15,7 @@ namespace uknit.Views
 		private string ProjectName = String.Empty;
 		private KnittingProject Project;
 		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
+		private bool IsTensDigitEnabled = false;
 
 		public string TensDigit
 		{
@@ -63,6 +64,8 @@ namespace uknit.Views
 					this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
 				}
 			}
+
+			this.IsTensDigitEnabled = this.AppSettings.IsRowCounterTensDigitEnabled();
 		}
 
 		private void InitializePage(string projectName)
@@ -113,10 +116,13 @@ namespace uknit.Views
 
 		private void RowCounter_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.RowCounterControl.Tens.Tap += (s, gestureEventArgs) =>
-				{
-					IncrementRow(10);
-				};
+			if(this.IsTensDigitEnabled)
+			{
+				this.RowCounterControl.Tens.Tap += (s, gestureEventArgs) =>
+					{
+						IncrementRow(10);
+					};
+			}
 
 			this.RowCounterControl.Ones.Tap += (s, gestureEventArgs) =>
 				{
@@ -139,7 +145,10 @@ namespace uknit.Views
 				}
 				else
 				{
-					IncrementRow(isIncrement ? 10 : -10);
+					if(this.IsTensDigitEnabled)
+					{
+						IncrementRow(isIncrement ? 10 : -10);
+					}
 				}
 			}
 		}

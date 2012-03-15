@@ -15,11 +15,11 @@
 	mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
 	Style="{StaticResource PageStyle}"
 	shell:SystemTray.IsVisible="True" >
-	
+
 	<phone:PhoneApplicationPage.Resources>
 		<c4fControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 	</phone:PhoneApplicationPage.Resources>
-	
+
 	<Grid x:Name="LayoutRoot">
 		<Grid.Background>
 			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg"/>
@@ -58,35 +58,33 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="180"/>
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-			<TextBlock x:Name="ApplicationTitle" Text="uknit" Style="{StaticResource PhoneTextNormalStyle}"/>
+		<StackPanel Grid.Column="1" x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+			<TextBlock x:Name="ApplicationTitle" Text="uknit"  Style="{StaticResource PhoneTextNormalStyle}"/>
 			<TextBlock x:Name="PageTitle" Text="ruler" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
+		<Canvas x:Name="RulerGrid" Width="180" Grid.Column="0" Grid.RowSpan="2" Background="WhiteSmoke">
+		</Canvas>
 
-		<Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="180" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
-			<Canvas x:Name="RulerGrid" Width="180" Grid.Column="0" Background="WhiteSmoke">
-			</Canvas>
-			<Grid Grid.Column="2">
-				<Rectangle x:Name="ContentBackground" Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.6" />
-				<StackPanel>
-					<toolkit:ToggleSwitch x:Name="RulerSettingsSwitch" Header="Ruler Settings"  IsChecked="False" />
-					<TextBlock x:Name="RulerSettingsText" Margin="12,-36" Foreground="{StaticResource PhoneAccentBrush}" Style="{StaticResource PhoneTextSmallStyle}" />
-					<StackPanel x:Name="UnitOfMeasurePanel" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-						<RadioButton Content="Imperial" Grid.Column="1" x:Name="Imperial" Checked="UnitOfMeasure_Checked" />
-						<RadioButton Content="Metric" Grid.Column="2" x:Name="Metric" Checked="UnitOfMeasure_Checked" />
-						<toolkit:ToggleSwitch x:Name="CalibrationSwitch" Header="Calibrate Ruler" IsChecked="False" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-						<StackPanel x:Name="CalibrationButtons" Visibility="{Binding ElementName=CalibrationSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-							<Button Content="Bigger" Click="OnClick_Bigger" />
-							<Button Content="Smaller" Click="OnClick_Smaller" />
-						</StackPanel>
+		<Grid x:Name="ContentPanel" Grid.Column="1" Grid.Row="2" Margin="12,0,12,0">
+			<Rectangle x:Name="ContentBackground" Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.6" />
+			<StackPanel>
+				<toolkit:ToggleSwitch x:Name="RulerSettingsSwitch" Header="Ruler Settings"  IsChecked="False" />
+				<TextBlock x:Name="RulerSettingsText" Margin="12,-36" Foreground="{StaticResource PhoneAccentBrush}" Style="{StaticResource PhoneTextSmallStyle}" />
+				<StackPanel x:Name="UnitOfMeasurePanel" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+					<RadioButton Content="Imperial" Grid.Column="1" x:Name="Imperial" Checked="UnitOfMeasure_Checked" />
+					<RadioButton Content="Metric" Grid.Column="2" x:Name="Metric" Checked="UnitOfMeasure_Checked" />
+					<toolkit:ToggleSwitch x:Name="CalibrationSwitch" Header="Calibrate Ruler" IsChecked="False" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+					<StackPanel x:Name="CalibrationButtons" Visibility="{Binding ElementName=CalibrationSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<Button Content="Bigger" Click="OnClick_Bigger" />
+						<Button Content="Smaller" Click="OnClick_Smaller" />
 					</StackPanel>
 				</StackPanel>
-			</Grid>
+			</StackPanel>
 		</Grid>
 	</Grid>
 </phone:PhoneApplicationPage>

@@ -7,6 +7,7 @@
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:c4fControls="clr-namespace:Coding4Fun.Phone.Controls.Converters;assembly=Coding4Fun.Phone.Controls"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
@@ -15,8 +16,11 @@
 	shell:SystemTray.IsVisible="True"
 	toolkit:TiltEffect.IsTiltEnabled="True"
 	Style="{StaticResource PageStyle}" >
-	
-	<!--LayoutRoot is the root grid where all page content is placed-->
+
+	<phone:PhoneApplicationPage.Resources>
+		<c4fControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+	</phone:PhoneApplicationPage.Resources>
+
 	<Grid x:Name="LayoutRoot">
 		<Grid.Background>
 			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg" />
@@ -69,13 +73,11 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<!--TitlePanel contains the name of the application and page title-->
 		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
 			<TextBlock x:Name="ApplicationTitle" Text="uknit" Style="{StaticResource PhoneTextNormalStyle}"/>
 			<TextBlock x:Name="PageTitle" Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
 
-		<!--ContentPanel - place additional content here-->
 		<Grid Grid.Row="1">
 			<Rectangle x:Name="ContentBackground" Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.6"/>
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
@@ -84,9 +86,11 @@
 					<toolkit:ListPickerItem Content="Metric" />
 				</toolkit:ListPicker>
 				<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Images" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" IsChecked="True" />
+				<!--<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="{Binding ElementName=BackgroundToggle, Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}">-->
 				<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
-					<TextBlock  Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left">choose background</TextBlock>
+					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">choose background</TextBlock>
 				</Button>
+				<toolkit:ToggleSwitch x:Name="RowCounterTensToggle" Header="Row Counter" Content="enable 10s digit" Checked="RowCounterTensToggle_Checked" Unchecked="RowCounterTensToggle_Unchecked" IsChecked="False" />
 				<Button Click="OnClick_Restore" BorderThickness="0" HorizontalContentAlignment="Left">
 					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">restore defaults</TextBlock>
 				</Button>
