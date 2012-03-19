@@ -48,7 +48,6 @@ namespace uknit.Views
 			InitializeComponent();
 
 			this.DataContext = this;
-			this.Loaded += new RoutedEventHandler(RowCounter_Loaded);
 			IsNew = true;
 
 			if(!this.AppSettings.IsBackgroundEnabled())
@@ -66,6 +65,16 @@ namespace uknit.Views
 			}
 
 			this.IsTensDigitEnabled = this.AppSettings.IsRowCounterTensDigitEnabled();
+
+			this.RowCounterControl.Tens.Tap += (s, gestureEventArgs) =>
+			{
+				IncrementRow(10);
+			};
+
+			this.RowCounterControl.Ones.Tap += (s, gestureEventArgs) =>
+				{
+					IncrementRow(1);
+				};
 		}
 
 		private void InitializePage(string projectName)
@@ -111,23 +120,24 @@ namespace uknit.Views
 
 			IsNew = false;
 
+			this.IsTensDigitEnabled = this.AppSettings.IsRowCounterTensDigitEnabled();
+
 			base.OnNavigatedTo(e);
 		}
 
-		private void RowCounter_Loaded(object sender, RoutedEventArgs e)
+		private void OnClick_Settings(object sender, EventArgs e)
 		{
-			if(this.IsTensDigitEnabled)
-			{
-				this.RowCounterControl.Tens.Tap += (s, gestureEventArgs) =>
-					{
-						IncrementRow(10);
-					};
-			}
+			NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
+		}
 
-			this.RowCounterControl.Ones.Tap += (s, gestureEventArgs) =>
-				{
-					IncrementRow(1);
-				};
+		void Ones_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+		{
+			IncrementRow(1);
+		}
+
+		void Tens_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+		{
+			IncrementRow(10);
 		}
 
 
@@ -155,7 +165,9 @@ namespace uknit.Views
 
 		private void IncrementRow(int increment)
 		{
-			if((increment == -10 && this.CurrentRowCount < 10) || (increment == 10 && this.CurrentRowCount >= 90))
+			if((increment == 10 && !this.IsTensDigitEnabled) ||
+				(increment == -10 && this.CurrentRowCount < 10) ||
+				(increment == 10 && this.CurrentRowCount >= 90))
 			{
 				// Do nothing
 				return;

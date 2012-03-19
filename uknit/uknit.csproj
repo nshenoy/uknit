@@ -90,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\KnittingProject.cs" />
     <Compile Include="ViewModels\AddNewProjectViewModel.cs" />
+    <Compile Include="ViewModels\StitchConversionViewModel.cs" />
     <Compile Include="ViewModels\GaugeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ApplicationSettingsManager.cs" />
@@ -97,6 +98,9 @@
       <DependentUpon>AddNewProject.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Converters.cs" />
+    <Compile Include="Views\Tools\StitchConversion.xaml.cs">
+      <DependentUpon>StitchConversion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tools\GaugeCalculator.xaml.cs">
       <DependentUpon>GaugeCalculator.xaml</DependentUpon>
     </Compile>
@@ -131,6 +135,10 @@
     <Page Include="Views\AddNewProject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tools\StitchConversion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Tools\GaugeCalculator.xaml">
       <SubType>Designer</SubType>

@@ -128,7 +128,7 @@
 			</controls:PanoramaItem>
 			<controls:PanoramaItem Header="tools">
 				<Grid>
-					<Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity=".4" VerticalAlignment="Top" Height="324"/>
+					<Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity=".4" VerticalAlignment="Top" Height="372"/>
 					<StackPanel x:Name="ToolsPanel">
 						<Button BorderThickness="0" Click="OnClick_Tools_Ruler" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">ruler</TextBlock>
@@ -136,8 +136,11 @@
 						<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">gauge calculator</TextBlock>
 						</Button>
+						<Button BorderThickness="0" Click="OnClick_Tools_Stitch" HorizontalContentAlignment="Left">
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">stitch converter</TextBlock>
+						</Button>
 						<Button BorderThickness="0" Click="OnClick_Tools_YardsMeters" HorizontalContentAlignment="Left">
-							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">convert yards &lt;-&gt; meters</TextBlock>
+							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">yards ↔ meters converter</TextBlock>
 						</Button>
 						<Button BorderThickness="0" Click="OnClick_Settings" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">settings</TextBlock>

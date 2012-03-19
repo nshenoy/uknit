@@ -139,6 +139,11 @@ namespace uknit
 			NavigationService.Navigate(new Uri("/Views/Tools/GaugeCalculator.xaml", UriKind.Relative));
 		}
 
+		private void OnClick_Tools_Stitch(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Views/Tools/StitchConversion.xaml", UriKind.Relative));
+		}
+
 		private void OnClick_Tools_Ruler(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new Uri("/Views/Tools/Ruler.xaml", UriKind.Relative));
