@@ -133,9 +133,9 @@
 						<Button BorderThickness="0" Click="OnClick_Tools_Ruler" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">ruler</TextBlock>
 						</Button>
-						<!--<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalContentAlignment="Left">
+						<Button BorderThickness="0" Click="OnClick_Tools_Gauge" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">gauge calculator</TextBlock>
-						</Button>-->
+						</Button>
 						<Button BorderThickness="0" Click="OnClick_Tools_YardsMeters" HorizontalContentAlignment="Left">
 							<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding ElementName=MainPagePanorama, Path=Foreground}">convert yards &lt;-&gt; meters</TextBlock>
 						</Button>

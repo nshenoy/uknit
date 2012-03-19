@@ -6,6 +6,8 @@
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+	xmlns:uknit="clr-namespace:uknit.Views.Converters;assembly=uknit"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
 	FontSize="{StaticResource PhoneFontSizeNormal}"
 	Foreground="{StaticResource PhoneForegroundBrush}"
@@ -14,33 +16,83 @@
 	shell:SystemTray.IsVisible="True"
 	Style="{StaticResource PageStyle}" >
 
-	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot" Background="Transparent">
+	<Grid x:Name="LayoutRoot">
+		<Grid.Background>
+			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg"/>
+		</Grid.Background>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<!--TitlePanel contains the name of the application and page title-->
+		<Grid.Resources>
+			<DataTemplate x:Name="PickerFullModeItemTemplate">
+				<TextBlock Text="{Binding Name}" Margin="16 0 0 0" FontSize="43" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+			</DataTemplate>
+			<uknit:DoubleToStringConverter x:Key="DoubleToStringConverter" />
+		</Grid.Resources>
 		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
 			<TextBlock x:Name="ApplicationTitle" Text="uknit TOOLS" Style="{StaticResource PhoneTextNormalStyle}"/>
 			<TextBlock x:Name="PageTitle" Text="gauge calculator" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
 		</StackPanel>
 
-		<!--ContentPanel - place additional content here-->
-		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+			<StackPanel>
+				<TextBlock Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeMedium}">Pattern Gauge</TextBlock>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="144" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBox x:Name="PatternGauge" Grid.Column="0" InputScope="Digits" Text="" MaxLength="5" VerticalAlignment="Center" TextAlignment="Right" TextChanged="Measurement_TextChanged"/>
+					<TextBlock Grid.Column="1" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0">sts over</TextBlock>
+					<TextBlock Grid.Column="2" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0" Text="{Binding SwatchMeasurement}"/>
+				</Grid>
+				<TextBlock Margin="12,12,0,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeMedium}">Your Measured gauge</TextBlock>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="144" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<TextBox x:Name="MeasuredStitches" Grid.Column="0" InputScope="Digits" Text="" MaxLength="5" VerticalAlignment="Center"  TextAlignment="Right" TextChanged="Measurement_TextChanged"/>
+					<TextBlock Grid.Column="1" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left">sts over</TextBlock>
+					<toolkit:ListPicker x:Name="MeasuredLength" Margin="0,-6,0,0" Grid.Column="2" Height="{Binding ElementName=MeasuredStitches, Path=Height}" Width="{Binding ElementName=MeasuredStitches, Path=Width}" VerticalAlignment="Center" ItemsSource="{Binding ActualGaugeMeasurementOptions}" SelectedIndex="0" ExpansionMode="FullScreenOnly" SelectionChanged="Measurement_SelectionChanged" />
+				</Grid>
+				<Grid x:Name="ActualGaugePanel" Margin="0,24,0,0">
+					<Grid.Background>
+						<SolidColorBrush Opacity="0.6" Color="Black" />
+					</Grid.Background>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="144" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource PhoneTextLargeStyle}" FontWeight="Bold" Margin="12,12,0,0" Text="Your Actual Gauge"/>
+					<TextBlock Grid.Row="1" x:Name="ActualCalculatedGauge" Grid.Column="0" Style="{StaticResource PhoneTextLargeStyle}" FontWeight="Bold" Foreground="{StaticResource PhoneAccentBrush}" VerticalAlignment="Center" TextAlignment="Right" Text="{Binding ActualGauge, Converter={StaticResource DoubleToStringConverter}}"/>
+					<TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0">sts over</TextBlock>
+					<TextBlock Grid.Row="1" Grid.Column="2" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0" Text="{Binding SwatchMeasurement}"/>
+				</Grid>
+				<Grid>
+					<Grid.Background>
+						<SolidColorBrush Opacity="0.6" Color="Black" />
+					</Grid.Background>
+					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Foreground="Goldenrod" Margin="12,24,0,12" Text="{Binding GaugeGuidance}" TextWrapping="Wrap"/>
+				</Grid>
+			</StackPanel>
+		</Grid>
 	</Grid>
 
-	<!--Sample code showing usage of ApplicationBar-->
-	<!--<phone:PhoneApplicationPage.ApplicationBar>
-		<shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-			<shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-				<shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-			</shell:ApplicationBar.MenuItems>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar Mode="Default" IsVisible="True"  IsMenuEnabled="True" Opacity="0.6">
+			<shell:ApplicationBarIconButton IconUri="/Content/Images/settings.png" Text="settings" Click="OnClick_Settings"/>
 		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>-->
+	</phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>
