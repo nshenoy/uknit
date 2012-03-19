@@ -90,10 +90,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\KnittingProject.cs" />
     <Compile Include="ViewModels\AddNewProjectViewModel.cs" />
+    <Compile Include="ViewModels\StitchConversionViewModel.cs" />
+    <Compile Include="ViewModels\GaugeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\ApplicationSettingsManager.cs" />
     <Compile Include="Views\AddNewProject.xaml.cs">
       <DependentUpon>AddNewProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Converters.cs" />
+    <Compile Include="Views\Tools\StitchConversion.xaml.cs">
+      <DependentUpon>StitchConversion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tools\GaugeCalculator.xaml.cs">
       <DependentUpon>GaugeCalculator.xaml</DependentUpon>
@@ -129,6 +135,10 @@
     <Page Include="Views\AddNewProject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tools\StitchConversion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Tools\GaugeCalculator.xaml">
       <SubType>Designer</SubType>
@@ -175,6 +185,7 @@
     <Resource Include="Content\Images\light\add.png" />
     <Content Include="Content\Images\save.png" />
     <Content Include="Content\Images\PanoramaBackground.jpg" />
+    <Content Include="Content\Images\settings.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup />

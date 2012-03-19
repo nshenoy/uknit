@@ -55,6 +55,8 @@ namespace uknit.Views
 				this.UnitOfMeasure.SelectedIndex = selectedIndex;
 			});
 
+			this.RowCounterTensToggle.IsChecked = this.AppSettings.IsRowCounterTensDigitEnabled();
+
 			this.PhotoChooser = new PhotoChooserTask();
 			this.PhotoChooser.Completed += new EventHandler<PhotoResult>(PhotoChooserTask_Completed);
 			this.UnitOfMeasure.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(UnitOfMeasure_SelectionChanged);
@@ -152,12 +154,12 @@ namespace uknit.Views
 
 		private void RowCounterTensToggle_Checked(object sender, RoutedEventArgs e)
 		{
-
+			AppSettings.EnableRowCounterTensDigit(true);
 		}
 
 		private void RowCounterTensToggle_Unchecked(object sender, RoutedEventArgs e)
 		{
-
+			AppSettings.EnableRowCounterTensDigit(false);
 		}
 	}
 }

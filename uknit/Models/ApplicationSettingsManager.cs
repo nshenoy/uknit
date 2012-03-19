@@ -53,6 +53,11 @@ namespace uknit.Models
 			}
 		}
 
+		public void EnableRowCounterTensDigit(bool isEnabled)
+		{
+			IsolatedStorage[EnableRowCounterTensDigitKeyName] = isEnabled;
+		}
+
 		public bool IsRowCounterTensDigitEnabled()
 		{
 			bool? isRowCounterTensDigitEnabled;

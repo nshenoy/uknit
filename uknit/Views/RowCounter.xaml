@@ -38,4 +38,11 @@
 			<uknit:RowCounterControl x:Name="RowCounterControl" HorizontalAlignment="Center" TensDigit="{Binding TensDigit}" OnesDigit="{Binding OnesDigit}" NeedleWidth="{Binding ElementName=LayoutRoot,Path=ActualWidth}" />
 		</Grid>
 	</Grid>
+
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar Mode="Default" IsVisible="True"  IsMenuEnabled="True" Opacity="0.6">
+			<shell:ApplicationBarIconButton IconUri="/Content/Images/settings.png" Text="settings" Click="OnClick_Settings"/>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
+
 </phone:PhoneApplicationPage>
