@@ -16,10 +16,7 @@
 	shell:SystemTray.IsVisible="True"
 	Style="{StaticResource PageStyle}" >
 
-	<Grid x:Name="LayoutRoot">
-		<Grid.Background>
-			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg"/>
-		</Grid.Background>
+	<Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
@@ -66,9 +63,10 @@
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
 					</Grid.ColumnDefinitions>
-					<TextBox x:Name="MeasuredGauge" Grid.Column="0" InputScope="Digits" Text="" MaxLength="5" VerticalAlignment="Center"  TextAlignment="Right" TextChanged="Measurement_TextChanged"/>
+					<TextBox x:Name="MeasuredStitches" Grid.Column="0" InputScope="Digits" Text="" MaxLength="5" VerticalAlignment="Center"  TextAlignment="Right" TextChanged="Measurement_TextChanged"/>
 					<TextBlock Grid.Column="1" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left">sts over</TextBlock>
-					<TextBlock Grid.Column="2" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0" Text="{Binding SwatchMeasurement}"/>
+					<!--<TextBlock Grid.Column="2" Style="{StaticResource PhoneTextLargeStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0" Text="{Binding SwatchMeasurement}"/>-->
+					<toolkit:ListPicker x:Name="MeasuredLength" Margin="0,2,0,10" Grid.Column="2" Height="{Binding ElementName=MeasuredStitches, Path=Height}" Width="{Binding ElementName=MeasuredStitches, Path=Width}" VerticalAlignment="Center" ItemsSource="{Binding MeasurementOptions}" SelectedIndex="0" SelectionChanged="Measurement_SelectionChanged" />
 				</Grid>
 				<StackPanel x:Name="ActualStitchesPanel" Margin="0,24,0,0">
 					<StackPanel.Background>

@@ -5,6 +5,7 @@ using System.Windows;
 using Microsoft.Phone.Controls;
 using uknit.Models;
 using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace uknit.Views
 {
@@ -43,6 +44,20 @@ namespace uknit.Views
 			}
 		}
 
+		private Brush BackgroundBrushProperty;
+		public Brush BackgroundBrush
+		{
+			get
+			{
+				return this.BackgroundBrushProperty;
+			}
+			set
+			{
+				this.BackgroundBrushProperty = value;
+				this.PropertyChanged(this, new PropertyChangedEventArgs("BackgroundBrush"));
+			}
+		}
+
 		public RowCounter()
 		{
 			InitializeComponent();
@@ -50,11 +65,9 @@ namespace uknit.Views
 			this.DataContext = this;
 			IsNew = true;
 
-			if(!this.AppSettings.IsBackgroundEnabled())
-			{
-				this.LayoutRoot.Background = null;
-			}
-			else
+			this.BackgroundBrush = AppSettings.GetPageBackgroundBrush();
+
+			if(this.AppSettings.IsBackgroundEnabled())
 			{
 				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
 				if(isLightTheme == Visibility.Visible)
@@ -121,6 +134,7 @@ namespace uknit.Views
 			IsNew = false;
 
 			this.IsTensDigitEnabled = this.AppSettings.IsRowCounterTensDigitEnabled();
+			this.BackgroundBrush = AppSettings.GetPageBackgroundBrush();
 
 			base.OnNavigatedTo(e);
 		}
@@ -185,6 +199,38 @@ namespace uknit.Views
 			this.Project.CurrentRowCount = this.CurrentRowCount;
 		}
 
+		private void ClearCounterValues()
+		{
+			this.CurrentRowCount = 0;
+			this.TensDigit = "0";
+			this.OnesDigit = "0";
+
+			this.Project.CurrentRowCount = this.CurrentRowCount;
+		}
+
 		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void OnClick_ResetCounter(object sender, EventArgs e)
+		{
+			Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+			messagePrompt.IsCancelVisible = true;
+			messagePrompt.Body = new TextBlock
+			{
+				Text = "Yikes! Do you seriously want to reset this counter to 0?",
+				FontSize = 30.0,
+				TextWrapping = TextWrapping.Wrap
+			};
+
+			messagePrompt.Completed += (str, res) =>
+			{
+				if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+				{
+					this.ClearCounterValues();
+					MessageBox.Show("Counter has been reset.");
+				}
+			};
+
+			messagePrompt.Show();
+		}
 	}
 }

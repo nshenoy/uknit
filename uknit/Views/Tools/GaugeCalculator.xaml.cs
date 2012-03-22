@@ -23,14 +23,23 @@ namespace uknit.Views
 			InitializeComponent();
 
 			this.DataContext = viewModel;
+
+			if(this.viewModel.IsBackgroundEnabled())
+			{
+				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+				if(isLightTheme == Visibility.Visible)
+				{
+					this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
+					this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
+				}
+			}
 		}
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
 		{
-			if(viewModel.DetectSettingsChange())
+			if(viewModel.Update())
 			{
 				this.MeasuredLength.SelectedIndex = 0;
-				viewModel.Reinitialize();
 			}
 			base.OnNavigatedTo(e);
 		}
@@ -52,24 +61,24 @@ namespace uknit.Views
 
 		private void CalculateGauge()
 		{
-			int patternGauge = 0;
-			int measuredStitches = 0;
-			int measuredLength = 0;
+			double patternGauge = 0;
+			double measuredStitches = 0;
+			double measuredLength = 0;
 
 			if(!String.IsNullOrWhiteSpace(this.PatternGauge.Text))
 			{
-				patternGauge = int.Parse(this.PatternGauge.Text);
+				patternGauge = double.Parse(this.PatternGauge.Text);
 			}
 
 			if(!String.IsNullOrWhiteSpace(this.MeasuredStitches.Text))
 			{
-				measuredStitches = int.Parse(this.MeasuredStitches.Text);
+				measuredStitches = double.Parse(this.MeasuredStitches.Text);
 			}
 
 			string measuredLengthText = this.MeasuredLength.Items[this.MeasuredLength.SelectedIndex] as string;
 			if(!String.IsNullOrWhiteSpace(measuredLengthText))
 			{
-				measuredLength = int.Parse(measuredLengthText.Substring(0, measuredLengthText.Length - 3));
+				measuredLength = double.Parse(measuredLengthText.Substring(0, measuredLengthText.Length - 3));
 			}
 
 			if((patternGauge > 0) && (measuredStitches > 0) && (measuredLength > 0))

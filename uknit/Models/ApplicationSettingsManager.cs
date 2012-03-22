@@ -20,6 +20,7 @@ namespace uknit.Models
 		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/SwirveDark.jpg";
 		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBackground.jpg";
 		private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBlueBackground.jpg";
+		private const string DEFAULT_PAGE_IMAGE = "/Content/Images/KnitBackground480x800.jpg";
 
 		private const string EnableRowCounterTensDigitKeyName = "EnableRowCounterTensDigit";
 		private const string EnableBackgroundImageKeyName = "EnableBackgroundImage";
@@ -83,7 +84,7 @@ namespace uknit.Models
 			return (bool)isBackgroundEnabled;
 		}
 
-		public Brush GetBackgroundBrush()
+		public Brush GetPanoramaBackgroundBrush()
 		{
 			Brush backgroundBrush;
 			BitmapImage backgroundImage = new BitmapImage();
@@ -109,6 +110,33 @@ namespace uknit.Models
 				{
 					backgroundImage.UriSource = new Uri(ApplicationSettingsManager.DEFAULT_PANORAMA_IMAGE, UriKind.Relative);
 				}
+
+				ImageBrush img = new ImageBrush();
+				img.ImageSource = backgroundImage;
+				backgroundBrush = img;
+			}
+			else
+			{
+				backgroundBrush = Application.Current.Resources["PhoneBackgroundBrush"] as SolidColorBrush;
+			}
+
+			return backgroundBrush;
+		}
+
+		public Brush GetPageBackgroundBrush()
+		{
+			Brush backgroundBrush;
+			BitmapImage backgroundImage = new BitmapImage();
+			bool? isBackgroundEnabled;
+
+			if(!IsolatedStorage.TryGetValue(EnableBackgroundImageKeyName, out isBackgroundEnabled))
+			{
+				isBackgroundEnabled = true;
+			}
+
+			if(isBackgroundEnabled == true)
+			{
+				backgroundImage.UriSource = new Uri(ApplicationSettingsManager.DEFAULT_PAGE_IMAGE, UriKind.Relative);
 
 				ImageBrush img = new ImageBrush();
 				img.ImageSource = backgroundImage;
@@ -259,7 +287,7 @@ namespace uknit.Models
 
 			return projects;
 		}
-	
+
 		public bool IsRulerCalibrated()
 		{
 			return IsolatedStorage.Contains(RulerCalibratedKeyName);
@@ -275,7 +303,7 @@ namespace uknit.Models
 
 		public string GetUnitOfMeasure()
 		{
-			string unitOfMeasure = "Imperial";
+			string unitOfMeasure = "Inches";
 			if(IsolatedStorage.Contains(UnitOfMeasureKeyName))
 			{
 				unitOfMeasure = IsolatedStorage[UnitOfMeasureKeyName] as string;
@@ -297,7 +325,7 @@ namespace uknit.Models
 		{
 			double ppd;
 
-			if(this.GetUnitOfMeasure() == "Imperial")
+			if(this.GetUnitOfMeasure() == "Inches")
 			{
 				ppd = this.GetDevicePixelsPerInch();
 			}
@@ -311,7 +339,7 @@ namespace uknit.Models
 
 		public void SetDevicePixelDensity(double pixelsBetweenLines)
 		{
-			if(this.GetUnitOfMeasure() == "Imperial")
+			if(this.GetUnitOfMeasure() == "Inches")
 			{
 				this.SetDevicePixelsPerInch(pixelsBetweenLines);
 			}

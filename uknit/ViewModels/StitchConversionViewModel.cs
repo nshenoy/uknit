@@ -3,21 +3,21 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using uknit.Models;
+using System.Windows.Media;
 
 namespace uknit.ViewModels
 {
-	public class StitchConversionViewModel : INotifyPropertyChanged
+	public class StitchConversionViewModel : ViewModelBase
 	{
 		private const string GaugeMatched = "Gauge matched!";
 		private const string GaugeSmall = "Gauge is smaller than the pattern. Consider an increased needle size.";
 		private const string GaugeLarge = "Gauge is larger than the pattern. Consider a decreased needle size.";
-		private const string SwatchMeasurementImperial = "4 inches";
-		private const string SwatchMeasurementMetric = "10 cm";
+		private const string SwatchMeasurementInches = "4 inches";
+		private const string SwatchMeasurementCentimeters = "10 cm";
 
 		private string UnitOfMeasure;
-		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
-		public ObservableCollection<string> ActualGaugeMeasurementOptions
+		public ObservableCollection<string> MeasurementOptions
 		{
 			get;
 			private set;
@@ -27,13 +27,13 @@ namespace uknit.ViewModels
 		{
 			get
 			{
-				if(this.UnitOfMeasure == "Imperial")
+				if(this.UnitOfMeasure == "Inches")
 				{
-					return StitchConversionViewModel.SwatchMeasurementImperial;
+					return StitchConversionViewModel.SwatchMeasurementInches;
 				}
 				else
 				{
-					return StitchConversionViewModel.SwatchMeasurementMetric;
+					return StitchConversionViewModel.SwatchMeasurementCentimeters;
 				}
 			}
 		}
@@ -66,23 +66,62 @@ namespace uknit.ViewModels
 			}
 		}
 
+		public bool IsDataLoaded
+		{
+			get;
+			private set;
+		}
+
 		public StitchConversionViewModel()
 		{
 			this.ActualStitchesProperty = 0;
+			this.LoadData();
 		}
 
-		public bool DetectSettingsChange()
+		public new bool Update()
 		{
-			return this.UnitOfMeasure != AppSettings.GetUnitOfMeasure();
-		}
+			bool isUpdated = false;
 
-		public void Reinitialize()
-		{
 			if(AppSettings.GetUnitOfMeasure() != this.UnitOfMeasure)
 			{
-				this.UnitOfMeasure = AppSettings.GetUnitOfMeasure();
+				this.LoadData();
 				NotifyPropertyChanged("SwatchMeasurement");
+				isUpdated = true;
 			}
+
+			base.Update();
+
+			return isUpdated;
+		}
+
+		public void LoadData()
+		{
+			int max;
+			string units;
+
+			this.UnitOfMeasure = AppSettings.GetUnitOfMeasure();
+
+			if(this.UnitOfMeasure == "Inches")
+			{
+				max = 4;
+				units = "in";
+			}
+			else
+			{
+				max = 10;
+				units = "cm";
+			}
+
+			ObservableCollection<string> measurementChoices = new ObservableCollection<string>();
+			for(int i = max; i > 0; i--)
+			{
+				measurementChoices.Add(String.Format("{0} {1}", i, units));
+			}
+
+			measurementChoices.OrderBy(p => p);
+			this.MeasurementOptions = measurementChoices;
+			NotifyPropertyChanged("MeasurementOptions");
+			this.IsDataLoaded = true;
 		}
 
 		public void CalculateActualStitches(double patternGauge, double patternStitches, double measuredGauge)
@@ -93,33 +132,20 @@ namespace uknit.ViewModels
 			this.ActualStitches = actualStitches;
 		}
 
-		public void MeasureGaugeGuidance(double patternGauge)
+		public double CalculateActualGauge(double measuredStitches, double measuredLength)
 		{
-			//if(this.ActualStitches == 0)
-			//{
-			//    this.GaugeGuidance = String.Empty;
-			//}
-			//else if(this.ActualStitches == patternGauge)
-			//{
-			//    this.GaugeGuidance = StitchConversionViewModel.GaugeMatched;
-			//}
-			//else if(this.ActualStitches > patternGauge)
-			//{
-			//    this.GaugeGuidance = StitchConversionViewModel.GaugeLarge;
-			//}
-			//else if(this.ActualStitches < patternGauge)
-			//{
-			//    this.GaugeGuidance = StitchConversionViewModel.GaugeSmall;
-			//}
-		}
+			double gauge = measuredStitches / measuredLength;
 
-		public event PropertyChangedEventHandler PropertyChanged;
-		private void NotifyPropertyChanged(String propertyName)
-		{
-			if(null != PropertyChanged)
+			if(this.UnitOfMeasure == "Inches")
 			{
-				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				gauge = gauge * 4;
 			}
+			else
+			{
+				gauge = gauge * 10;
+			}
+
+			return gauge;
 		}
 	}
 }

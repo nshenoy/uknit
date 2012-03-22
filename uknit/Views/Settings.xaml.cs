@@ -42,10 +42,10 @@ namespace uknit.Views
 			int selectedIndex = 0;
 			switch(this.AppSettings.GetUnitOfMeasure())
 			{
-				case "Imperial":
+				case "Inches":
 					selectedIndex = 0;
 					break;
-				case "Metric":
+				case "Centimeters":
 					selectedIndex = 1;
 					break;
 			}
@@ -121,7 +121,7 @@ namespace uknit.Views
 		{
 			if(e.AddedItems.Count == 0)
 			{
-				this.AppSettings.SetUnitOfMeasure("Imperial");
+				this.AppSettings.SetUnitOfMeasure("Inches");
 			}
 			else
 			{

@@ -16,10 +16,7 @@
 	shell:SystemTray.IsVisible="True"
 	Style="{StaticResource PageStyle}" >
 
-	<Grid x:Name="LayoutRoot">
-		<Grid.Background>
-			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg"/>
-		</Grid.Background>
+	<Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>

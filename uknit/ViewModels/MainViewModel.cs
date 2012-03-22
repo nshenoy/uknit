@@ -32,7 +32,7 @@ namespace uknit.ViewModels
 		{
 			get
 			{
-				this.PanoramaBackgroundBrushProperty = this.AppSettings.GetBackgroundBrush();
+				this.PanoramaBackgroundBrushProperty = this.AppSettings.GetPanoramaBackgroundBrush();
 				return PanoramaBackgroundBrushProperty;
 			}
 			set

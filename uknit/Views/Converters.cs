@@ -17,10 +17,10 @@ namespace uknit.Views.Converters
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
 			double doubleToConvert = (double)value;
-			string convertedString = doubleToConvert.ToString("F1");
+			string convertedString = doubleToConvert.ToString("F2");
 
 			int index = convertedString.IndexOf('.');
-			if(convertedString[index+1] == '0')
+			if(convertedString.Substring(index+1) == "00")
 			{
 				convertedString = convertedString.Substring(0, index);
 			}

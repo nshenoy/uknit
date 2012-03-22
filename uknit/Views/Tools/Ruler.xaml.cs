@@ -78,14 +78,14 @@ namespace uknit.Views.Tools
 		private void DrawRuler()
 		{
 			this.RulerGrid.Children.Clear();
-			if(this.AppSettings.GetUnitOfMeasure() == "Imperial")
+			if(this.AppSettings.GetUnitOfMeasure() == "Inches")
 			{
-				this.Imperial.IsChecked = true;
+				this.Inches.IsChecked = true;
 				DrawRulerImperial(App.Current.Host.Content.ActualHeight);
 			}
 			else
 			{
-				this.Metric.IsChecked = true;
+				this.Centimeters.IsChecked = true;
 				DrawRulerMetric(App.Current.Host.Content.ActualHeight);
 			}
 		}

@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Windows.Navigation;
+using uknit.ViewModels;
 
 namespace uknit.Views
 {
@@ -19,12 +20,14 @@ namespace uknit.Views
 		private SolidColorBrush SteelBlue = new SolidColorBrush(Color.FromArgb(0xFF, 0x46, 0x82, 0xb4));
 		private SolidColorBrush WhiteSmoke = new SolidColorBrush(Color.FromArgb(0xFF, 0xF5, 0xF5, 0xF5));
 
+		private ViewModelBase viewModel = new ViewModelBase();
+
 		private bool isNew = true;
 
 		public YardsMeters()
 		{
 			InitializeComponent();
-
+			this.DataContext = viewModel;
 			isNew = true;
 		}
 
@@ -54,6 +57,8 @@ namespace uknit.Views
 			}
 
 			isNew = false;
+
+			viewModel.Update();
 			base.OnNavigatedTo(e);
 		}
 

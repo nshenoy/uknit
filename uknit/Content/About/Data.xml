@@ -13,10 +13,8 @@
 				<Link NavigationUri="http://repne.wordpress.com"
 							Content="http://repne.wordpress.com"
 							Label="Web:" />
-			</Links>
-			<Links>
-				<Link NavigationUri="mailto:nithin_shenoy@hotmail.com"
-							Content="mailto:nithin_shenoy@hotmail.com"
+				<Link NavigationUri="mailto:uknit@hotmail.com"
+							Content="mailto:uknit@hotmail.com"
 							Label="Support:" />
 			</Links>
 		</MainItem>
@@ -32,15 +30,11 @@
 			Background Images
 			All background images were original works by my lovely wife Kerry. Follow her on Ravelry at http://www.ravelry.com/people/KerryBeth.
 
-
-			YLAD
-			http://ylad.codeplex.com.
-
-			Coding4Fun Windows Phone Toolkit
-			http://coding4fun.codeplex.com/
-
-			MetroGridHelper
-			http://nuget.org/packages/MetroGridHelper
+			Libraries
+			This app would not have been possible without these great components:
+			- http://ylad.codeplex.com.
+			- http://coding4fun.codeplex.com/
+			- http://nuget.org/packages/MetroGridHelper
 		</Item>
 	</Items>
 </About>

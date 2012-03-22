@@ -76,8 +76,8 @@
 				<toolkit:ToggleSwitch x:Name="RulerSettingsSwitch" Header="Ruler Settings"  IsChecked="False" />
 				<TextBlock x:Name="RulerSettingsText" Margin="12,-36" Foreground="{StaticResource PhoneAccentBrush}" Style="{StaticResource PhoneTextSmallStyle}" />
 				<StackPanel x:Name="UnitOfMeasurePanel" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-					<RadioButton Content="Imperial" Grid.Column="1" x:Name="Imperial" Checked="UnitOfMeasure_Checked" />
-					<RadioButton Content="Metric" Grid.Column="2" x:Name="Metric" Checked="UnitOfMeasure_Checked" />
+					<RadioButton Content="Inches" Grid.Column="1" x:Name="Inches" Checked="UnitOfMeasure_Checked" />
+					<RadioButton Content="Centimeters" Grid.Column="2" x:Name="Centimeters" Checked="UnitOfMeasure_Checked" />
 					<toolkit:ToggleSwitch x:Name="CalibrationSwitch" Header="Calibrate Ruler" IsChecked="False" Visibility="{Binding ElementName=RulerSettingsSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 					<StackPanel x:Name="CalibrationButtons" Visibility="{Binding ElementName=CalibrationSwitch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
 						<Button Content="Bigger" Click="OnClick_Bigger" />

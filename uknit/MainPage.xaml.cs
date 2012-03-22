@@ -34,7 +34,7 @@ namespace uknit
 
 				if(System.Diagnostics.Debugger.IsAttached)
 				{
-					MetroGridHelper.IsVisible = true;
+					MetroGridHelper.IsVisible = false;
 				}
 			}
 
@@ -70,7 +70,7 @@ namespace uknit
 					this.AddIcon.Source = new BitmapImage(new Uri("Content/Images/Light/add.png", UriKind.Relative));
 				}
 			}
-			App.ViewModel.PanoramaBackgroundBrush = this.AppSettings.GetBackgroundBrush();
+			App.ViewModel.PanoramaBackgroundBrush = this.AppSettings.GetPanoramaBackgroundBrush();
 			base.OnNavigatedTo(e);
 		}
 

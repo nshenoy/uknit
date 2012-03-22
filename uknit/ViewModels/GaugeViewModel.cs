@@ -6,16 +6,15 @@ using uknit.Models;
 
 namespace uknit.ViewModels
 {
-	public class GaugeViewModel : INotifyPropertyChanged
+	public class GaugeViewModel : ViewModelBase
 	{
 		private const string GaugeMatched = "Gauge matched!";
 		private const string GaugeSmall = "Gauge is smaller than the pattern. Consider an increased needle size.";
 		private const string GaugeLarge = "Gauge is larger than the pattern. Consider a decreased needle size.";
-		private const string SwatchMeasurementImperial = "4 inches";
-		private const string SwatchMeasurementMetric = "10 cm";
+		private const string SwatchMeasurementInches = "4 inches";
+		private const string SwatchMeasurementCentimeters = "10 cm";
 
 		private string UnitOfMeasure;
-		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
 		public ObservableCollection<string> ActualGaugeMeasurementOptions
 		{
@@ -27,13 +26,13 @@ namespace uknit.ViewModels
 		{
 			get
 			{
-				if(this.UnitOfMeasure == "Imperial")
+				if(this.UnitOfMeasure == "Inches")
 				{
-					return GaugeViewModel.SwatchMeasurementImperial;
+					return GaugeViewModel.SwatchMeasurementInches;
 				}
 				else
 				{
-					return GaugeViewModel.SwatchMeasurementMetric;
+					return GaugeViewModel.SwatchMeasurementCentimeters;
 				}
 			}
 		}
@@ -68,9 +67,24 @@ namespace uknit.ViewModels
 
 		public GaugeViewModel()
 		{
-			//this.ActualGaugeMeasurementOptions = new ObservableCollection<string>();
 			this.ActualGaugeProperty = 0;
 			this.LoadData();
+		}
+
+		public new bool Update()
+		{
+			bool isUpdated = false;
+
+			if(AppSettings.GetUnitOfMeasure() != this.UnitOfMeasure)
+			{
+				this.LoadData();
+				NotifyPropertyChanged("SwatchMeasurement");
+				isUpdated = true;
+			}
+
+			base.Update();
+
+			return isUpdated;
 		}
 
 		public bool IsDataLoaded
@@ -86,7 +100,7 @@ namespace uknit.ViewModels
 
 			this.UnitOfMeasure = AppSettings.GetUnitOfMeasure();
 
-			if(this.UnitOfMeasure == "Imperial")
+			if(this.UnitOfMeasure == "Inches")
 			{
 				max = 4;
 				units = "in";
@@ -109,26 +123,11 @@ namespace uknit.ViewModels
 			this.IsDataLoaded = true;
 		}
 
-		public bool DetectSettingsChange()
-		{
-			return this.UnitOfMeasure != AppSettings.GetUnitOfMeasure();
-		}
-
-		public void Reinitialize()
-		{
-			if(AppSettings.GetUnitOfMeasure() != this.UnitOfMeasure)
-			{
-				this.UnitOfMeasure = AppSettings.GetUnitOfMeasure();
-				LoadData();
-				NotifyPropertyChanged("SwatchMeasurement");
-			}
-		}
-
 		public void CalculateActualGauge(double measuredStitches, double measuredLength)
 		{
 			double gauge = measuredStitches / measuredLength;
 
-			if(this.UnitOfMeasure == "Imperial")
+			if(this.UnitOfMeasure == "Inches")
 			{
 				gauge = gauge * 4;
 			}
@@ -157,15 +156,6 @@ namespace uknit.ViewModels
 			else if(this.ActualGauge < patternGauge)
 			{
 				this.GaugeGuidance = GaugeViewModel.GaugeSmall;
-			}
-		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
-		private void NotifyPropertyChanged(String propertyName)
-		{
-			if(null != PropertyChanged)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

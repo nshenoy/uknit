@@ -22,19 +22,24 @@ namespace uknit.Views
 		{
 			InitializeComponent();
 
-			this.DataContext = viewModel;
+			this.DataContext = viewModel;			
 		}
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
 		{
-			if(viewModel.DetectSettingsChange())
+			if(viewModel.Update())
 			{
-				viewModel.Reinitialize();
+				this.MeasuredLength.SelectedIndex = 0;
 			}
 			base.OnNavigatedTo(e);
 		}
 
 		private void Measurement_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			CalculateStitches();
+		}
+
+		private void Measurement_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			CalculateStitches();
 		}
@@ -48,6 +53,8 @@ namespace uknit.Views
 		{
 			double patternGauge = 0;
 			double patternStitches = 0;
+			double measuredStitches = 0;
+			double measuredLength = 0;
 			double measuredGauge = 0;
 
 			if(!String.IsNullOrWhiteSpace(this.PatternGauge.Text))
@@ -60,13 +67,20 @@ namespace uknit.Views
 				patternStitches = double.Parse(this.PatternStitches.Text);
 			}
 
-			if(!String.IsNullOrWhiteSpace(this.MeasuredGauge.Text))
+			if(!String.IsNullOrWhiteSpace(this.MeasuredStitches.Text))
 			{
-				measuredGauge = double.Parse(this.MeasuredGauge.Text);
+				measuredStitches = double.Parse(this.MeasuredStitches.Text);
 			}
 
-			if((patternGauge > 0) && (patternStitches > 0) && (measuredGauge > 0))
+			string measuredLengthText = this.MeasuredLength.Items[this.MeasuredLength.SelectedIndex] as string;
+			if(!String.IsNullOrWhiteSpace(measuredLengthText))
 			{
+				measuredLength = double.Parse(measuredLengthText.Substring(0, measuredLengthText.Length - 3));
+			}
+
+			if((patternGauge > 0) && (patternStitches > 0) && (measuredStitches > 0) && (measuredLength > 0))
+			{
+				measuredGauge = viewModel.CalculateActualGauge(measuredStitches, measuredLength);
 				viewModel.CalculateActualStitches(patternGauge, patternStitches, measuredGauge);
 			}
 		}

@@ -15,10 +15,7 @@
 	Style="{StaticResource PageStyle}" >
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot">
-		<Grid.Background>
-			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg"/>
-		</Grid.Background>
+	<Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>

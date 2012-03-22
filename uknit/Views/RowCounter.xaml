@@ -16,11 +16,7 @@
 	shell:SystemTray.IsVisible="True"
 	Style="{StaticResource PageStyle}">
 
-	<Grid x:Name="LayoutRoot">
-		<Grid.Background>
-			<ImageBrush ImageSource="/Content/Images/KnitBackground480x800.jpg" />
-		</Grid.Background>
-
+	<Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}">
 		<toolkit:GestureService.GestureListener>
 			<toolkit:GestureListener Flick="RowCounterGestureListener_Flick"/>
 		</toolkit:GestureService.GestureListener>
@@ -42,7 +38,11 @@
 	<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar Mode="Default" IsVisible="True"  IsMenuEnabled="True" Opacity="0.6">
 			<shell:ApplicationBarIconButton IconUri="/Content/Images/settings.png" Text="settings" Click="OnClick_Settings"/>
+			<shell:ApplicationBar.MenuItems>
+				<shell:ApplicationBarMenuItem Text="reset counter" Click="OnClick_ResetCounter"/>
+			</shell:ApplicationBar.MenuItems>
 		</shell:ApplicationBar>
+
 	</phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

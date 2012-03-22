@@ -82,15 +82,15 @@
 			<Rectangle x:Name="ContentBackground" Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.6"/>
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
 				<toolkit:ListPicker x:Name="UnitOfMeasure" Header="Unit of Measure">
-					<toolkit:ListPickerItem Content="Imperial" />
-					<toolkit:ListPickerItem Content="Metric" />
+					<toolkit:ListPickerItem Content="Inches" />
+					<toolkit:ListPickerItem Content="Centimeters" />
 				</toolkit:ListPicker>
 				<toolkit:ToggleSwitch x:Name="BackgroundToggle" Header="Background Images" Checked="BackgroundToggle_Checked" Unchecked="BackgroundToggle_Unchecked" IsChecked="True" />
 				<!--<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="{Binding ElementName=BackgroundToggle, Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}">-->
 				<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
 					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">choose background</TextBlock>
 				</Button>
-				<toolkit:ToggleSwitch x:Name="RowCounterTensToggle" Header="Row Counter" Content="enable 10s digit" Checked="RowCounterTensToggle_Checked" Unchecked="RowCounterTensToggle_Unchecked" IsChecked="False" />
+				<toolkit:ToggleSwitch x:Name="RowCounterTensToggle" Header="Row Counter Increment 10s Digit" Checked="RowCounterTensToggle_Checked" Unchecked="RowCounterTensToggle_Unchecked" IsChecked="False" />
 				<Button Click="OnClick_Restore" BorderThickness="0" HorizontalContentAlignment="Left">
 					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">restore defaults</TextBlock>
 				</Button>
