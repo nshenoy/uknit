@@ -22,7 +22,12 @@ namespace uknit.Views
 		{
 			InitializeComponent();
 
-			this.DataContext = viewModel;			
+			this.DataContext = viewModel;
+
+			if(this.viewModel.IsBackgroundEnabled() && this.viewModel.IsLightThemeEnabled())
+			{
+				this.UpdateTextForeground(Colors.White);
+			}
 		}
 
 		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -31,6 +36,16 @@ namespace uknit.Views
 			{
 				this.MeasuredLength.SelectedIndex = 0;
 			}
+
+			if(!this.viewModel.IsBackgroundEnabled() && this.viewModel.IsLightThemeEnabled())
+			{
+				this.UpdateTextForeground(Colors.Black);
+			}
+			else
+			{
+				this.UpdateTextForeground(Colors.White);
+			}
+
 			base.OnNavigatedTo(e);
 		}
 
@@ -82,6 +97,51 @@ namespace uknit.Views
 			{
 				measuredGauge = viewModel.CalculateActualGauge(measuredStitches, measuredLength);
 				viewModel.CalculateActualStitches(patternGauge, patternStitches, measuredGauge);
+			}
+		}
+
+		private void UpdateTextForeground(Color foreground)
+		{
+			this.ApplicationTitle.Foreground = new SolidColorBrush(foreground);
+			this.PageTitle.Foreground = new SolidColorBrush(foreground);
+
+			TextBlock[] contentTextBlocks = this.ContentStackPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in contentTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] patternGaugeTextBlocks = this.PatternGaugePanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in patternGaugeTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] patternStitchesTextBlocks = this.PatternStitchesPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in patternStitchesTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] measuredStitchesTextBlocks = this.MeasuredStitchesPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in measuredStitchesTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] actualStitchesTextBlocks = this.ActualStitchesPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in actualStitchesTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] calculatedStitchesTextBlocks = this.CalculatedStitchesPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in calculatedStitchesTextBlocks)
+			{
+				if(tb.Name != "ActualCalculatedStitches")
+				{
+					tb.Foreground = new SolidColorBrush(foreground);
+				}
 			}
 		}
 	}

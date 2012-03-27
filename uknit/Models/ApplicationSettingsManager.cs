@@ -84,6 +84,13 @@ namespace uknit.Models
 			return (bool)isBackgroundEnabled;
 		}
 
+		public bool IsLightThemeEnabled()
+		{
+			Visibility isLightTheme = (Visibility)Application.Current.Resources["PhoneLightThemeVisibility"];
+
+			return isLightTheme == Visibility.Visible;
+		}
+
 		public Brush GetPanoramaBackgroundBrush()
 		{
 			Brush backgroundBrush;

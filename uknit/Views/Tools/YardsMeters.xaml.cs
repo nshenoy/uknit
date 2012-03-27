@@ -19,6 +19,10 @@ namespace uknit.Views
 	{
 		private SolidColorBrush SteelBlue = new SolidColorBrush(Color.FromArgb(0xFF, 0x46, 0x82, 0xb4));
 		private SolidColorBrush WhiteSmoke = new SolidColorBrush(Color.FromArgb(0xFF, 0xF5, 0xF5, 0xF5));
+		private SolidColorBrush BlackForegroundBrush = new SolidColorBrush(Colors.Black);
+		private SolidColorBrush WhiteForegroundBrush = new SolidColorBrush(Colors.White);
+		private SolidColorBrush PhoneAccentBrush;
+		private SolidColorBrush CurrentPageTextBrush;
 
 		private ViewModelBase viewModel = new ViewModelBase();
 
@@ -28,6 +32,18 @@ namespace uknit.Views
 		{
 			InitializeComponent();
 			this.DataContext = viewModel;
+
+			this.PhoneAccentBrush = Resources["PhoneAccentBrush"] as SolidColorBrush;
+			if(this.viewModel.IsBackgroundEnabled() && this.viewModel.IsLightThemeEnabled())
+			{
+				this.CurrentPageTextBrush = this.WhiteForegroundBrush;
+				this.UpdateTextForeground();
+			}
+			else
+			{
+				this.CurrentPageTextBrush = Resources["PhoneForegroundBrush"] as SolidColorBrush;
+			}
+
 			isNew = true;
 		}
 
@@ -58,6 +74,17 @@ namespace uknit.Views
 
 			isNew = false;
 
+			if(!this.viewModel.IsBackgroundEnabled() && this.viewModel.IsLightThemeEnabled())
+			{
+				this.CurrentPageTextBrush = this.BlackForegroundBrush;
+				this.UpdateTextForeground();
+			}
+			else
+			{
+				this.CurrentPageTextBrush = this.WhiteForegroundBrush;
+				this.UpdateTextForeground();
+			}
+
 			viewModel.Update();
 			base.OnNavigatedTo(e);
 		}
@@ -69,8 +96,8 @@ namespace uknit.Views
 
 		private void Yards_GotFocus(object sender, RoutedEventArgs e)
 		{
-			MetersLabel.Foreground = WhiteSmoke;
-			YardsLabel.Foreground = SteelBlue;
+			MetersLabel.Foreground = this.CurrentPageTextBrush;
+			YardsLabel.Foreground = this.PhoneAccentBrush;
 		}
 
 		private void Yards_LostFocus(object sender, RoutedEventArgs e)
@@ -88,9 +115,8 @@ namespace uknit.Views
 
 		private void Meters_GotFocus(object sender, RoutedEventArgs e)
 		{
-			YardsLabel.Foreground = WhiteSmoke;
-			MetersLabel.Foreground = SteelBlue;
-
+			YardsLabel.Foreground = this.CurrentPageTextBrush;
+			MetersLabel.Foreground = this.PhoneAccentBrush;
 		}
 
 		private void Meters_LostFocus(object sender, RoutedEventArgs e)
@@ -104,6 +130,27 @@ namespace uknit.Views
 				yards = Math.Round(meters * 1.0936133, 2);
 				Yards.Text = yards.ToString();
 			}
+		}
+
+		private void UpdateTextForeground()
+		{
+			this.ApplicationTitle.Foreground = this.CurrentPageTextBrush;
+			this.PageTitle.Foreground = this.CurrentPageTextBrush;
+
+			TextBlock[] contentTextBlocks = this.ContentStackPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in contentTextBlocks)
+			{
+				tb.Foreground = this.CurrentPageTextBrush;
+			}
+
+			TextBlock[] convertTextBlocks = this.ConvertGrid.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in convertTextBlocks)
+			{
+				tb.Foreground = this.CurrentPageTextBrush;
+			}
+
+			this.Convert.Foreground = this.CurrentPageTextBrush;
+			this.Convert.BorderBrush = this.CurrentPageTextBrush;
 		}
 	}
 }

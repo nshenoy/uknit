@@ -49,6 +49,11 @@ namespace uknit.ViewModels
 			return this.AppSettings.IsBackgroundEnabled();
 		}
 
+		public bool IsLightThemeEnabled()
+		{
+			return this.AppSettings.IsLightThemeEnabled();
+		}
+
 		public virtual void Update()
 		{
 			this.BackgroundBrush = AppSettings.GetPageBackgroundBrush();

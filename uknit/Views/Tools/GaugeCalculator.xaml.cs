@@ -24,14 +24,9 @@ namespace uknit.Views
 
 			this.DataContext = viewModel;
 
-			if(this.viewModel.IsBackgroundEnabled())
+			if(this.viewModel.IsBackgroundEnabled() && this.viewModel.IsLightThemeEnabled())
 			{
-				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
-				if(isLightTheme == Visibility.Visible)
-				{
-					this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
-					this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
-				}
+				this.UpdateTextForeground(Colors.White);
 			}
 		}
 
@@ -41,6 +36,16 @@ namespace uknit.Views
 			{
 				this.MeasuredLength.SelectedIndex = 0;
 			}
+
+			if(!this.viewModel.IsBackgroundEnabled() && this.viewModel.IsLightThemeEnabled())
+			{
+				this.UpdateTextForeground(Colors.Black);
+			}
+			else
+			{
+				this.UpdateTextForeground(Colors.White);
+			}
+
 			base.OnNavigatedTo(e);
 		}
 
@@ -85,6 +90,39 @@ namespace uknit.Views
 			{
 				viewModel.CalculateActualGauge(measuredStitches, measuredLength);
 				viewModel.MeasureGaugeGuidance(patternGauge);
+			}
+		}
+
+		private void UpdateTextForeground(Color foreground)
+		{
+			this.ApplicationTitle.Foreground = new SolidColorBrush(foreground);
+			this.PageTitle.Foreground = new SolidColorBrush(foreground);
+
+			TextBlock[] contentTextBlocks = this.ContentStackPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in contentTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] patternGaugeTextBlocks = this.PatternGaugePanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in patternGaugeTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] measuredStitchesTextBlocks = this.MeasuredStitchesPanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in measuredStitchesTextBlocks)
+			{
+				tb.Foreground = new SolidColorBrush(foreground);
+			}
+
+			TextBlock[] actualGaugeTextBlocks = this.ActualGaugePanel.Children.OfType<TextBlock>().ToArray();
+			foreach(TextBlock tb in actualGaugeTextBlocks)
+			{
+				if(tb.Name != "ActualCalculatedGauge")
+				{
+					tb.Foreground = new SolidColorBrush(foreground);
+				}
 			}
 		}
 	}
