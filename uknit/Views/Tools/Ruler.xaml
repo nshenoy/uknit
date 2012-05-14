@@ -27,30 +27,37 @@
 		<Grid.Resources>
 			<Style TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X1" Value="0" />
 			</Style>
 			<Style x:Key="Millimeter" TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X2" Value="12" />
 			</Style>
 			<Style x:Key="Eighth" TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X2" Value="12" />
 			</Style>
 			<Style x:Key="Quarter" TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X2" Value="24" />
 			</Style>
 			<Style x:Key="Half" TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X2" Value="32" />
 			</Style>
 			<Style x:Key="Centimeter" TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X2" Value="48" />
 			</Style>
 			<Style x:Key="Inch" TargetType="Line">
 				<Setter Property="Stroke" Value="Black" />
+				<Setter Property="StrokeThickness" Value="1" />
 				<Setter Property="X2" Value="48" />
 			</Style>
 		</Grid.Resources>

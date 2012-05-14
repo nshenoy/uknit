@@ -90,6 +90,7 @@
 				<Button x:Name="BackgroundPicker" Click="OnClick_ChangeBackground" BorderThickness="0" Margin="0,0,0,12" HorizontalContentAlignment="Left" IsEnabled="True" Visibility="Collapsed">
 					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">choose background</TextBlock>
 				</Button>
+				<!--<toolkit:ToggleSwitch x:Name="ShowRavelryPanel" Header="Show Ravelry Panel" Checked="ShowRavelryPanelToggle_Checked" Unchecked="ShowRavelryPanelToggle_Unchecked" IsChecked="True" />-->
 				<toolkit:ToggleSwitch x:Name="RowCounterTensToggle" Header="Row Counter Increment 10s Digit" Checked="RowCounterTensToggle_Checked" Unchecked="RowCounterTensToggle_Unchecked" IsChecked="False" />
 				<Button Click="OnClick_Restore" BorderThickness="0" HorizontalContentAlignment="Left">
 					<TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="-12,0,0,0" HorizontalAlignment="Left">restore defaults</TextBlock>

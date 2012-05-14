@@ -16,333 +16,267 @@ using System.Windows.Data;
 
 namespace uknit.Views.Tools
 {
-	public partial class Ruler : PhoneApplicationPage
-	{
-		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
+    public partial class Ruler : PhoneApplicationPage
+    {
+        private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
-		public enum ImperialTick
-		{
-			Eighth,
-			Quarter,
-			Half,
-			Inch
-		}
+        public enum ImperialTick
+        {
+            None = 0,
+            Eighth = 1,
+            Quarter = 2,
+            Half = 3,
+            Inch = 4
+        }
 
-		public enum MetricTick
-		{
-			Millimeter,
-			Half,
-			Centimeter
-		}
+        public enum MetricTick
+        {
+            None = 0,
+            Millimeter = 1,
+            Half = 2,
+            Centimeter = 3
+        }
 
-		private string currentRulerUnitOfMeasure;
+        private string currentRulerUnitOfMeasure;
 
-		public Ruler()
-		{
-			InitializeComponent();
+        public Ruler()
+        {
+            InitializeComponent();
 
-			if(!this.AppSettings.IsBackgroundEnabled())
-			{
-				this.LayoutRoot.Background = null;
-			}
-			else
-			{
-				Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
-				if(isLightTheme == Visibility.Visible)
-				{
-					this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
-					this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
-				}
-			}
+            if (!this.AppSettings.IsBackgroundEnabled())
+            {
+                this.LayoutRoot.Background = null;
+            }
+            else
+            {
+                Visibility isLightTheme = (Visibility)Resources["PhoneLightThemeVisibility"];
+                if (isLightTheme == Visibility.Visible)
+                {
+                    this.ApplicationTitle.Foreground = new SolidColorBrush(Colors.White);
+                    this.PageTitle.Foreground = new SolidColorBrush(Colors.White);
+                }
+            }
 
-			currentRulerUnitOfMeasure = this.AppSettings.GetUnitOfMeasure();
-		}
+            currentRulerUnitOfMeasure = this.AppSettings.GetUnitOfMeasure();
+        }
 
-		protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-		{
-			DrawRuler();
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            DrawRuler();
 
-			base.OnNavigatedTo(e);
+            base.OnNavigatedTo(e);
 
-			if(!this.AppSettings.IsRulerCalibrated())
-			{
-				AskForCalibration();
-			}
-		}
+            if (!this.AppSettings.IsRulerCalibrated())
+            {
+                AskForCalibration();
+            }
+        }
 
-		private void OnClick_Settings(object sender, EventArgs e)
-		{
-			NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
-		}
+        private void OnClick_Settings(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
+        }
 
-		private void DrawRuler()
-		{
-			this.RulerGrid.Children.Clear();
-			if(this.AppSettings.GetUnitOfMeasure() == "Inches")
-			{
-				this.Inches.IsChecked = true;
-				DrawRulerImperial(App.Current.Host.Content.ActualHeight);
-			}
-			else
-			{
-				this.Centimeters.IsChecked = true;
-				DrawRulerMetric(App.Current.Host.Content.ActualHeight);
-			}
-		}
+        private void DrawRuler()
+        {
+            this.RulerGrid.Children.Clear();
+            if (this.AppSettings.GetUnitOfMeasure() == "Inches")
+            {
+                this.Inches.IsChecked = true;
+                DrawRulerImperial(App.Current.Host.Content.ActualHeight);
+            }
+            else
+            {
+                this.Centimeters.IsChecked = true;
+                DrawRulerMetric(App.Current.Host.Content.ActualHeight);
+            }
+        }
 
-		private void DrawRulerImperial(double rulerLengthInPixels)
-		{
-			//int ppi = 262;
-			double ppi = this.AppSettings.GetDevicePixelsPerInch();
-			double pixelsBetweenLines = (ppi - 9) / 9;
+        private void DrawRulerImperial(double rulerLengthInPixels)
+        {
+            int pixelDensity = (int)this.AppSettings.GetDevicePixelDensity();
 
-			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
+            int rulerPixelPosition = 10;
+            int currentInch = 0;
 
-			ImperialTick tick = ImperialTick.Inch;
-			double sum = 0;
-			double offset = 10;
-			int currentInch = 0;
+            while (rulerPixelPosition < rulerLengthInPixels)
+            {
+                DrawRulerImperialMark(rulerPixelPosition, ImperialTick.Inch, currentInch.ToString());
+                DrawRulerImperialMeasure(rulerPixelPosition, rulerPixelPosition + pixelDensity, ImperialTick.Half);
 
-			while(sum < rulerLengthInPixels)
-			{
-				for(int idx = 0; idx < 9; idx++)
-				{
-					if(idx > 0)
-					{
-						sum += pixelsBetweenLines;
-					}
+                currentInch++;
+                rulerPixelPosition += pixelDensity;
+            }
+        }
 
-					if(idx % 8 == 0)
-					{
-						tick = ImperialTick.Inch;
-					}
-					else if(idx % 4 == 0)
-					{
-						tick = ImperialTick.Half;
-					}
-					else if(idx % 2 == 0)
-					{
-						tick = ImperialTick.Quarter;
-					}
-					else
-					{
-						tick = ImperialTick.Eighth;
-					}
+        private void DrawRulerImperialMeasure(int start, int end, ImperialTick tick)
+        {
+            if (tick == ImperialTick.None)
+            {
+                return;
+            }
 
-					if(idx < 8)
-					{
-						sum += 1;
+            int midPoint = (start + end) / 2;
 
-						Line line = new Line()
-						{
-							Style = (Style)this.LayoutRoot.Resources[tick.ToString()],
-							Y1 = sum + offset,
-							Y2 = sum + offset
-						};
+            DrawRulerImperialMeasure(start, midPoint, tick - 1);
+            DrawRulerImperialMark(midPoint, tick);
+            DrawRulerImperialMeasure(midPoint, end, tick - 1);
+        }
 
-						if(tick == ImperialTick.Inch)
-						{
-							line.Name = "tick_inch_" + currentInch;
-							TextBlock textBlock = new TextBlock()
-							{
-								Name = "label_" + line.Name,
-								Text = currentInch.ToString(),
-								FontSize = 24,
-								Foreground = new SolidColorBrush(Colors.Black),
-								RenderTransform = new RotateTransform()
-								{
-									Angle = 90
-								}
-							};
+        private void DrawRulerImperialMark(int position, ImperialTick tick, string label = "")
+        {
+            Line line = new Line()
+            {
+                Style = (Style)this.LayoutRoot.Resources[tick.ToString()],
+                Y1 = position,
+                Y2 = position
+            };
 
-							textBlock.Margin = new Thickness(line.X2 + 36, line.Y1 - 6, 0, 0);
-							this.RulerGrid.Children.Add(textBlock);
-						}
+            if (tick == ImperialTick.Inch)
+            {
+                line.Name = "tick_inch_" + label;
+                TextBlock textBlock = new TextBlock()
+                {
+                    Name = "label_" + line.Name,
+                    Text = label,
+                    FontSize = 24,
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    RenderTransform = new RotateTransform()
+                    {
+                        Angle = 90
+                    }
+                };
 
-						Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
-						this.RulerGrid.Children.Add(line);
-					}
-				}
+                textBlock.Margin = new Thickness(line.X2 + 36, line.Y1 - 6, 0, 0);
+                this.RulerGrid.Children.Add(textBlock);
+            }
 
-				currentInch++;
-			}
-		}
+            Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
+            this.RulerGrid.Children.Add(line);
+        }
 
-		private void DrawRulerMetric(double rulerLengthInPixels)
-		{
-			//int ppi = 262;
-			double ppi = this.AppSettings.GetDevicePixelsPerCentimeter();
-			double pixelsBetweenLines = (ppi - 11) / 11;
+        private void DrawRulerMetric(double rulerLengthInPixels)
+        {
+            int pixelDensity = (int)this.AppSettings.GetDevicePixelDensity();
 
-			Debug.WriteLine("pixelsBetweenLines is {0}", pixelsBetweenLines);
+            int rulerPixelPosition = 10;
+            int currentCm = 0;
 
-			MetricTick tick = MetricTick.Centimeter;
-			double sum = 0;
-			double offset = 10;
-			int currentCm = 0;
+            while (rulerPixelPosition < rulerLengthInPixels)
+            {
+                DrawRulerMetricMark(rulerPixelPosition, MetricTick.Centimeter, currentCm.ToString());
+                DrawRulerMetricMeasure(rulerPixelPosition, rulerPixelPosition + pixelDensity, MetricTick.Half);
 
-			while(sum < rulerLengthInPixels)
-			{
-				for(int idx = 0; idx < 11; idx++)
-				{
-					if(idx > 0)
-					{
-						sum += pixelsBetweenLines;
-					}
+                currentCm++;
+                rulerPixelPosition += pixelDensity;
+            }
+        }
 
-					if(idx % 10 == 0)
-					{
-						tick = MetricTick.Centimeter;
-					}
-					else if(idx % 5 == 0)
-					{
-						tick = MetricTick.Half;
-					}
-					else
-					{
-						tick = MetricTick.Millimeter;
-					}
+        private void DrawRulerMetricMeasure(int start, int end, MetricTick tick)
+        {
+            if (tick == MetricTick.Millimeter)
+            {
+                int mmDivision = (end - start) / 5;
 
-					if(idx < 10)
-					{
-						sum += 1;
+                for (int i = 1; i < 5; i++)
+                {
+                    DrawRulerMetricMark(start + (mmDivision * i), tick);
+                }
 
-						Line line = new Line()
-						{
-							Style = (Style)this.LayoutRoot.Resources[tick.ToString()],
-							Y1 = sum + offset,
-							Y2 = sum + offset
-						};
+                return;
+            }
 
-						if(tick == MetricTick.Centimeter)
-						{
-							line.Name = "tick_cm_" + currentCm;
-							TextBlock textBlock = new TextBlock()
-							{
-								Name = "label_" + line.Name,
-								Text = currentCm.ToString(),
-								FontSize = 24,
-								Foreground = new SolidColorBrush(Colors.Black),
-								RenderTransform = new RotateTransform()
-								{
-									Angle = 90
-								}
-							};
+            int midPoint = (start + end) / 2;
 
-							textBlock.Margin = new Thickness(line.X2 + 36, line.Y1 - 6, 0, 0);
-							this.RulerGrid.Children.Add(textBlock);
-						}
+            DrawRulerMetricMeasure(start, midPoint, tick - 1);
+            DrawRulerMetricMark(midPoint, tick);
+            DrawRulerMetricMeasure(midPoint, end, tick - 1);
+        }
 
-						Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
-						this.RulerGrid.Children.Add(line);
-					}
-				}
+        private void DrawRulerMetricMark(int position, MetricTick tick, string label = "")
+        {
+            Line line = new Line()
+            {
+                Style = (Style)this.LayoutRoot.Resources[tick.ToString()],
+                Y1 = position,
+                Y2 = position
+            };
 
-				currentCm++;
-			}
-		}
+            if (tick == MetricTick.Centimeter)
+            {
+                line.Name = "tick_cm_" + label;
+                TextBlock textBlock = new TextBlock()
+                {
+                    Name = "label_" + line.Name,
+                    Text = label,
+                    FontSize = 24,
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    RenderTransform = new RotateTransform()
+                    {
+                        Angle = 90
+                    }
+                };
 
-		private void OnClick_Bigger(object sender, RoutedEventArgs e)
-		{
-			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Take(2).ToArray();
-			double pixelsBetweenLines = Math.Abs(offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1) + 1;
-			double sum = offsetCalcLines[0].Y1;
+                textBlock.Margin = new Thickness(line.X2 + 36, line.Y1 - 6, 0, 0);
+                this.RulerGrid.Children.Add(textBlock);
+            }
 
-			this.AppSettings.SetDevicePixelDensity(pixelsBetweenLines - 1);
-			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
-			Debug.WriteLine("PPI is now {0}", this.AppSettings.GetDevicePixelDensity());
+            Debug.WriteLine("Drawing line {0} at {1}", tick.ToString(), line.Y1);
+            this.RulerGrid.Children.Add(line);
+        }
 
-			var lines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Skip(1);
-			foreach(Line line in lines)
-			{
-				sum += pixelsBetweenLines;
-				line.Y1 = sum;
-				line.Y2 = sum;
+        private void OnClick_Bigger(object sender, RoutedEventArgs e)
+        {
+            double pixelsPerInch = this.AppSettings.GetDevicePixelDensity();
+            this.AppSettings.SetDevicePixelDensity(pixelsPerInch + 1);
+            Debug.WriteLine("PPI is now {0}", this.AppSettings.GetDevicePixelDensity());
 
-				if(line.Name.StartsWith("tick_"))
-				{
-					string label = "label_" + line.Name;
-					TextBlock tb = this.RulerGrid.Children.OfType<TextBlock>().Where(t => t.Name == label).First();
-					Thickness thickness = tb.Margin;
-					thickness.Top = line.Y1 - 6;
-					tb.Margin = thickness;
-				}
-			}
+            DrawRuler();
+        }
 
-			DrawRuler();
-		}
+        private void OnClick_Smaller(object sender, RoutedEventArgs e)
+        {
+            double pixelsPerInch = this.AppSettings.GetDevicePixelDensity();
+            this.AppSettings.SetDevicePixelDensity(pixelsPerInch - 1);
+            Debug.WriteLine("PPI is now {0}", this.AppSettings.GetDevicePixelDensity());
 
-		private void OnClick_Smaller(object sender, RoutedEventArgs e)
-		{
-			var offsetCalcLines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Take(2).ToArray();
-			double pixelsBetweenLines = Math.Abs(offsetCalcLines[1].Y1 - offsetCalcLines[0].Y1) - 1;
+            DrawRuler();
+        }
 
-			if(pixelsBetweenLines < 2)
-			{
-				// Don't allow the ruler to be made any smaller. Cuz that's just silly.
-				return;
-			}
+        private void UnitOfMeasure_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            this.AppSettings.SetUnitOfMeasure(rb.Name);
+            this.RulerSettingsText.Text = rb.Name;
+            if (rb.Name != currentRulerUnitOfMeasure)
+            {
+                DrawRuler();
+                currentRulerUnitOfMeasure = rb.Name;
+            }
+        }
 
-			double sum = offsetCalcLines[0].Y1;
+        private void AskForCalibration()
+        {
+            Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+            messagePrompt.IsCancelVisible = true;
+            messagePrompt.Body = new TextBlock
+            {
+                Text = "I noticed that you haven't calibrated the ruler yet. This is important to make sure the ruler is somewhat accurate. Afterall, you don't want to make a baby hat that fits Andre the Giant. Would you like to calibrate now?",
+                FontSize = 20.0,
+                TextWrapping = TextWrapping.Wrap
+            };
 
-			this.AppSettings.SetDevicePixelDensity(pixelsBetweenLines - 1);
-			Debug.WriteLine("Spacing is now {0}", pixelsBetweenLines - 1);
-			Debug.WriteLine("PPI is now {0}", this.AppSettings.GetDevicePixelDensity());
+            messagePrompt.Completed += (str, res) =>
+            {
+                if (res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+                {
+                    this.RulerSettingsSwitch.IsChecked = true;
+                    this.CalibrationSwitch.IsChecked = true;
+                    this.AppSettings.SetRulerCalibrated();
+                }
+            };
 
-			var lines = this.RulerGrid.Children.OfType<Line>().OrderBy(l => l.Y1).Skip(1);
-			foreach(Line line in lines)
-			{
-				sum += pixelsBetweenLines;
-				line.Y1 = sum;
-				line.Y2 = sum;
-
-				if(line.Name.StartsWith("tick_"))
-				{
-					string label = "label_" + line.Name;
-					TextBlock tb = this.RulerGrid.Children.OfType<TextBlock>().Where(t => t.Name == label).First();
-					Thickness thickness = tb.Margin;
-					thickness.Top = line.Y1 - 6;
-					tb.Margin = thickness;
-				}
-			}
-
-			DrawRuler();
-		}
-
-		private void UnitOfMeasure_Checked(object sender, RoutedEventArgs e)
-		{
-			RadioButton rb = sender as RadioButton;
-			this.AppSettings.SetUnitOfMeasure(rb.Name);
-			this.RulerSettingsText.Text = rb.Name;
-			if(rb.Name != currentRulerUnitOfMeasure)
-			{
-				DrawRuler();
-				currentRulerUnitOfMeasure = rb.Name;
-			}
-		}
-
-		private void AskForCalibration()
-		{
-			Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
-			messagePrompt.IsCancelVisible = true;
-			messagePrompt.Body = new TextBlock
-			{
-				Text = "I noticed that you have calibrated the ruler yet. This is important to make sure the ruler is somewhat accurate. Afterall, you don't want to make a baby hat that fits Andre the Giant. Would you like to calibrate now?",
-				FontSize = 20.0,
-				TextWrapping = TextWrapping.Wrap
-			};
-
-			messagePrompt.Completed += (str, res) =>
-			{
-				if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
-				{
-					this.RulerSettingsSwitch.IsChecked = true;
-					this.CalibrationSwitch.IsChecked = true;
-					this.AppSettings.SetRulerCalibrated();
-				}
-			};
-
-			messagePrompt.Show();
-		}
-	}
+            messagePrompt.Show();
+        }
+    }
 }

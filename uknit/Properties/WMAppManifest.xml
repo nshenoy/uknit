@@ -3,19 +3,19 @@
   <App xmlns="" ProductID="{32ab7289-a829-4eee-8bbd-fbdefe44558c}" Title="uknit" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="uknit author" Description="Sample description" Publisher="uknit">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
-      <Capability Name="ID_CAP_CAMERA" />
-      <Capability Name="ID_CAP_GAMERSERVICES" />
+      <!--<Capability Name="ID_CAP_CAMERA" />
+      <Capability Name="ID_CAP_GAMERSERVICES" />-->
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
       <Capability Name="ID_CAP_IDENTITY_USER" />
       <!--<Capability Name="ID_CAP_INTEROPSERVICES" />-->
-      <Capability Name="ID_CAP_LOCATION" />
+      <!--<Capability Name="ID_CAP_LOCATION" />-->
       <Capability Name="ID_CAP_MEDIALIB" />
-      <Capability Name="ID_CAP_MICROPHONE" />
+      <!--<Capability Name="ID_CAP_MICROPHONE" />-->
       <Capability Name="ID_CAP_NETWORKING" />
-      <Capability Name="ID_CAP_NETWORKING_ADMIN" />
-      <Capability Name="ID_CAP_PHONEDIALER" />
+      <!--<Capability Name="ID_CAP_NETWORKING_ADMIN" />
+      <Capability Name="ID_CAP_PHONEDIALER" />-->
       <Capability Name="ID_CAP_PUSH_NOTIFICATION" />
-      <Capability Name="ID_CAP_RINGTONE_ADD" />
+      <!--<Capability Name="ID_CAP_RINGTONE_ADD" />-->
       <Capability Name="ID_CAP_SENSORS" />
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
     </Capabilities>

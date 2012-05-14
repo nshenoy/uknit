@@ -17,8 +17,6 @@ namespace uknit.Models
 		private const string IMAGES_PATH = "Images";
 		private const string SAVEDPROJECTS_FILENAME = "SavedProjects.xml";
 		private const string BACKGROUNDIMAGE_FILENAME = "Background.jpg";
-		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/SwirveDark.jpg";
-		//private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBackground.jpg";
 		private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBlueBackground.jpg";
 		private const string DEFAULT_PAGE_IMAGE = "/Content/Images/KnitBackground480x800.jpg";
 
@@ -344,15 +342,15 @@ namespace uknit.Models
 			return ppd;
 		}
 
-		public void SetDevicePixelDensity(double pixelsBetweenLines)
+		public void SetDevicePixelDensity(double pixelsPerInch)
 		{
 			if(this.GetUnitOfMeasure() == "Inches")
 			{
-				this.SetDevicePixelsPerInch(pixelsBetweenLines);
+				this.SetDevicePixelsPerInch(pixelsPerInch);
 			}
 			else
 			{
-				this.SetDevicePixelsPerCentimeter(pixelsBetweenLines);
+				this.SetDevicePixelsPerCentimeter(pixelsPerInch);
 			}
 		}
 
@@ -368,11 +366,9 @@ namespace uknit.Models
 			return ppi;
 		}
 
-		public void SetDevicePixelsPerInch(double pixelsBetweenLines)
+		public void SetDevicePixelsPerInch(double pixelsPerInch)
 		{
-			double ppi = pixelsBetweenLines * 9 + 9;
-
-			IsolatedStorage[DevicePixelsPerInchKeyName] = ppi;
+			IsolatedStorage[DevicePixelsPerInchKeyName] = pixelsPerInch;
 		}
 
 		public double GetDevicePixelsPerCentimeter()
@@ -382,11 +378,9 @@ namespace uknit.Models
 			return (ppi / 2.54);
 		}
 
-		public void SetDevicePixelsPerCentimeter(double pixelsBetweenLines)
+		public void SetDevicePixelsPerCentimeter(double pixelsPerCentimeter)
 		{
-			double ppc = pixelsBetweenLines * 11 + 11;
-
-			IsolatedStorage[DevicePixelsPerInchKeyName] = ppc * 2.54;
+			IsolatedStorage[DevicePixelsPerInchKeyName] = pixelsPerCentimeter * 2.54;
 		}
 
 		public void RestoreDefaults()
@@ -394,6 +388,8 @@ namespace uknit.Models
 			IsolatedStorage.Remove(DevicePixelsPerInchKeyName);
 			IsolatedStorage.Remove(UnitOfMeasureKeyName);
 			IsolatedStorage.Remove(RulerCalibratedKeyName);
+			IsolatedStorage.Remove(EnableRowCounterTensDigitKeyName);
+			IsolatedStorage.Remove(EnableBackgroundImageKeyName);
 		}
 
 		private Color HexString2Color(string hex)
