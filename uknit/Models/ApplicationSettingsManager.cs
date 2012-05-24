@@ -80,6 +80,8 @@ namespace uknit.Models
 
 			if(tile != null)
 			{
+				string tileImageFile = System.IO.Path.Combine(ApplicationSettingsManager.SHAREDSHELLCONTENT_PATH, tileName + ".png");
+				ApplicationSettingsManager.UserStoreForApplication.DeleteFile(tileImageFile);
 				tile.Delete();
 			}
 		}

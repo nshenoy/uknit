@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using uknit.Models;
 
 namespace uknit.ViewModels
 {
-	public class AddNewProjectViewModel
+	public class ProjectViewModel
 	{
 		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 
@@ -26,11 +28,11 @@ namespace uknit.ViewModels
 			set;
 		}
 
-		public AddNewProjectViewModel()
+		public ProjectViewModel()
 		{
 		}
 
-		public AddNewProjectViewModel(string projectName)
+		public ProjectViewModel(string projectName)
 		{
 			this.ProjectName = projectName;
 
@@ -77,9 +79,37 @@ namespace uknit.ViewModels
 			else
 			{
 				this.AppSettings.ModifyKnittingProjectByName(projectName, project);
+
+				if(project.IsPinnedToStart)
+				{
+					WriteableBitmap tileBitmap = this.CreateRowCounterBitmap(project);
+
+					this.AppSettings.UpdateTile(tileBitmap, this.ProjectName);
+				}
 			}
 
 			App.ViewModel.KnittingProjects[index] = project;
+		}
+
+		public WriteableBitmap CreateRowCounterBitmap(KnittingProject project)
+		{
+			uknit.Controls.RowCounterControl rowCounter = new uknit.Controls.RowCounterControl()
+			{
+				TensDigit = (project.CurrentRowCount / 10).ToString(),
+				OnesDigit = (project.CurrentRowCount % 10).ToString(),
+				Fill = project.RowCounterColor,
+				NeedleWidth = 100,
+				HorizontalAlignment = System.Windows.HorizontalAlignment.Center
+			};
+
+			rowCounter.Measure(new Size(400, 400));
+			rowCounter.Arrange(new Rect(0, 0, 400, 400));
+
+			WriteableBitmap tileBitmap = new WriteableBitmap(400, 400);
+			tileBitmap.Render(rowCounter, null);
+			tileBitmap.Invalidate();
+
+			return tileBitmap;
 		}
 	}
 }

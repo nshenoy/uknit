@@ -12,7 +12,7 @@ namespace uknit.Views
 		private bool IsNew = false;
 		private bool IsEditProject = false;
 		private string OriginalProjectName = String.Empty;
-		private AddNewProjectViewModel Project = null;
+		private ProjectViewModel Project = null;
 
 		public AddNewProject()
 		{
@@ -68,11 +68,12 @@ namespace uknit.Views
 			if(this.IsEditProject)
 			{
 				Project.EditProject(this.AddProject_Name.Text, this.AddProject_Description.Text, this.AddProject_RowCounterColor.Color);
+
 				successfullySaved = true;
 			}
 			else
 			{
-				Project = new AddNewProjectViewModel()
+				Project = new ProjectViewModel()
 				{
 					ProjectName = this.AddProject_Name.Text,
 					ProjectDescription = this.AddProject_Description.Text,
@@ -98,7 +99,7 @@ namespace uknit.Views
 
 		private void SetPageValues(string projectName)
 		{
-			Project = new AddNewProjectViewModel(projectName);
+			Project = new ProjectViewModel(projectName);
 
 			this.OriginalProjectName = projectName;
 

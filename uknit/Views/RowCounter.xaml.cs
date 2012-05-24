@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.Shell;
+using uknit.ViewModels;
 
 namespace uknit.Views
 {
@@ -20,6 +21,7 @@ namespace uknit.Views
 		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 		private bool IsTensDigitEnabled = false;
 		private bool NewPin = false;
+		private ProjectViewModel ProjectVM = new ProjectViewModel();
 
 		public string TensDigit
 		{
@@ -121,7 +123,7 @@ namespace uknit.Views
 		{
 			if(this.Project.IsPinnedToStart && !this.NewPin)
 			{
-				WriteableBitmap tileBitmap = this.CreateRowCounterBitmap();
+				WriteableBitmap tileBitmap = this.ProjectVM.CreateRowCounterBitmap(this.Project);
 
 				this.AppSettings.UpdateTile(tileBitmap, this.ProjectName);
 			}
@@ -268,7 +270,7 @@ namespace uknit.Views
 		{
 			if(!this.Project.IsPinnedToStart)
 			{
-				WriteableBitmap tileBitmap = this.CreateRowCounterBitmap();
+				WriteableBitmap tileBitmap = this.ProjectVM.CreateRowCounterBitmap(this.Project);
 
 				this.Project.IsPinnedToStart = true;
 				this.AppSettings.ModifyKnittingProjectByName(this.ProjectName, this.Project);
@@ -307,27 +309,6 @@ namespace uknit.Views
 
 				messagePrompt.Show();
 			}
-		}
-
-		private WriteableBitmap CreateRowCounterBitmap()
-		{
-			uknit.Controls.RowCounterControl rowCounter = new uknit.Controls.RowCounterControl()
-			{
-				TensDigit = this.TensDigit,
-				OnesDigit = this.OnesDigit,
-				Fill = this.Project.RowCounterColor,
-				NeedleWidth = 100,
-				HorizontalAlignment = System.Windows.HorizontalAlignment.Center
-			};
-
-			rowCounter.Measure(new Size(400, 400));
-			rowCounter.Arrange(new Rect(0, 0, 400, 400));
-
-			WriteableBitmap tileBitmap = new WriteableBitmap(400, 400);
-			tileBitmap.Render(rowCounter, null);
-			tileBitmap.Invalidate();
-
-			return tileBitmap;
 		}
 	}
 }

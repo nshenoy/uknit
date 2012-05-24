@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using uknit.Models;
+using uknit.ViewModels;
 
 namespace uknit
 {
@@ -126,6 +127,12 @@ namespace uknit
 			KnittingProject project = this.AppSettings.GetKnittingProjectByName(projectName);
 			int index = App.ViewModel.KnittingProjects.IndexOf(project);
 			App.ViewModel.KnittingProjects.RemoveAt(index);
+
+			if(project.IsPinnedToStart)
+			{
+				this.AppSettings.DeleteTile(project.ProjectName);
+			}
+
 			this.AppSettings.RemoveKnittingProjectByName(projectName);
 		}
 

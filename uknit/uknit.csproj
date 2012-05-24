@@ -108,7 +108,7 @@
     <Compile Include="MetroGridHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\KnittingProject.cs" />
-    <Compile Include="ViewModels\AddNewProjectViewModel.cs" />
+    <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="ViewModels\StitchConversionViewModel.cs" />
     <Compile Include="ViewModels\GaugeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
