@@ -52,24 +52,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coding4Fun.Phone.Controls">
-      <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.5.1\lib\Coding4Fun.Phone.Controls.dll</HintPath>
+    <Reference Include="Coding4Fun.Phone.Controls, Version=1.5.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.5.6\lib\sl4-windowsphone71\Coding4Fun.Phone.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Coding4Fun.Phone.Controls.Toolkit">
-      <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.5.1\lib\Coding4Fun.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Coding4Fun.Phone.Controls.Toolkit, Version=1.5.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.5.6\lib\sl4-windowsphone71\Coding4Fun.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZLib.Phone">
+      <HintPath>..\packages\ImageTools.0.3.1\lib\sl3-wp\ICSharpCode.SharpZLib.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageTools">
+      <HintPath>..\packages\ImageTools.0.3.1\lib\sl3-wp\ImageTools.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageTools.IO.Png">
+      <HintPath>..\packages\ImageTools.0.3.1\lib\sl3-wp\ImageTools.IO.Png.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageTools.Utils">
+      <HintPath>..\packages\ImageTools.0.3.1\lib\sl3-wp\ImageTools.Utils.dll</HintPath>
     </Reference>
     <Reference Include="IsolatedStorageExplorer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\packages\Coding4Fun.Phone.Controls.Complete.1.5.1\lib\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.1\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp.WindowsPhone">
-      <HintPath>..\packages\RestSharp.102.7\lib\sl4-wp71\RestSharp.WindowsPhone.dll</HintPath>
+    <Reference Include="PhoneCodeContractsAssemblies">
+      <HintPath>..\packages\ImageTools.0.3.1\lib\sl3-wp\PhoneCodeContractsAssemblies.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -77,8 +88,9 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="YourLastAboutDialog, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YLAD.1.4\lib\sl40-wp71\YourLastAboutDialog.dll</HintPath>
+    <Reference Include="YourLastAboutDialog, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YLAD.2.0.0\lib\sl40-wp71\YourLastAboutDialog.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +101,7 @@
     <Compile Include="Controls\RowCounterControl.xaml.cs">
       <DependentUpon>RowCounterControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\StringToColorConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -104,7 +117,7 @@
     <Compile Include="Views\AddNewProject.xaml.cs">
       <DependentUpon>AddNewProject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Converters.cs" />
+    <Compile Include="Helpers\DoubleToStringConverter.cs" />
     <Compile Include="Views\Tools\StitchConversion.xaml.cs">
       <DependentUpon>StitchConversion.xaml</DependentUpon>
     </Compile>
@@ -131,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ApplicationDefinition>
+    <Content Include="Content\About\AboutStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Content>
     <Page Include="Controls\RowCounterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,7 +189,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -186,13 +205,21 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Images\cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <Resource Include="Content\Images\dark\add.png" />
+    <Resource Include="Content\Images\dark\pushpin.png" />
     <Content Include="Content\Images\KnitBackground480x800.jpg" />
     <Content Include="Content\Images\KnitBlueBackground.JPG" />
     <Resource Include="Content\Images\light\add.png" />
+    <Resource Include="Content\Images\light\pushpin.png" />
+    <Content Include="Content\Images\pushpin.png" />
     <Content Include="Content\Images\save.png" />
     <Content Include="Content\Images\PanoramaBackground.jpg" />
     <Content Include="Content\Images\settings.png" />
+    <Content Include="Content\Images\unpin.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup />

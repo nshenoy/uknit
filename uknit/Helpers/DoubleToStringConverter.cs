@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Data;
 
-namespace uknit.Views.Converters
+namespace uknit.Helpers.Converters
 {
 	public class DoubleToStringConverter : IValueConverter
 	{
@@ -32,6 +32,5 @@ namespace uknit.Views.Converters
 		{
 			throw new NotImplementedException();
 		}
-
 	}
 }

@@ -13,7 +13,7 @@ using Microsoft.Phone.Controls;
 using System.Windows.Navigation;
 using uknit.ViewModels;
 
-namespace uknit.Views
+namespace uknit.Views.Tools
 {
 	public partial class YardsMeters : PhoneApplicationPage
 	{

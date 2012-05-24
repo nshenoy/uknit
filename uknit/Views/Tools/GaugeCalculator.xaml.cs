@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using uknit.ViewModels;
 
-namespace uknit.Views
+namespace uknit.Views.Tools
 {
 	public partial class GaugeCalculator : PhoneApplicationPage
 	{

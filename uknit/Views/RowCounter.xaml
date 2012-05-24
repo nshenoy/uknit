@@ -38,6 +38,7 @@
 	<phone:PhoneApplicationPage.ApplicationBar>
 		<shell:ApplicationBar Mode="Default" IsVisible="True"  IsMenuEnabled="True" Opacity="0.6">
 			<shell:ApplicationBarIconButton IconUri="/Content/Images/settings.png" Text="settings" Click="OnClick_Settings"/>
+			<shell:ApplicationBarIconButton IconUri="/Content/Images/pushpin.png" Text="pin to start" Click="OnClick_PinToStart"/>
 			<shell:ApplicationBar.MenuItems>
 				<shell:ApplicationBarMenuItem Text="reset counter" Click="OnClick_ResetCounter"/>
 			</shell:ApplicationBar.MenuItems>

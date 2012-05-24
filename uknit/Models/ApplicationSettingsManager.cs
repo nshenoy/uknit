@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
-using System.Windows;
-using System.ComponentModel;
+using ImageTools;
+using Microsoft.Phone.Shell;
+using uknit.Helpers.Converters;
 
 namespace uknit.Models
 {
@@ -15,6 +17,7 @@ namespace uknit.Models
 	{
 		private const string DATA_PATH = "Data";
 		private const string IMAGES_PATH = "Images";
+		private const string SHAREDSHELLCONTENT_PATH = "Shared/ShellContent";
 		private const string SAVEDPROJECTS_FILENAME = "SavedProjects.xml";
 		private const string BACKGROUNDIMAGE_FILENAME = "Background.jpg";
 		private const string DEFAULT_PANORAMA_IMAGE = "Content/Images/KnitBlueBackground.jpg";
@@ -49,6 +52,61 @@ namespace uknit.Models
 			using(IsolatedStorageFileStream ifs = ApplicationSettingsManager.UserStoreForApplication.OpenFile(backgroundImageFile, FileMode.Create, FileAccess.ReadWrite))
 			{
 				System.Windows.Media.Imaging.Extensions.SaveJpeg(backgroundImage, ifs, backgroundImage.PixelWidth, backgroundImage.PixelHeight, 0, 85);
+			}
+		}
+
+		public void CreateTile(WriteableBitmap tileImage, string tileName, Uri pageUri)
+		{
+			string tileImageFile = System.IO.Path.Combine(ApplicationSettingsManager.SHAREDSHELLCONTENT_PATH, tileName + ".png");
+
+			using(IsolatedStorageFileStream ifs = ApplicationSettingsManager.UserStoreForApplication.OpenFile(tileImageFile, FileMode.Create, FileAccess.ReadWrite))
+			{
+				ExtendedImage image = tileImage.ToImage();
+				image.WriteToStream(ifs, tileImageFile);
+			}
+
+			StandardTileData tileData = new StandardTileData
+			{
+				Title = String.Format("uknit - {0}", tileName),
+				BackgroundImage = new Uri("isostore:/" + tileImageFile, UriKind.Absolute)
+			};
+
+			ShellTile.Create(pageUri, tileData);
+		}
+
+		public void DeleteTile(string tileName)
+		{
+			ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains(tileName));
+
+			if(tile != null)
+			{
+				tile.Delete();
+			}
+		}
+
+		public void UpdateTile(WriteableBitmap tileImage, string tileName)
+		{
+			ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains(tileName));
+			
+			if(tile != null)
+			{
+				string tileImageFile = System.IO.Path.Combine(ApplicationSettingsManager.SHAREDSHELLCONTENT_PATH, tileName + ".png");
+
+				ApplicationSettingsManager.UserStoreForApplication.DeleteFile(tileImageFile);
+
+				using(IsolatedStorageFileStream ifs = ApplicationSettingsManager.UserStoreForApplication.OpenFile(tileImageFile, FileMode.Create, FileAccess.ReadWrite))
+				{
+					ExtendedImage image = tileImage.ToImage();
+					image.WriteToStream(ifs, tileImageFile);
+				}
+
+				StandardTileData tileData = new StandardTileData
+				{
+					Title = String.Format("uknit - {0}", tileName),
+					BackgroundImage = new Uri("isostore:/" + tileImageFile, UriKind.Absolute)
+				};
+
+				tile.Update(tileData);
 			}
 		}
 
@@ -168,7 +226,8 @@ namespace uknit.Models
 						ProjectName = project.Element("Name").Value,
 						ProjectDescription = project.Element("Description").Value,
 						CurrentRowCount = int.Parse(project.Element("CurrentRowCount").Value),
-						RowCounterColor = HexString2Color(project.Element("RowCounterColorRGB").Value)
+						RowCounterColor = StringToColorConverter.HexString2Color(project.Element("RowCounterColorRGB").Value),
+						IsPinnedToStart = project.Element("IsPinnedToStart") == null ? false : bool.Parse(project.Element("IsPinnedToStart").Value)
 					};
 			}
 
@@ -189,6 +248,10 @@ namespace uknit.Models
 					projectXml.Save(writer);
 				}
 			}
+
+			// If the project is pinned, then remove the tile
+			// TODO
+
 		}
 
 		public void AddKnittingProject(string projectName, KnittingProject project)
@@ -227,6 +290,14 @@ namespace uknit.Models
 			projectToModify.Element("CurrentRowCount").Value = project.CurrentRowCount.ToString();
 			projectToModify.Element("RowCounterColorRGB").Value = project.RowCounterColorRGB;
 
+			if(projectToModify.Element("IsPinnedToStart") == null)
+			{
+				projectToModify.Add(new XElement("IsPinnedToStart", project.IsPinnedToStart.ToString()));
+			}
+			else
+			{
+				projectToModify.Element("IsPinnedToStart").Value = project.IsPinnedToStart.ToString();
+			}
 
 			string projectPath = System.IO.Path.Combine(ApplicationSettingsManager.DATA_PATH, ApplicationSettingsManager.SAVEDPROJECTS_FILENAME);
 			using(IsolatedStorageFileStream stream = ApplicationSettingsManager.UserStoreForApplication.OpenFile(projectPath, FileMode.Create, FileAccess.ReadWrite))
@@ -249,8 +320,9 @@ namespace uknit.Models
 				{
 					ProjectName = p.Element("Name").Value,
 					ProjectDescription = p.Element("Description").Value,
-					RowCounterColor = HexString2Color(p.Element("RowCounterColorRGB").Value),
-					CurrentRowCount = int.Parse(p.Element("CurrentRowCount").Value)
+					RowCounterColor = StringToColorConverter.HexString2Color(p.Element("RowCounterColorRGB").Value),
+					CurrentRowCount = int.Parse(p.Element("CurrentRowCount").Value),
+					IsPinnedToStart = p.Element("IsPinnedToStart") == null ? false : bool.Parse(p.Element("IsPinnedToStart").Value)
 				}).ToList();
 			}
 
@@ -390,21 +462,6 @@ namespace uknit.Models
 			IsolatedStorage.Remove(RulerCalibratedKeyName);
 			IsolatedStorage.Remove(EnableRowCounterTensDigitKeyName);
 			IsolatedStorage.Remove(EnableBackgroundImageKeyName);
-		}
-
-		private Color HexString2Color(string hex)
-		{
-			byte a;
-			byte r;
-			byte g;
-			byte b;
-
-			a = (byte)(int.Parse(hex.Substring(1, 2), System.Globalization.NumberStyles.AllowHexSpecifier));
-			r = (byte)(int.Parse(hex.Substring(3, 2), System.Globalization.NumberStyles.AllowHexSpecifier));
-			g = (byte)(int.Parse(hex.Substring(5, 2), System.Globalization.NumberStyles.AllowHexSpecifier));
-			b = (byte)(int.Parse(hex.Substring(7, 2), System.Globalization.NumberStyles.AllowHexSpecifier));
-
-			return Color.FromArgb(a, r, g, b);
 		}
 	}
 }

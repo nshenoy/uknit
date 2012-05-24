@@ -19,6 +19,9 @@
 			</Links>
 		</MainItem>
 		<Item Title="history" Type="text">
+			1.2
+			Added Live Tile support for row counters
+			
 			1.1
 			Fixed accuracy of ruler
 			
@@ -38,6 +41,7 @@
 			- http://ylad.codeplex.com.
 			- http://coding4fun.codeplex.com/
 			- http://nuget.org/packages/MetroGridHelper
+			- http://imagetools.codeplex.com
 		</Item>
 	</Items>
 </About>

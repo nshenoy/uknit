@@ -1,13 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Media;
-using System.Collections.Generic;
+using System.Xml.Serialization;
+using uknit.Helpers.Converters;
 
 namespace uknit.Models
 {
 	public class KnittingProject : INotifyPropertyChanged, IComparable
 	{
 		private string _projectName;
+
+		[XmlElement("Name")]
 		public string ProjectName
 		{
 			get
@@ -22,6 +25,8 @@ namespace uknit.Models
 		}
 
 		private string _projectDescription;
+
+		[XmlElement("Description")]
 		public string ProjectDescription
 		{
 			get
@@ -49,15 +54,22 @@ namespace uknit.Models
 			}
 		}
 
+		[XmlElement("RowCounterColorRGB")]
 		public string RowCounterColorRGB
 		{
 			get
 			{
 				return _rowCounterColor.ToString();
 			}
+			set
+			{
+				RowCounterColor = StringToColorConverter.HexString2Color(value);
+			}
 		}
 
 		private int _currentRowCount;
+
+		[XmlElement("CurrentRowCount")]
 		public int CurrentRowCount
 		{
 			get
@@ -68,6 +80,22 @@ namespace uknit.Models
 			{
 				_currentRowCount = value;
 				NotifyPropertyChanged("CurrentRowCount");
+			}
+		}
+
+		private bool _isPinnedToStart;
+
+		[XmlElement("IsPinnedToStart")]
+		public bool IsPinnedToStart
+		{
+			get
+			{
+				return _isPinnedToStart;
+			}
+			set
+			{
+				_isPinnedToStart = value;
+				NotifyPropertyChanged("IsPinnedToStart");
 			}
 		}
 

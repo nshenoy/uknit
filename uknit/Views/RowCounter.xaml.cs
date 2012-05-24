@@ -6,6 +6,8 @@ using Microsoft.Phone.Controls;
 using uknit.Models;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using Microsoft.Phone.Shell;
 
 namespace uknit.Views
 {
@@ -17,6 +19,7 @@ namespace uknit.Views
 		private KnittingProject Project;
 		private ApplicationSettingsManager AppSettings = new ApplicationSettingsManager();
 		private bool IsTensDigitEnabled = false;
+		private bool NewPin = false;
 
 		public string TensDigit
 		{
@@ -101,6 +104,29 @@ namespace uknit.Views
 
 			this.TensDigit = (this.CurrentRowCount / 10).ToString();
 			this.OnesDigit = (this.CurrentRowCount % 10).ToString();
+
+			if(this.Project.IsPinnedToStart)
+			{
+				// Check to see if this is actually pinned.
+				//  If yes, then change icon to unpin.
+				//  In no, then skip the logic below and change IsPinnedToStart to false
+
+				ApplicationBarIconButton pinButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+				pinButton.Text = "unpin";
+				pinButton.IconUri = new Uri("Content/Images/unpin.png", UriKind.Relative);
+			}
+		}
+
+		protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
+		{
+			if(this.Project.IsPinnedToStart && !this.NewPin)
+			{
+				WriteableBitmap tileBitmap = this.CreateRowCounterBitmap();
+
+				this.AppSettings.UpdateTile(tileBitmap, this.ProjectName);
+			}
+
+			base.OnNavigatingFrom(e);
 		}
 
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
@@ -129,6 +155,11 @@ namespace uknit.Views
 				{
 					InitializePage(val as string);
 				}
+			}
+
+			if(this.NewPin == true)
+			{
+				this.NewPin = false;
 			}
 
 			IsNew = false;
@@ -231,6 +262,72 @@ namespace uknit.Views
 			};
 
 			messagePrompt.Show();
+		}
+
+		private void OnClick_PinToStart(object sender, EventArgs e)
+		{
+			if(!this.Project.IsPinnedToStart)
+			{
+				WriteableBitmap tileBitmap = this.CreateRowCounterBitmap();
+
+				this.Project.IsPinnedToStart = true;
+				this.AppSettings.ModifyKnittingProjectByName(this.ProjectName, this.Project);
+
+				Uri projectPage = new Uri(String.Format("/Views/RowCounter.xaml?ProjectName={0}", this.ProjectName), UriKind.Relative);
+				this.NewPin = true;
+				this.AppSettings.CreateTile(tileBitmap, this.ProjectName, projectPage);
+			}
+			else
+			{
+				Coding4Fun.Phone.Controls.MessagePrompt messagePrompt = new Coding4Fun.Phone.Controls.MessagePrompt();
+				messagePrompt.IsCancelVisible = true;
+				messagePrompt.Body = new TextBlock
+				{
+					Text = "Are you sure you want to unpin this tile?",
+					FontSize = 30.0,
+					TextWrapping = TextWrapping.Wrap
+				};
+
+				messagePrompt.Completed += (str, res) =>
+				{
+					if(res.PopUpResult == Coding4Fun.Phone.Controls.PopUpResult.Ok)
+					{
+						Dispatcher.BeginInvoke(() =>
+						{
+							this.Project.IsPinnedToStart = false;
+							this.AppSettings.ModifyKnittingProjectByName(this.ProjectName, this.Project);
+							this.AppSettings.DeleteTile(this.ProjectName);
+
+							ApplicationBarIconButton pinButton = (ApplicationBarIconButton)(this.ApplicationBar.Buttons[1]);
+							pinButton.Text = "pin to start";
+							pinButton.IconUri = new Uri("Content/Images/pushpin.png", UriKind.Relative);
+						});
+					}
+				};
+
+				messagePrompt.Show();
+			}
+		}
+
+		private WriteableBitmap CreateRowCounterBitmap()
+		{
+			uknit.Controls.RowCounterControl rowCounter = new uknit.Controls.RowCounterControl()
+			{
+				TensDigit = this.TensDigit,
+				OnesDigit = this.OnesDigit,
+				Fill = this.Project.RowCounterColor,
+				NeedleWidth = 100,
+				HorizontalAlignment = System.Windows.HorizontalAlignment.Center
+			};
+
+			rowCounter.Measure(new Size(400, 400));
+			rowCounter.Arrange(new Rect(0, 0, 400, 400));
+
+			WriteableBitmap tileBitmap = new WriteableBitmap(400, 400);
+			tileBitmap.Render(rowCounter, null);
+			tileBitmap.Invalidate();
+
+			return tileBitmap;
 		}
 	}
 }
