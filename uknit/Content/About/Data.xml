@@ -10,8 +10,8 @@
 			Title="about"
 			AppAdditionalNotesLabel="A Word from the Author:">
 			<Links>
-				<Link NavigationUri="http://repne.wordpress.com"
-							Content="http://repne.wordpress.com"
+				<Link NavigationUri="http://uknit.github.com"
+							Content="http://uknit.github.com"
 							Label="Web:" />
 				<Link NavigationUri="mailto:uknit@hotmail.com"
 							Content="mailto:uknit@hotmail.com"
@@ -19,6 +19,9 @@
 			</Links>
 		</MainItem>
 		<Item Title="history" Type="text">
+			1.2.1
+			Fixed crashing bug related to Live Tiles
+			
 			1.2
 			Added Live Tile support for row counters
 			

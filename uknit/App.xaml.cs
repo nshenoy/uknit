@@ -122,6 +122,20 @@ namespace uknit
 		// Code to execute on Unhandled Exceptions
 		private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
 		{
+			// Write the callstack to isolated storage
+			System.IO.IsolatedStorage.IsolatedStorageSettings IsolatedStorage = System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings;
+			System.IO.IsolatedStorage.IsolatedStorageFile UserStoreForApplication = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+			using(System.IO.IsolatedStorage.IsolatedStorageFileStream stream = UserStoreForApplication.OpenFile("callstack.txt", System.IO.FileMode.CreateNew, System.IO.FileAccess.ReadWrite))
+			{
+				using(System.IO.StreamWriter writer = new System.IO.StreamWriter(stream))
+				{
+					writer.WriteLine("Message: " + e.ExceptionObject.Message);
+					writer.WriteLine("Callstack:");
+					writer.WriteLine(e.ExceptionObject.StackTrace);
+					writer.Flush();
+				}
+			}
+
 			if(System.Diagnostics.Debugger.IsAttached)
 			{
 				// An unhandled exception has occurred; break into the debugger

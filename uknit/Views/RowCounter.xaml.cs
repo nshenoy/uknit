@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using Microsoft.Phone.Controls;
-using uknit.Models;
-using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using uknit.Models;
 using uknit.ViewModels;
 
 namespace uknit.Views
@@ -63,6 +63,12 @@ namespace uknit.Views
 			}
 		}
 
+		public bool LaunchedAsTile
+		{
+			get;
+			set;
+		}
+
 		public RowCounter()
 		{
 			InitializeComponent();
@@ -101,6 +107,7 @@ namespace uknit.Views
 			this.PageTitle.Text = projectName;
 
 			this.Project = this.AppSettings.GetKnittingProjectByName(projectName);
+
 			this.CurrentRowCount = this.Project.CurrentRowCount;
 			this.RowCounterControl.Fill = this.Project.RowCounterColor;
 
@@ -134,10 +141,17 @@ namespace uknit.Views
 		protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
 		{
 			this.State["ProjectName"] = this.ProjectName;
+			this.State["AppSettings"] = this.AppSettings;
+
 			this.AppSettings.ModifyKnittingProjectByName(this.ProjectName, this.Project);
 
-			int index = App.ViewModel.KnittingProjects.IndexOf(this.Project);
-			App.ViewModel.KnittingProjects[index] = this.Project;
+			List<KnittingProject> projects = this.AppSettings.LoadKnittingProjects();
+
+			if(!this.LaunchedAsTile)
+			{
+				int index = App.ViewModel.KnittingProjects.IndexOf(this.Project);
+				App.ViewModel.KnittingProjects[index] = this.Project;
+			}
 
 			base.OnNavigatedFrom(e);
 		}
@@ -149,14 +163,26 @@ namespace uknit.Views
 			{
 				InitializePage(queryString["ProjectName"]);
 			}
-			else if(IsNew)
+			else //if(IsNew)
 			{
 				object val;
+
+				if(this.State.TryGetValue("AppSettings", out val))
+				{
+					this.AppSettings = val as ApplicationSettingsManager;
+				}
+
+				val = null;
 
 				if(this.State.TryGetValue("ProjectName", out val))
 				{
 					InitializePage(val as string);
 				}
+			}
+
+			if(queryString.ContainsKey("SecondaryTile"))
+			{
+				this.LaunchedAsTile = true;
 			}
 
 			if(this.NewPin == true)
@@ -275,7 +301,7 @@ namespace uknit.Views
 				this.Project.IsPinnedToStart = true;
 				this.AppSettings.ModifyKnittingProjectByName(this.ProjectName, this.Project);
 
-				Uri projectPage = new Uri(String.Format("/Views/RowCounter.xaml?ProjectName={0}", this.ProjectName), UriKind.Relative);
+				Uri projectPage = new Uri(String.Format("/Views/RowCounter.xaml?ProjectName={0}&SecondaryTile=1", this.ProjectName), UriKind.Relative);
 				this.NewPin = true;
 				this.AppSettings.CreateTile(tileBitmap, this.ProjectName, projectPage);
 			}
